@@ -66,7 +66,6 @@ const register = async (
 
     return res
       .status(201)
-      .cookie("accessToken", accessToken, aaccessTokenOptions)
       .json({
       message: "User registered successfully",
       refreshToken: refreshToken,
