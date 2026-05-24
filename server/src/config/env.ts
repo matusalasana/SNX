@@ -9,3 +9,4 @@ export const ACCESS_TOKEN_EXP = process.env.ACCESS_TOKEN_EXP || "15m";
 export const REFRESH_TOOEN_EXP = process.env.REFRESH_TOOEN_EXP || "7d";
 
 export const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 12;
+export const NODE_ENV = Number(process.env.NODE_ENV) || "development";
