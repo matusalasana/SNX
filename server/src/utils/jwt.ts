@@ -3,7 +3,7 @@ import {
   JWT_SECRET,
   ACCESS_TOKEN_EXP,
   REFRESH_TOOEN_EXP,
-} from "jsonwebtoken";
+} from "../config/env";
 
 interface UserPayload {
   id: string,

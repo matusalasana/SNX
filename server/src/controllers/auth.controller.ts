@@ -7,15 +7,16 @@ import {
 import { 
   generateAccessToken,
   generateRefreshToken
-} from "../utils/hash";
+} from "../utils/jwt";
 import { 
   setAccessTokenCookie,
   setRefreshTokenCookie,
   clearRefreshTokenCookie,
   clearAccessTokenCookie
-} from "../config/cookie";
+} from "../config/cookies";
 
-export const register = async (
+// REGISTER
+const register = async (
   req: Request,
   res: Response
 ) => {
@@ -85,3 +86,8 @@ export const register = async (
     });
   }
 };
+
+
+export const AuthController = {
+  register
+}
