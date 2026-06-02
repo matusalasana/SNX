@@ -1,18 +1,52 @@
-import { dbQuery } from '../../db/client';
+import { sql } from '../../configs/db';
 
-const findByUsername = async (username: string) => {
-  const sql = 'SELECT * FROM users WHERE username = $1 LIMIT 1';
-  const result = await dbQuery(sql, [username]);
-  return result.rows[0] || null;
+const findByUsername = async (
+  username: string ) => {
+  const result = await sql`
+    SELECT * FROM users 
+    WHERE username = ${username}
+  `;
+  return result[0] || null;
 };
 
 const findById = async (id: string) => {
-  const sql = 'SELECT id, username, email, avatar_url, bio FROM users WHERE id = $1 LIMIT 1';
-  const result = await dbQuery(sql, [id]);
-  return result.rows[0] || null;
+  const result = sql`
+    SELECT 
+      id, 
+      username, 
+      email, 
+      avatar_url, 
+      bio FROM users 
+    WHERE id = ${id}
+  `;
+  return result[0] || null;
 };
+
+
+const register = async(
+  username,
+  email,
+  hashedPassword
+) => {
+  
+  const result = await sql`
+    INSERT INTO users (
+      username,
+      email,
+      password_hash
+    )
+    VALUES (
+      ${username},
+      ${email},
+      ${hashedPassword}
+    )
+    RETURNING id, email, username, avatar_url, bio
+  `
+  return result[0] || null;
+}
 
 export const AuthRepository = {
   findByUsername,
-  findById
+  findById,
+  register
 };

@@ -8,13 +8,15 @@ export interface AuthenticatedRequest extends Request {
   };
 }
 
-export const requireAuth = (req: Request, res: Response, next: NextFunction): void => {
-  const authReq = req as AuthenticatedRequest;
+export const requireAuth = (
+  req: Request, 
+  res: Response, 
+  next: NextFunction) => {
   
   // Extract token from cookies or authorization headers
   let token = req.cookies?.token;
   
-  if (!token && req.headers.authorization?.startsWith('Bearer ')) {
+  if (!token && req.headers.authorization) {
     token = req.headers.authorization.split(' ')[1];
   }
 
@@ -24,11 +26,12 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction): vo
   }
 
   const decoded = verifyToken(token);
+  
   if (!decoded) {
     res.status(401).json({ error: 'Session expired or authentication token is invalid.' });
     return;
   }
 
-  authReq.user = decoded;
+  req.user = decoded
   next();
 };

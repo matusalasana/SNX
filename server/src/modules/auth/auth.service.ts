@@ -1,18 +1,29 @@
 import { AuthRepository } from './auth.repository';
-import { comparePassword, generateToken } from '../../utils/auth';
+import { comparePassword, hashPassword, generateToken } from '../../utils/auth';
+import { 
+  RegisterInput,
+  LoginInput
+} from "./auth.validation"
 
-const loginUser = async (usernameStr: string, passwordStr: string) => {
-  const user = await AuthRepository.findByUsername(usernameStr);
+const loginUser = async (
+  data: LoginInput ) => {
+    
+  const { username, password_hash } = data;
+  
+  const user = await AuthRepository.findByUsername(username);
   if (!user) {
-    throw new Error('Invalid login criteria. Access denied.');
+    throw new Error('Invalid Credentials. User not found.');
   }
 
-  const pinMatch = await comparePassword(passwordStr, user.password_hash);
-  if (!pinMatch) {
-    throw new Error('Invalid login criteria. Password mismatch.');
+  const isMatch = await comparePassword(password_hash,  user.password_hash
+  );
+  
+  if (!isMatch) {
+    throw new Error('Invalid Credentials. Password mismatch.');
   }
-
-  const token = generateToken({ userId: user.id, username: user.username });
+  
+  const payload = { userId: user.id, username: user.username  }
+  const token = await generateToken(payload);
   return {
     user: {
       id: user.id,
@@ -25,7 +36,7 @@ const loginUser = async (usernameStr: string, passwordStr: string) => {
   };
 };
 
-const verifyUserById = async (userId: string) => {
+const getMe = async (userId: string) => {
   const user = await AuthRepository.findById(userId);
   if (!user) {
     throw new Error('User profiles no longer registered.');
@@ -33,7 +44,45 @@ const verifyUserById = async (userId: string) => {
   return user;
 };
 
+
+
+const register = async (data: RegisterInput) => {
+  const { username, email, password_hash } = data;
+  
+  const exists = await AuthRepository.findByUsername(username);
+  
+  if(exists){
+    throw new Error("User name taken")
+  }
+  
+  if(!username || !email || !password_hash){
+    throw new Error("Missing required fields")
+  }
+  
+  const hashed = await hashPassword(password_hash);
+  const user = await AuthRepository.register(
+    username,
+    email,
+    hashed
+  )
+  const payload = { userId: user.id, username: user.username  }
+  const token = await generateToken(payload)
+  
+  return {
+    user: {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      avatar_url: user.avatar_url,
+      bio: user.bio
+    },
+    token
+  };
+}
+
+
 export const AuthService = {
   loginUser,
-  verifyUserById
+  getMe,
+  register
 };
