@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { ProjectsController } from './projects.controller';
 import { requireAuth } from '../../middleware/auth.middleware';
+import { validate } from '../../middleware/validation.middleware';
+import { updateProjectSchema, createProjectSchema } from "./projects.validation"
 
 const router = Router();
 
@@ -9,8 +11,8 @@ router.get('/', ProjectsController.getProjects);
 router.get('/:id', ProjectsController.getProjectById);
 
 // Admin-only protected routes
-router.post('/', requireAuth, ProjectsController.createProject);
-router.patch('/:id', requireAuth, ProjectsController.updateProject);
+router.post('/', validate(createProjectSchema), requireAuth, ProjectsController.createProject);
+router.patch('/:id', validate(updateProjectSchema), requireAuth, ProjectsController.updateProject);
 router.delete('/:id', requireAuth, ProjectsController.deleteProject);
 
 export default router;
