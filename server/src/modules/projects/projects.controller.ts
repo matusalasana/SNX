@@ -1,56 +1,53 @@
 import { Request, Response } from 'express';
 import { ProjectsService } from './projects.service';
-import { createProjectSchema, updateProjectSchema } from './projects.validation';
 
-const getProjects = async (req: Request, res: Response): Promise<void> => {
+
+// GET ALL
+const getProjects = async (req: Request, res: Response) => {
   try {
-    const list = await ProjectsService.getAllProjects();
-    res.json(list);
+    const projects = await ProjectsService.getAllProjects();
+    res.status(200).json(list);
   } catch (err: any) {
+    console.log("Get projects error:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
 
-const getProjectById = async (req: Request, res: Response): Promise<void> => {
+// GET ONE
+const getProjectById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const project = await ProjectsService.getProjectById(id);
-    res.json(project);
+    const project = await ProjectsService.getProjectById(req.params.id);
+    res.status(200).json(project);
   } catch (err: any) {
+    console.log("Get project error:", err.message);
     res.status(404).json({ error: err.message });
   }
 };
 
-const createProject = async (req: Request, res: Response): Promise<void> => {
+const createProject = async (req: Request, res: Response) => {
   try {
-    const result = createProjectSchema.safeParse(req.body);
-    if (!result.success) {
-      res.status(400).json({ error: 'Validation failed', details: result.error.format() });
-      return;
-    }
-    const newProj = await ProjectsService.createNewProject(result.data);
+    const newProj = await ProjectsService.createNewProject(req.body);
     res.status(201).json(newProj);
   } catch (err: any) {
+    console.log("Create project error:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
 
-const updateProject = async (req: Request, res: Response): Promise<void> => {
+const updateProject = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const result = updateProjectSchema.safeParse(req.body);
-    if (!result.success) {
-      res.status(400).json({ error: 'Validation failed', details: result.error.format() });
-      return;
-    }
-    const updated = await ProjectsService.updateProject(id, result.data);
-    res.json(updated);
+    const updated = await ProjectsService.updateProject(
+      req.params.id, 
+      req.body
+    );
+    res.status(200).json(updated);
   } catch (err: any) {
+    console.log("Update project error:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
 
-const deleteProject = async (req: Request, res: Response): Promise<void> => {
+const deleteProject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     await ProjectsService.deleteProject(id);
