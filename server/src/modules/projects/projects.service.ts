@@ -1,30 +1,39 @@
 import { ProjectsRepository } from './projects.repository';
 import { CreateProjectInput, UpdateProjectInput } from './projects.validation';
 
+// GET ALL
 const getAllProjects = async () => {
-  return ProjectsRepository.findAll();
+  return await ProjectsRepository.findAll();
 };
 
+// GET ONE
 const getProjectById = async (id: string) => {
   const project = await ProjectsRepository.findById(id);
   if (!project) throw new Error('Project not found');
   return project;
 };
 
+// CREATE
 const createNewProject = async (data: CreateProjectInput) => {
   return ProjectsRepository.create(data);
 };
 
+// UPDATE 
 const updateProject = async (id: string, data: UpdateProjectInput) => {
+  const project = await ProjectsRepository.findById(id);
+  if (!project) throw new Error('Project to update not found');
+  
   const updated = await ProjectsRepository.update(id, data);
-  if (!updated) throw new Error('Project to update not found');
+  
   return updated;
 };
 
+// DELETE
 const deleteProject = async (id: string) => {
+  const project = await ProjectsRepository.findById(id);
+  if (!project) throw new Error('Project to delete not found');
+  
   const success = await ProjectsRepository.deleteOne(id);
-  if (!success) throw new Error('Project to delete not found');
-  return success;
 };
 
 export const ProjectsService = {

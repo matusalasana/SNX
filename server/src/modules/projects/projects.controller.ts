@@ -6,7 +6,7 @@ import { ProjectsService } from './projects.service';
 const getProjects = async (req: Request, res: Response) => {
   try {
     const projects = await ProjectsService.getAllProjects();
-    res.status(200).json(list);
+    res.status(200).json(projects);
   } catch (err: any) {
     console.log("Get projects error:", err.message);
     res.status(500).json({ error: err.message });
@@ -24,6 +24,7 @@ const getProjectById = async (req: Request, res: Response) => {
   }
 };
 
+// CREATE 
 const createProject = async (req: Request, res: Response) => {
   try {
     const newProj = await ProjectsService.createNewProject(req.body);
@@ -34,6 +35,7 @@ const createProject = async (req: Request, res: Response) => {
   }
 };
 
+// UPDATE 
 const updateProject = async (req: Request, res: Response) => {
   try {
     const updated = await ProjectsService.updateProject(
@@ -47,6 +49,7 @@ const updateProject = async (req: Request, res: Response) => {
   }
 };
 
+// DELETE 
 const deleteProject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
