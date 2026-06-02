@@ -1,0 +1,6 @@
+{
+  "name": "SNX Portfolio",
+  "description": "A highly modern, full-stack MVP developer portfolio built with the PERN stack, Neon Serverless PostgreSQL and REST API architecture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
