@@ -8,14 +8,5 @@ const api = axios.create({
   }
 });
 
-// Configure client response interceptors to ease authentication extraction
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // Return formatted error messages directly
-    const msg = error.response?.data?.error || error.message || 'An unexpected API connection error occurred.';
-    return Promise.reject(new Error(msg));
-  }
-);
 
 export default api;
