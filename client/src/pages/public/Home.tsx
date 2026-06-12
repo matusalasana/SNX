@@ -5,6 +5,7 @@ import  Buttons  from "../../components/home/Buttons";
 import  SocialMedias  from "../../components/home/SocialMedias";
 import  AboutMe  from "../../components/home/AboutMe";
 import  Skills  from "../../components/home/Skills";
+import  Projects  from "../../components/home/Projects";
 
 export default function HomePage() {
 
@@ -51,37 +52,7 @@ export default function HomePage() {
       </section>
 
       {/* PROJECTS */}
-      <section id="projects" className="mx-auto max-w-7xl px-6 py-32">
-        <p className="mb-4 text-cyan-400">FEATURED WORK</p>
-
-        <h2 className="mb-12 text-4xl font-bold">
-          Selected Projects
-        </h2>
-
-        <div className="grid gap-8 md:grid-cols-3">
-          {projects.map((project) => (
-            <article
-              key={project.title}
-              className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition hover:border-cyan-400"
-            >
-              <div className="mb-6 h-48 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20" />
-
-              <h3 className="mb-4 text-2xl font-semibold">
-                {project.title}
-              </h3>
-
-              <p className="mb-6 leading-7 text-slate-400">
-                {project.description}
-              </p>
-
-              <button className="flex items-center gap-2 text-cyan-400">
-                View Details
-                <ArrowRight size={18} />
-              </button>
-            </article>
-          ))}
-        </div>
-      </section>
+      <Projects />
 
       {/* CONTACT */}
       <section
