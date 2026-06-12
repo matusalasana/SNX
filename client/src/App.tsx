@@ -11,6 +11,7 @@ import About from "./pages/public/About";
 import Login from "./pages/public/Login";
 import Blog from "./pages/public/Blog";
 import Contact from "./pages/public/Contact";
+import AdminDashboard from "./pages/admin/Dashboard";
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         
       </Routes>
     </>
