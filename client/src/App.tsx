@@ -8,6 +8,8 @@ import Projects from "./pages/public/Projects";
 import ProjectDetails from "./pages/public/ProjectDetails";
 import About from "./pages/public/About";
 import Login from "./pages/public/Login";
+import Blog from "./pages/public/Blog";
+import Contact from "./pages/public/Contact";
 
 
 const App = () => {
@@ -21,6 +23,8 @@ const App = () => {
           
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/blog" element={<Blog />} />
         
       </Routes>
     </>
