@@ -33,15 +33,11 @@ const logout = async (req: Request, res: Response) => {
 };
 
 const getMe = async (req: Request, res: Response) => {
-  if (!req.user) {
-    res.status(401).json({ error: 'Session not authenticated.' });
-    return;
-  }
-  
   try {
     const user = await AuthService.getMe(req.user.userId);
     res.json({
       authenticated: true,
+      test:"hello",
       user
     });
   } catch (err: any) {

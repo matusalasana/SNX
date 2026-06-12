@@ -1,13 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from '../utils/auth';
 
-export interface AuthenticatedRequest extends Request {
-  user?: {
-    userId: string;
-    username: string;
-  };
-}
-
 export const requireAuth = (
   req: Request, 
   res: Response, 

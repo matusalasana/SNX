@@ -10,7 +10,7 @@ const findByUsername = async (
 };
 
 const findById = async (id: string) => {
-  const result = sql`
+  const result = await sql`
     SELECT 
       id, 
       username, 

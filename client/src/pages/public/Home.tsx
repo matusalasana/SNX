@@ -1,0 +1,249 @@
+import { Github, Linkedin, Mail, ArrowRight, Download } from "lucide-react";
+
+export default function HomePage() {
+  const skills = [
+    "React",
+    "TypeScript",
+    "Node.js",
+    "Express",
+    "PostgreSQL",
+    "MongoDB",
+    "Redis",
+    "Docker",
+    "Git",
+    "Tailwind CSS",
+  ];
+
+  const projects = [
+    {
+      title: "Multi Vendor Marketplace",
+      description:
+        "A scalable marketplace platform with authentication, order management, payments, and vendor dashboards.",
+    },
+    {
+      title: "E-Commerce REST API",
+      description:
+        "Production-ready backend API featuring JWT authentication, RBAC, caching, and PostgreSQL.",
+    },
+    {
+      title: "Task Management Platform",
+      description:
+        "Full-stack productivity application with real-time updates and team collaboration features.",
+    },
+  ];
+
+  return (
+    <main className="min-h-screen bg-[#0f172a] text-white">
+      {/* NAVBAR */}
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0f172a]/80 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+          <h1 className="text-xl font-bold tracking-wider">
+            SANA<span className="text-cyan-400">.</span>
+          </h1>
+
+          <nav className="hidden gap-8 md:flex">
+            <a href="#about" className="text-slate-300 hover:text-white">
+              About
+            </a>
+            <a href="#skills" className="text-slate-300 hover:text-white">
+              Skills
+            </a>
+            <a href="#projects" className="text-slate-300 hover:text-white">
+              Projects
+            </a>
+            <a href="#contact" className="text-slate-300 hover:text-white">
+              Contact
+            </a>
+          </nav>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div className="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-cyan-500/20 blur-[150px]" />
+        <div className="absolute bottom-0 right-0 h-[500px] w-[500px] rounded-full bg-blue-600/20 blur-[150px]" />
+
+        <div className="relative mx-auto flex min-h-[90vh] max-w-7xl items-center px-6">
+          <div className="max-w-4xl">
+            <p className="mb-4 text-lg text-cyan-400">
+              👋 Hello, I'm Sana Matusala
+            </p>
+
+            <h1 className="text-5xl font-black leading-tight md:text-7xl">
+              Full Stack
+              <br />
+              <span className="text-cyan-400">Developer</span>
+            </h1>
+
+            <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-400">
+              I build modern, scalable, and secure web applications using
+              React, TypeScript, Node.js, PostgreSQL, and cloud technologies.
+              Passionate about creating products that solve real-world problems.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <a
+                href="#projects"
+                className="flex items-center gap-2 rounded-xl bg-cyan-500 px-6 py-4 font-semibold text-slate-950 transition hover:bg-cyan-400"
+              >
+                View Projects
+                <ArrowRight size={18} />
+              </a>
+
+              <button className="flex items-center gap-2 rounded-xl border border-slate-700 px-6 py-4 transition hover:border-cyan-400">
+                <Download size={18} />
+                Resume
+              </button>
+            </div>
+
+            <div className="mt-10 flex gap-5">
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
+              >
+                <Github size={22} />
+              </a>
+
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
+              >
+                <Linkedin size={22} />
+              </a>
+
+              <a
+                href="mailto:your@email.com"
+                className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
+              >
+                <Mail size={22} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="mx-auto max-w-7xl px-6 py-32">
+        <div className="grid gap-16 lg:grid-cols-2">
+          <div>
+            <p className="mb-4 text-cyan-400">ABOUT ME</p>
+
+            <h2 className="text-4xl font-bold">
+              Building applications that people actually use.
+            </h2>
+          </div>
+
+          <div>
+            <p className="text-lg leading-8 text-slate-400">
+              I'm a Full Stack Developer focused on creating responsive,
+              performant, and maintainable web applications. I enjoy working
+              across the entire development lifecycle—from designing intuitive
+              user interfaces to building scalable backend systems and APIs.
+            </p>
+
+            <p className="mt-6 text-lg leading-8 text-slate-400">
+              My primary stack includes React, TypeScript, Node.js, Express,
+              PostgreSQL, MongoDB, Redis, and Docker.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SKILLS */}
+      <section
+        id="skills"
+        className="border-y border-white/10 bg-slate-950/50 py-32"
+      >
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="mb-4 text-cyan-400">TECH STACK</p>
+
+          <h2 className="mb-12 text-4xl font-bold">
+            Technologies I Work With
+          </h2>
+
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+            {skills.map((skill) => (
+              <div
+                key={skill}
+                className="rounded-2xl border border-white/10 bg-white/5 p-5 text-center font-medium backdrop-blur-sm transition hover:border-cyan-400"
+              >
+                {skill}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PROJECTS */}
+      <section id="projects" className="mx-auto max-w-7xl px-6 py-32">
+        <p className="mb-4 text-cyan-400">FEATURED WORK</p>
+
+        <h2 className="mb-12 text-4xl font-bold">
+          Selected Projects
+        </h2>
+
+        <div className="grid gap-8 md:grid-cols-3">
+          {projects.map((project) => (
+            <article
+              key={project.title}
+              className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition hover:border-cyan-400"
+            >
+              <div className="mb-6 h-48 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20" />
+
+              <h3 className="mb-4 text-2xl font-semibold">
+                {project.title}
+              </h3>
+
+              <p className="mb-6 leading-7 text-slate-400">
+                {project.description}
+              </p>
+
+              <button className="flex items-center gap-2 text-cyan-400">
+                View Details
+                <ArrowRight size={18} />
+              </button>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section
+        id="contact"
+        className="border-t border-white/10 py-32"
+      >
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <p className="mb-4 text-cyan-400">GET IN TOUCH</p>
+
+          <h2 className="text-5xl font-bold">
+            Let's Build Something Amazing
+          </h2>
+
+          <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-slate-400">
+            I'm currently open to internships, freelance opportunities,
+            and full-time roles. Feel free to reach out.
+          </p>
+
+          <a
+            href="mailto:matusalasala@gmail.com"
+            className="mt-10 inline-flex items-center gap-2 rounded-xl bg-cyan-500 px-8 py-4 font-semibold text-slate-950 transition hover:bg-cyan-400"
+          >
+            Contact Me
+            <ArrowRight size={18} />
+          </a>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-white/10 py-8">
+        <div className="mx-auto max-w-7xl px-6 text-center text-slate-500">
+          © 2026 Sana Matusala. All rights reserved.
+        </div>
+      </footer>
+    </main>
+  );
+}

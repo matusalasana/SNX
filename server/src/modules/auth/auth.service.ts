@@ -39,7 +39,7 @@ const loginUser = async (
 const getMe = async (userId: string) => {
   const user = await AuthRepository.findById(userId);
   if (!user) {
-    throw new Error('User profiles no longer registered.');
+    throw new Error('User profile not found.');
   }
   return user;
 };
