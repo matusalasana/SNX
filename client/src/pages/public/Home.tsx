@@ -3,6 +3,7 @@ import  Summary  from "../../components/home/Summary";
 import  Title  from "../../components/common/Title";
 import  Buttons  from "../../components/home/Buttons";
 import  SocialMedias  from "../../components/home/SocialMedias";
+import  AboutMe  from "../../components/home/AboutMe";
 
 export default function HomePage() {
   const skills = [
@@ -55,33 +56,7 @@ export default function HomePage() {
           
         </div>
       </section>
-
-      {/* ABOUT */}
-      <section id="about" className="mx-auto max-w-7xl px-6 py-32">
-        <div className="grid gap-16 lg:grid-cols-2">
-          <div>
-            <p className="mb-4 text-cyan-400">ABOUT ME</p>
-
-            <h2 className="text-4xl font-bold">
-              Building applications that people actually use.
-            </h2>
-          </div>
-
-          <div>
-            <p className="text-lg leading-8 text-slate-400">
-              I'm a Full Stack Developer focused on creating responsive,
-              performant, and maintainable web applications. I enjoy working
-              across the entire development lifecycle—from designing intuitive
-              user interfaces to building scalable backend systems and APIs.
-            </p>
-
-            <p className="mt-6 text-lg leading-8 text-slate-400">
-              My primary stack includes React, TypeScript, Node.js, Express,
-              PostgreSQL, MongoDB, Redis, and Docker.
-            </p>
-          </div>
-        </div>
-      </section>
+      <AboutMe />
 
       {/* SKILLS */}
       <section
