@@ -82,19 +82,23 @@ export default function HomePage() {
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#projects"
-                className="flex items-center gap-2 rounded-xl bg-cyan-500 px-6 py-4 font-semibold text-slate-950 transition hover:bg-cyan-400"
-              >
-                View Projects
-                <ArrowRight size={18} />
-              </a>
+  <a
+    href="#projects"
+    className="flex items-center gap-2 rounded-xl bg-cyan-500 px-6 py-4 font-semibold text-slate-950 transition hover:bg-cyan-400"
+  >
+    View Projects
+    <ArrowRight size={18} />
+  </a>
 
-              <button className="flex items-center gap-2 rounded-xl border border-slate-700 px-6 py-4 transition hover:border-cyan-400">
-                <Download size={18} />
-                Resume
-              </button>
-            </div>
+    <a
+      href="/Sana_Matusala_Resume.pdf"
+      download="Sana_Matusala_Resume.pdf"
+      className="flex items-center gap-2 rounded-xl border border-slate-700 px-6 py-4 transition hover:border-cyan-400"
+    >
+      <Download size={18} />
+      Download Resume
+    </a>
+</div>
 
             <div className="mt-10 flex gap-5">
               <a
