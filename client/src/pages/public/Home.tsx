@@ -1,4 +1,7 @@
-import { Github, Linkedin, Mail, ArrowRight, Download } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowRight } from "lucide-react";
+import  DownloadResumeBtn  from "../../components/common/DownloadResumeBtn";
+import  Summary  from "../../components/home/Summary";
+import  Title  from "../../components/common/Title";
 
 export default function HomePage() {
   const skills = [
@@ -34,29 +37,6 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#0f172a] text-white">
-      {/* NAVBAR */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0f172a]/80 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <h1 className="text-xl font-bold tracking-wider">
-            SANA<span className="text-cyan-400">.</span>
-          </h1>
-
-          <nav className="hidden gap-8 md:flex">
-            <a href="#about" className="text-slate-300 hover:text-white">
-              About
-            </a>
-            <a href="#skills" className="text-slate-300 hover:text-white">
-              Skills
-            </a>
-            <a href="#projects" className="text-slate-300 hover:text-white">
-              Projects
-            </a>
-            <a href="#contact" className="text-slate-300 hover:text-white">
-              Contact
-            </a>
-          </nav>
-        </div>
-      </header>
 
       {/* HERO */}
       <section className="relative overflow-hidden">
@@ -65,40 +45,21 @@ export default function HomePage() {
 
         <div className="relative mx-auto flex min-h-[90vh] max-w-7xl items-center px-6">
           <div className="max-w-4xl">
-            <p className="mb-4 text-lg text-cyan-400">
-              👋 Hello, I'm Sana Matusala
-            </p>
-
-            <h1 className="text-5xl font-black leading-tight md:text-7xl">
-              Full Stack
-              <br />
-              <span className="text-cyan-400">Developer</span>
-            </h1>
-
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-400">
-              I build modern, scalable, and secure web applications using
-              React, TypeScript, Node.js, PostgreSQL, and cloud technologies.
-              Passionate about creating products that solve real-world problems.
-            </p>
+            
+            <Title />
+            <Summary />
 
             <div className="mt-10 flex flex-wrap gap-4">
-  <a
-    href="#projects"
-    className="flex items-center gap-2 rounded-xl bg-cyan-500 px-6 py-4 font-semibold text-slate-950 transition hover:bg-cyan-400"
-  >
-    View Projects
-    <ArrowRight size={18} />
-  </a>
-
-    <a
-      href="/Sana_Matusala_Resume.pdf"
-      download="Sana_Matusala_Resume.pdf"
-      className="flex items-center gap-2 rounded-xl border border-slate-700 px-6 py-4 transition hover:border-cyan-400"
-    >
-      <Download size={18} />
-      Download Resume
-    </a>
-</div>
+              <a
+                href="#projects"
+                className="flex items-center gap-2 rounded-xl bg-cyan-500 px-6 py-4 font-semibold text-slate-950 transition hover:bg-cyan-400"
+              >
+                View Projects
+                <ArrowRight size={18} />
+              </a>
+            
+                <DownloadResumeBtn />
+            </div>
 
             <div className="mt-10 flex gap-5">
               <a
