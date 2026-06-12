@@ -1,7 +1,8 @@
 import { Github, Linkedin, Mail, ArrowRight } from "lucide-react";
-import  DownloadResumeBtn  from "../../components/common/DownloadResumeBtn";
 import  Summary  from "../../components/home/Summary";
 import  Title  from "../../components/common/Title";
+import  Buttons  from "../../components/home/Buttons";
+import  SocialMedias  from "../../components/home/SocialMedias";
 
 export default function HomePage() {
   const skills = [
@@ -44,50 +45,14 @@ export default function HomePage() {
         <div className="absolute bottom-0 right-0 h-[500px] w-[500px] rounded-full bg-blue-600/20 blur-[150px]" />
 
         <div className="relative mx-auto flex min-h-[90vh] max-w-7xl items-center px-6">
+        
           <div className="max-w-4xl">
-            
             <Title />
             <Summary />
-
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#projects"
-                className="flex items-center gap-2 rounded-xl bg-cyan-500 px-6 py-4 font-semibold text-slate-950 transition hover:bg-cyan-400"
-              >
-                View Projects
-                <ArrowRight size={18} />
-              </a>
-            
-                <DownloadResumeBtn />
-            </div>
-
-            <div className="mt-10 flex gap-5">
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
-              >
-                <Github size={22} />
-              </a>
-
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
-              >
-                <Linkedin size={22} />
-              </a>
-
-              <a
-                href="mailto:your@email.com"
-                className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
-              >
-                <Mail size={22} />
-              </a>
-            </div>
+            <Buttons />
+            <SocialMedias />
           </div>
+          
         </div>
       </section>
 
