@@ -4,20 +4,9 @@ import  Title  from "../../components/common/Title";
 import  Buttons  from "../../components/home/Buttons";
 import  SocialMedias  from "../../components/home/SocialMedias";
 import  AboutMe  from "../../components/home/AboutMe";
+import  Skills  from "../../components/home/Skills";
 
 export default function HomePage() {
-  const skills = [
-    "React",
-    "TypeScript",
-    "Node.js",
-    "Express",
-    "PostgreSQL",
-    "MongoDB",
-    "Redis",
-    "Docker",
-    "Git",
-    "Tailwind CSS",
-  ];
 
   const projects = [
     {
@@ -42,45 +31,23 @@ export default function HomePage() {
 
       {/* HERO */}
       <section className="relative overflow-hidden">
-        <div className="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-cyan-500/20 blur-[150px]" />
-        <div className="absolute bottom-0 right-0 h-[500px] w-[500px] rounded-full bg-blue-600/20 blur-[150px]" />
-
-        <div className="relative mx-auto flex min-h-[90vh] max-w-7xl items-center px-6">
-        
-          <div className="max-w-4xl">
-            <Title />
-            <Summary />
-            <Buttons />
-            <SocialMedias />
-          </div>
-          
-        </div>
+        <Title />
+        <Summary />
+        <Buttons />
+        <SocialMedias />
       </section>
-      <AboutMe />
+      
+      {/* ABOUT */}
+      <section className="relative overflow-hidden">
+        <AboutMe />
+      </section>
 
       {/* SKILLS */}
       <section
         id="skills"
         className="border-y border-white/10 bg-slate-950/50 py-32"
       >
-        <div className="mx-auto max-w-7xl px-6">
-          <p className="mb-4 text-cyan-400">TECH STACK</p>
-
-          <h2 className="mb-12 text-4xl font-bold">
-            Technologies I Work With
-          </h2>
-
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            {skills.map((skill) => (
-              <div
-                key={skill}
-                className="rounded-2xl border border-white/10 bg-white/5 p-5 text-center font-medium backdrop-blur-sm transition hover:border-cyan-400"
-              >
-                {skill}
-              </div>
-            ))}
-          </div>
-        </div>
+        <Skills />
       </section>
 
       {/* PROJECTS */}
