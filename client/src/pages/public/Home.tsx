@@ -6,6 +6,7 @@ import  SocialMedias  from "../../components/home/SocialMedias";
 import  AboutMe  from "../../components/home/AboutMe";
 import  Skills  from "../../components/home/Skills";
 import  Projects  from "../../components/home/Projects";
+import  Services  from "../../components/home/Services";
 
 export default function HomePage() {
 
@@ -53,6 +54,8 @@ export default function HomePage() {
 
       {/* PROJECTS */}
       <Projects />
+      
+      <Services />
 
       {/* CONTACT */}
       <section
