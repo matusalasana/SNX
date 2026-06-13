@@ -7,6 +7,7 @@ import  AboutMe  from "../../components/home/AboutMe";
 import  Skills  from "../../components/home/Skills";
 import  Projects  from "../../components/home/Projects";
 import  Services  from "../../components/home/Services";
+import  Certifications  from "../../components/home/Certifications";
 
 export default function HomePage() {
 
@@ -56,6 +57,8 @@ export default function HomePage() {
       
       {/* PROJECTS */}
       <Projects />
+      
+      <Certifications />
       
 
       {/* CONTACT */}
