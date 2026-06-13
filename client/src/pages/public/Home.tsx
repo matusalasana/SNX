@@ -51,11 +51,12 @@ export default function HomePage() {
       >
         <Skills />
       </section>
-
+      
+      <Services />
+      
       {/* PROJECTS */}
       <Projects />
       
-      <Services />
 
       {/* CONTACT */}
       <section
