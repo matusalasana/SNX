@@ -22,8 +22,8 @@ const login = async (req: Request, res: Response) => {
       token // For testing purpose
     });
   } catch (err: any) {
-    console.log("Login error:", err.message);
-    res.status(401).json({ error: err.message });
+    console.log("Login error:", err.cause || err.message);
+    res.status(401).json({ error: err.cause || err.message });
   }
 };
 
@@ -37,12 +37,11 @@ const getMe = async (req: Request, res: Response) => {
     const user = await AuthService.getMe(req.user.userId);
     res.json({
       authenticated: true,
-      test:"hello",
       user
     });
   } catch (err: any) {
-    console.log("GetMe error:", err.message);
-    res.status(404).json({ error: err.message });
+    console.log("GetMe error:", err.cause || err.message);
+    res.status(404).json({ error: err.cause || err.message });
   }
 };
 
@@ -58,7 +57,7 @@ const register = async(req: Request, res: Response) => {
   }catch(err){
     console.log("Register error:", err.message);
     res.status(400).json({
-      message: err.message
+      message: err.cause || err.message
     })
   }
 }

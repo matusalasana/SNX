@@ -8,30 +8,24 @@ import {
 const loginUser = async (
   data: LoginInput ) => {
     
-  const { username, password_hash } = data;
+  const { email, password } = data;
   
-  const user = await AuthRepository.findByUsername(username);
+  const user = await AuthRepository.findByEmail(email);
   if (!user) {
     throw new Error('Invalid Credentials. User not found.');
   }
 
-  const isMatch = await comparePassword(password_hash,  user.password_hash
+  const isMatch = await comparePassword(password,  user.password
   );
   
   if (!isMatch) {
     throw new Error('Invalid Credentials. Password mismatch.');
   }
   
-  const payload = { userId: user.id, username: user.username  }
+  const payload = { userId: user.id, email: user.email  }
   const token = await generateToken(payload);
   return {
-    user: {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      avatar_url: user.avatar_url,
-      bio: user.bio
-    },
+    user,
     token
   };
 };
@@ -47,31 +41,29 @@ const getMe = async (userId: string) => {
 
 
 const register = async (data: RegisterInput) => {
-  const { username, email, password_hash } = data;
+  const { email, password } = data;
   
-  const exists = await AuthRepository.findByUsername(username);
+  const exists = await AuthRepository.findByEmail(email);
   
   if(exists){
     throw new Error("User name taken")
   }
   
-  if(!username || !email || !password_hash){
+  if(!email || !password){
     throw new Error("Missing required fields")
   }
   
-  const hashed = await hashPassword(password_hash);
+  const hashed = await hashPassword(password);
   const user = await AuthRepository.register(
-    username,
     email,
     hashed
   )
-  const payload = { userId: user.id, username: user.username  }
+  const payload = { userId: user.id, email: user.email  }
   const token = await generateToken(payload)
   
   return {
     user: {
       id: user.id,
-      username: user.username,
       email: user.email,
       avatar_url: user.avatar_url,
       bio: user.bio

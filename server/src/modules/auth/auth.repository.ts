@@ -1,52 +1,58 @@
-import { sql } from '../../configs/db';
+import { db } from "../../db";
+import { users } from "../../db/schema/users";
 
-const findByUsername = async (
-  username: string ) => {
-  const result = await sql`
-    SELECT * FROM users 
-    WHERE username = ${username}
-  `;
-  return result[0] || null;
-};
+import { eq } from "drizzle-orm";
 
-const findById = async (id: string) => {
-  const result = await sql`
-    SELECT
-      id,
-      username,
-      email,
-      avatar_url,
-      bio FROM users
-    WHERE id = ${id}
-  `;
-  return result[0] || null;
-};
-
-
-const register = async(
-  username,
-  email,
-  hashedPassword
+const findByEmail = async (
+  email: string
 ) => {
-  
-  const result = await sql`
-    INSERT INTO users (
-      username,
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, email));
+
+  return result[0] ?? null;
+};
+
+const findById = async (
+  id: string
+) => {
+  const result = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      avatarUrl: users.avatarUrl,
+      bio: users.bio,
+    })
+    .from(users)
+    .where(eq(users.id, id));
+
+  return result[0] ?? null;
+};
+
+const register = async (
+  email: string,
+  hashedPassword: string
+) => {
+  const result = await db
+    .insert(users)
+    .values({
       email,
-      password
-    )
-    VALUES (
-      ${username},
-      ${email},
-      ${hashedPassword}
-    )
-    RETURNING id, email, username, avatar_url, bio
-  `
-  return result[0] || null;
-}
+      password: hashedPassword,
+      bio: "",
+    })
+    .returning({
+      id: users.id,
+      email: users.email,
+      avatarUrl: users.avatarUrl,
+      bio: users.bio,
+    });
+
+  return result[0] ?? null;
+};
 
 export const AuthRepository = {
-  findByUsername,
+  findByEmail,
   findById,
-  register
+  register,
 };

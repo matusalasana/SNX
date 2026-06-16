@@ -1,3 +1,10 @@
+import { 
+  uuid,
+  varchar,
+  text,
+  timestamp,
+  pgTable } from "drizzle-orm/pg-core";
+
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
 
@@ -5,11 +12,11 @@ export const users = pgTable("users", {
     .notNull()
     .unique(),
 
-  passwordHash: text("password_hash").notNull(),
+  password: text("password").notNull(),
 
-  role: varchar("role", { length: 20 })
-    .$type<"ADMIN">()
-    .default("ADMIN"),
+  bio: text("bio").notNull(),
+  
+  avatarUrl: text("avatar_url"),
 
   createdAt: timestamp("created_at")
     .defaultNow()
