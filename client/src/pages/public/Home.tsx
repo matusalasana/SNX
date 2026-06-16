@@ -1,406 +1,273 @@
-// Home.tsx
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { 
-  Terminal, 
-  ArrowRight, 
-  Download, 
-  ChevronRight,
-  Layers, 
+  ArrowUpRight, 
+  Code2, 
   Database, 
-  Mail,
-  ChevronUp,
-  Github,
-  Linkedin,
+  Wrench, 
+  Mail, 
+  ArrowRight, 
+  Github, 
+  Linkedin, 
+  Twitter, 
   FileText,
-  Sparkles
+  Briefcase
 } from 'lucide-react';
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 
-const Home: React.FC = () => {
-  const [showBackToTop, setShowBackToTop] = useState(false);
-  const { scrollY } = useScroll();
-  const heroRef = useRef<HTMLElement>(null);
-  
-  // Parallax effect for grid
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+// --- Mock Data ---
+const projects = [
+  {
+    title: "Quantum Analytics Engine",
+    description: "Real-time data processing and visualization for enterprise IoT networks.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    title: "CoreShield OS",
+    description: "A lightweight, security-first runtime for decentralized edge computing.",
+    image: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=800&q=80",
+  }
+];
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setShowBackToTop(latest > 500);
-  });
+const techStack = {
+  frontend: ["React/Next.js", "Tailwind CSS", "TypeScript", "Three.js", "Framer Motion"],
+  backend: ["Node.js", "Go-Lang", "PostgreSQL", "Redis", "GraphQL"],
+  tools: ["Docker", "Kubernetes", "Terraform", "Git/CI-CD", "Vercel"]
+};
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      setMousePosition({ x, y });
-    };
+const articles = [
+  {
+    date: "MAR 12, 2024",
+    title: "Optimizing Next.js for WebGL Performance"
+  },
+  {
+    date: "FEB 28, 2024",
+    title: "Architecture: Building Scalable Microservices with Go"
+  },
+  {
+    date: "JAN 15, 2024",
+    title: "The Future of Edge Computing and Wasm"
+  }
+];
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const projects = [
-    {
-      title: "Quantum Analytics Engine",
-      description: "Real-time data processing and visualization for enterprise IoT networks.",
-      tags: ["TypeScript", "Three.js"],
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-      gradient: "from-surface-container-lowest"
-    },
-    {
-      title: "CoreShield OS",
-      description: "A lightweight, security-first runtime for decentralized edge computing.",
-      tags: ["Rust", "WebAssembly"],
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop",
-      gradient: "from-surface-container-lowest"
-    }
-  ];
-
-  const blogPosts = [
-    { date: "MAR 12, 2024", title: "Optimizing Next.js for WebGL Performance" },
-    { date: "FEB 28, 2024", title: "Architecture: Building Scalable Microservices with Go" }
-  ];
-
-  const skills = {
-    frontend: ["React/Next.js", "Tailwind CSS", "TypeScript", "Three.js"],
-    backend: ["Node.js", "Go-lang", "PostgreSQL", "Redis"],
-    tools: ["Docker", "Kubernetes", "CI-CD"]
-  };
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
-  };
-
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
+export default function Home() {
   return (
-    <div className="bg-background text-on-surface font-body-md overflow-x-hidden relative">
-      {/* Animated Grid Background */}
-      <motion.div 
-        className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          backgroundSize: "40px 40px",
-          backgroundImage: `
-            linear-gradient(to right, rgba(192, 193, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(192, 193, 255, 0.05) 1px, transparent 1px)
-          `,
-          x: mousePosition.x,
-          y: mousePosition.y,
-          transition: "transform 0.1s ease-out"
-        }}
-      />
-
-      {/* Navigation */}
-      <motion.nav 
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30"
-      >
-        <div className="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 max-w-container-max mx-auto">
-          <motion.div 
-            className="font-headline-md text-headline-md font-bold text-on-surface cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            onClick={() => scrollToSection('hero')}
-          >
-            SNX
-          </motion.div>
+    <div className="min-h-screen bg-[#0B0D13] text-[#F3F4F6] font-sans antialiased selection:bg-indigo-500/30">
+      
+      {/* --- HEADER / NAVIGATION --- */}
+      <header className="sticky top-0 z-50 backdrop-blur-md border-b border-gray-800/40 bg-[#0B0D13]/70">
+        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+          <a href="#" className="font-bold tracking-wider text-sm text-white">SNX</a>
           
-          <div className="hidden md:flex items-center gap-lg">
-            {['projects', 'skills', 'blog', 'contact'].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors capitalize"
-              >
-                {section}
-              </button>
-            ))}
-          </div>
+          <nav className="hidden md:flex items-center gap-8 text-sm text-gray-400 font-medium">
+            <a href="#projects" className="text-white hover:text-white transition-colors">Projects</a>
+            <a href="#experience" className="hover:text-white transition-colors">Experience</a>
+            <a href="#skills" className="hover:text-white transition-colors">Skills</a>
+            <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+          </nav>
 
-          <div className="flex items-center gap-md">
-            <motion.button 
-              className="text-on-surface-variant hover:text-primary transition-all duration-200"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Terminal size={24} />
-            </motion.button>
-            <motion.button 
-              className="bg-primary text-on-primary px-sm py-xs rounded-lg font-label-md text-label-md hover:bg-primary-container transition-all"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+          <div className="flex items-center gap-4">
+            <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Portfolio">
+              <Briefcase className="w-4 h-4" />
+            </a>
+            <button className="bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-xs font-semibold px-4 py-2 rounded transition-all shadow-lg shadow-indigo-600/20">
               Hire Me
-            </motion.button>
-          </div>
-        </div>
-      </motion.nav>
-
-      <main className="relative z-10">
-        {/* Hero Section */}
-        <section 
-          id="hero"
-          ref={heroRef}
-          className="relative min-h-screen flex items-center justify-center overflow-hidden px-margin-mobile pt-16"
-        >
-          <div className="absolute inset-0 hero-gradient pointer-events-none"></div>
-          
-          <motion.div 
-            className="relative z-10 text-center max-w-4xl mx-auto"
-            variants={staggerContainer}
-            initial="initial"
-            animate="animate"
-          >
-            <motion.div 
-              variants={fadeInUp}
-              className="inline-flex items-center gap-2 px-3 py-1 glass-card rounded-full mb-md"
-            >
-              <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-              <span className="font-label-sm text-label-sm text-secondary tracking-widest uppercase">Available for new projects</span>
-            </motion.div>
-            
-            <motion.h1 
-              variants={fadeInUp}
-              className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-surface mb-sm"
-            >
-              SNX / Creative Developer <br className="hidden md:block"/> &amp; Architect
-            </motion.h1>
-            
-            <motion.p 
-              variants={fadeInUp}
-              className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-lg"
-            >
-              Crafting high-performance digital experiences with a focus on technical precision and premium SaaS aesthetics.
-            </motion.p>
-            
-            <motion.div 
-              variants={fadeInUp}
-              className="flex flex-col md:flex-row gap-md justify-center"
-            >
-              <motion.a
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-lg py-sm bg-primary text-on-primary rounded-xl font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-primary-container transition-all group cursor-pointer"
-                onClick={() => scrollToSection('projects')}
-              >
-                View Projects
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </motion.a>
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-lg py-sm border border-outline-variant text-on-surface rounded-xl font-label-md text-label-md hover:bg-surface-variant/30 transition-all flex items-center justify-center gap-xs group"
-              >
-                Read Resume
-                <Download size={18} className="group-hover:translate-y-0.5 transition-transform" />
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        </section>
-
-        {/* Projects Section */}
-        <section id="projects" className="py-xl px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto scroll-mt-20">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-xl gap-sm">
-            <div>
-              <h2 className="font-headline-lg text-headline-lg text-on-surface">Selected Works</h2>
-              <p className="font-body-md text-body-md text-on-surface-variant">Engineering solutions for complex problems.</p>
-            </div>
-            <button className="font-label-md text-label-md text-primary flex items-center gap-xs group">
-              View Archive <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-            {projects.map((project, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.02 }}
-                className="group relative aspect-video rounded-xl overflow-hidden border border-outline-variant bg-surface-container-low hover:border-primary/50 transition-all duration-300 cursor-pointer"
-              >
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                  style={{ backgroundImage: `url(${project.image})` }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent opacity-90" />
-                <div className="absolute bottom-0 left-0 p-lg w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  <div className="flex gap-xs mb-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {project.tags.map((tag, i) => (
-                      <span key={i} className="font-label-sm text-label-sm px-xs py-1 rounded bg-surface-variant/80 text-primary border border-outline-variant">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <h3 className="font-headline-md text-headline-md text-on-surface">{project.title}</h3>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{project.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+        </div>
+      </header>
 
-        {/* Skills Section */}
-        <section id="skills" className="py-xl bg-surface-container-low scroll-mt-20">
-          <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-            <h2 className="font-headline-lg text-headline-lg text-on-surface mb-xl">Technical Stack</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
-              {[
-                { icon: Layers, title: "Frontend", skills: skills.frontend, color: "text-primary" },
-                { icon: Database, title: "Backend", skills: skills.backend, color: "text-secondary" },
-                { icon: Terminal, title: "Tools", skills: skills.tools, color: "text-tertiary" }
-              ].map((category, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="p-lg rounded-xl border border-outline-variant bg-surface-container flex flex-col gap-md hover:border-primary/30 transition-all"
-                >
-                  <div className="flex items-center gap-sm">
-                    <category.icon className={category.color} size={24} />
-                    <h3 className="font-headline-md text-headline-md">{category.title}</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-xs">
-                    {category.skills.map((skill, i) => (
-                      <motion.span
-                        key={i}
-                        whileHover={{ scale: 1.05 }}
-                        className="px-3 py-1 bg-surface-variant text-on-surface-variant rounded-full font-label-sm text-label-sm"
-                      >
-                        {skill}
-                      </motion.span>
-                    ))}
-                  </div>
-                </motion.div>
+      {/* --- HERO SECTION --- */}
+      <section className="relative max-w-5xl mx-auto px-6 pt-24 pb-20 text-center flex flex-col items-center">
+        {/* Status Badge */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/5 text-emerald-400 text-xs font-medium mb-6 tracking-wide uppercase">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          Available for new projects
+        </div>
+
+        {/* Headline */}
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-3xl leading-[1.15] mb-6">
+          SNX / Creative Developer <br /> & Architect
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-gray-400 max-w-xl text-base md:text-lg mb-10 leading-relaxed font-light">
+          Crafting high-performance digital experiences with a focus on technical precision and premium SaaS aesthetics.
+        </p>
+
+        {/* Call to Actions */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+          <a href="#projects" className="group inline-flex items-center gap-2 bg-[#A5B4FC] hover:bg-[#C7D2FE] text-neutral-950 font-semibold px-6 py-3 rounded-md text-sm transition-all shadow-md">
+            View Projects 
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </a>
+          <a href="#" className="inline-flex items-center gap-2 border border-gray-800 bg-gray-900/40 hover:bg-gray-800/60 text-gray-300 hover:text-white px-6 py-3 rounded-md text-sm font-medium transition-all backdrop-blur-sm">
+            Read Resume
+          </a>
+        </div>
+      </section>
+
+      {/* --- SELECTED WORKS --- */}
+      <section id="projects" className="max-w-5xl mx-auto px-6 py-16 border-t border-gray-900">
+        <div className="flex justify-between items-end mb-10">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-2">Selected Works</h2>
+            <p className="text-gray-400 text-sm">Engineering solutions for complex problems.</p>
+          </div>
+          <a href="#" className="group inline-flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-white uppercase tracking-wider transition-colors">
+            View Archive 
+            <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projects.map((project, index) => (
+            <div key={index} className="group relative rounded-lg border border-gray-800/60 bg-[#111319]/40 overflow-hidden hover:border-gray-700/80 transition-all flex flex-col justify-end h-80 p-6">
+              {/* Background Cover Image with Overlay */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center mix-blend-luminosity opacity-20 group-hover:scale-[1.02] group-hover:opacity-30 transition-all duration-500" 
+                style={{ backgroundImage: `url(${project.image})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D13] via-[#0B0D13]/70 to-transparent pointer-events-none" />
+
+              {/* Card Contents */}
+              <div className="relative z-10">
+                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-indigo-300 transition-colors">
+                  {project.title}
+                </h3>
+                <p className="text-gray-400 text-xs md:text-sm leading-relaxed max-w-sm">
+                  {project.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* --- TECHNICAL STACK --- */}
+      <section id="skills" className="max-w-5xl mx-auto px-6 py-16 border-t border-gray-900">
+        <h2 className="text-2xl font-bold text-white mb-10">Technical Stack</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Frontend Category */}
+          <div className="p-6 rounded-lg border border-gray-800/60 bg-[#111319]/30 backdrop-blur-sm">
+            <div className="flex items-center gap-2 text-indigo-400 mb-6">
+              <Code2 className="w-4 h-4" />
+              <h3 className="font-semibold text-sm tracking-wide uppercase text-white">Frontend</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {techStack.frontend.map((tech, i) => (
+                <span key={i} className="px-3 py-1.5 text-xs rounded border border-gray-800 bg-gray-900/40 text-gray-400">
+                  {tech}
+                </span>
               ))}
             </div>
           </div>
-        </section>
 
-        {/* Blog Section */}
-        <section id="blog" className="py-xl px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto scroll-mt-20">
-          <h2 className="font-headline-lg text-headline-lg text-on-surface mb-xl">Technical Writing</h2>
-          <div className="flex flex-col border-t border-outline-variant">
-            {blogPosts.map((post, idx) => (
-              <motion.a
-                key={idx}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ x: 10 }}
-                className="group py-lg border-b border-outline-variant flex flex-col md:flex-row justify-between items-start md:items-center gap-md hover:bg-surface-variant/10 transition-colors px-md -mx-md cursor-pointer"
-              >
-                <div className="flex flex-col gap-1">
-                  <span className="font-label-sm text-label-sm text-primary">{post.date}</span>
-                  <h3 className="font-headline-md text-headline-md group-hover:text-primary transition-colors">{post.title}</h3>
-                </div>
-                <ChevronRight size={20} className="text-on-surface-variant group-hover:translate-x-2 transition-transform" />
-              </motion.a>
-            ))}
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section id="contact" className="py-xl mb-xl px-margin-mobile md:px-margin-desktop scroll-mt-20">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="max-w-container-max mx-auto glass-card rounded-2xl p-xl flex flex-col items-center text-center gap-lg border border-primary/20 relative overflow-hidden"
-          >
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-secondary/10 rounded-full blur-3xl" />
-            
-            <Sparkles className="text-primary w-12 h-12" />
-            <h2 className="font-headline-xl-mobile md:font-headline-lg text-headline-xl-mobile md:text-headline-lg">Let's Build Something Together</h2>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
-              I am currently open to freelance opportunities, contract roles, or collaborating on open-source projects.
-            </p>
-            <div className="flex gap-md">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-primary text-on-primary px-xl py-sm rounded-xl font-label-md text-label-md hover:bg-primary-container transition-all"
-              >
-                Send a Message
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 flex items-center justify-center border border-outline-variant rounded-xl hover:bg-surface-variant/30 transition-all"
-              >
-                <Mail size={24} />
-              </motion.button>
+          {/* Backend Category */}
+          <div className="p-6 rounded-lg border border-gray-800/60 bg-[#111319]/30 backdrop-blur-sm">
+            <div className="flex items-center gap-2 text-emerald-400 mb-6">
+              <Database className="w-4 h-4" />
+              <h3 className="font-semibold text-sm tracking-wide uppercase text-white">Backend</h3>
             </div>
-          </motion.div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-surface-dim border-t border-outline-variant py-xl relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop gap-md max-w-container-max mx-auto">
-          <div className="flex flex-col gap-xs items-center md:items-start">
-            <div className="font-label-md text-label-md font-bold text-on-surface">SNX Portfolio</div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant">© 2024 SNX Portfolio. Engineered for performance.</p>
+            <div className="flex flex-wrap gap-2">
+              {techStack.backend.map((tech, i) => (
+                <span key={i} className="px-3 py-1.5 text-xs rounded border border-gray-800 bg-gray-900/40 text-gray-400">
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="flex gap-lg">
-            {[
-              { icon: Github, label: "Github" },
-              { icon: Linkedin, label: "LinkedIn" },
-              { icon: FileText, label: "Resume" }
-            ].map((item, idx) => (
-              <motion.a
-                key={idx}
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors duration-200 flex items-center gap-1 cursor-pointer"
-              >
-                <item.icon size={16} />
-                {item.label}
-              </motion.a>
-            ))}
+
+          {/* Tools Category */}
+          <div className="p-6 rounded-lg border border-gray-800/60 bg-[#111319]/30 backdrop-blur-sm">
+            <div className="flex items-center gap-2 text-amber-400 mb-6">
+              <Wrench className="w-4 h-4" />
+              <h3 className="font-semibold text-sm tracking-wide uppercase text-white">Tools</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {techStack.tools.map((tech, i) => (
+                <span key={i} className="px-3 py-1.5 text-xs rounded border border-gray-800 bg-gray-900/40 text-gray-400">
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-      </footer>
+      </section>
 
-      {/* Back to Top Button */}
-      <motion.button
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: showBackToTop ? 1 : 0, scale: showBackToTop ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
-        className="fixed bottom-8 right-8 w-12 h-12 bg-primary/20 backdrop-blur-xl border border-primary/30 text-primary rounded-full flex items-center justify-center z-50 hover:bg-primary hover:text-on-primary group shadow-lg shadow-primary/10 cursor-pointer"
-        onClick={scrollToTop}
-      >
-        <ChevronUp size={24} className="transition-transform group-hover:-translate-y-1" />
-      </motion.button>
+      {/* --- TECHNICAL WRITING --- */}
+      <section className="max-w-5xl mx-auto px-6 py-16 border-t border-gray-900">
+        <h2 className="text-2xl font-bold text-white mb-8">Technical Writing</h2>
+        
+        <div className="divide-y divide-gray-800/60">
+          {articles.map((article, index) => (
+            <a 
+              key={index} 
+              href="#" 
+              className="group flex flex-col sm:flex-row sm:items-center justify-between py-6 first:pt-0 last:pb-0 transition-all"
+            >
+              <div className="mb-2 sm:mb-0">
+                <span className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-1">
+                  {article.date}
+                </span>
+                <h3 className="text-base font-semibold text-gray-200 group-hover:text-indigo-400 transition-colors">
+                  {article.title}
+                </h3>
+              </div>
+              <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* --- CTA / FOOTER HERO --- */}
+      <section id="contact" className="max-w-5xl mx-auto px-6 py-12">
+        <div className="relative rounded-xl border border-gray-800/50 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-950/20 via-[#111319]/50 to-[#111319]/50 p-12 text-center overflow-hidden">
+          
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            Let's Build Something Together
+          </h2>
+          <p className="text-gray-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
+            I am currently open to freelance opportunities, contract roles, or collaborating on open-source projects.
+          </p>
+
+          <div className="flex items-center justify-center gap-3">
+            <button className="inline-flex items-center gap-2 bg-[#C7D2FE] hover:bg-white text-neutral-950 font-semibold px-5 py-2.5 rounded-md text-xs transition-colors">
+              Send a Message
+            </button>
+            <a 
+              href="mailto:example@domain.com" 
+              className="p-2.5 rounded-md border border-gray-800 bg-gray-900/60 hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+              aria-label="Email Me"
+            >
+              <Mail className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FOOTER --- */}
+      <footer className="max-w-5xl mx-auto px-6 pt-12 pb-8 border-t border-gray-900/60 text-xs text-gray-500 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <span className="font-bold text-gray-400">SNX Portfolio</span>
+          <p className="mt-1">© 2026 SNX Portfolio. Engineered for performance.</p>
+        </div>
+        
+        <div className="flex items-center gap-6 font-medium">
+          <a href="#" className="hover:text-white transition-colors inline-flex items-center gap-1">
+            <Github className="w-3 h-3" /> Github
+          </a>
+          <a href="#" className="hover:text-white transition-colors inline-flex items-center gap-1">
+            <Linkedin className="w-3 h-3" /> LinkedIn
+          </a>
+          <a href="#" className="hover:text-white transition-colors inline-flex items-center gap-1">
+            <Twitter className="w-3 h-3" /> Twitter
+          </a>
+          <a href="#" className="hover:text-white transition-colors inline-flex items-center gap-1">
+            <FileText className="w-3 h-3" /> Resume
+          </a>
+        </div>
+      </footer>
     </div>
   );
-};
-
-export default Home;
+}

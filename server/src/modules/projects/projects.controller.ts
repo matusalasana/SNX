@@ -1,9 +1,8 @@
-import { Request, Response } from 'express';
-import { ProjectsService } from './projects.service';
-
+import { Request, Response } from "express";
+import { ProjectsService } from "./projects.service";
 
 // GET ALL
-const getProjects = async (req: Request, res: Response) => {
+const getProjects = async (_: Request, res: Response) => {
   try {
     const projects = await ProjectsService.getAllProjects();
     res.status(200).json(projects);
@@ -16,45 +15,49 @@ const getProjects = async (req: Request, res: Response) => {
 // GET ONE
 const getProjectById = async (req: Request, res: Response) => {
   try {
-    const project = await ProjectsService.getProjectById(req.params.id);
+    const project = await ProjectsService.getProjectById(
+      req.params.id
+    );
+
     res.status(200).json(project);
   } catch (err: any) {
-    console.log("Get project error:", err.message);
     res.status(404).json({ error: err.message });
   }
 };
 
-// CREATE 
+// CREATE
 const createProject = async (req: Request, res: Response) => {
   try {
-    const newProj = await ProjectsService.createNewProject(req.body);
+    const newProj = await ProjectsService.createNewProject(
+      req.body
+    );
+
     res.status(201).json(newProj);
   } catch (err: any) {
-    console.log("Create project error:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
 
-// UPDATE 
+// UPDATE
 const updateProject = async (req: Request, res: Response) => {
   try {
     const updated = await ProjectsService.updateProject(
-      req.params.id, 
+      req.params.id,
       req.body
     );
+
     res.status(200).json(updated);
   } catch (err: any) {
-    console.log("Update project error:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
 
-// DELETE 
+// DELETE
 const deleteProject = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    await ProjectsService.deleteProject(id);
-    res.json({ message: 'Project deleted successfully' });
+    await ProjectsService.deleteProject(req.params.id);
+
+    res.json({ message: "Project deleted successfully" });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
@@ -65,5 +68,5 @@ export const ProjectsController = {
   getProjectById,
   createProject,
   updateProject,
-  deleteProject
+  deleteProject,
 };

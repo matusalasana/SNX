@@ -1,15 +1,20 @@
-import { ProjectsRepository } from './projects.repository';
-import { CreateProjectInput, UpdateProjectInput } from './projects.validation';
+import { ProjectsRepository } from "./projects.repository";
+import {
+  CreateProjectInput,
+  UpdateProjectInput,
+} from "./projects.validation";
 
 // GET ALL
 const getAllProjects = async () => {
-  return await ProjectsRepository.findAll();
+  return ProjectsRepository.findAll();
 };
 
 // GET ONE
 const getProjectById = async (id: string) => {
   const project = await ProjectsRepository.findById(id);
-  if (!project) throw new Error('Project not found');
+
+  if (!project) throw new Error("Project not found");
+
   return project;
 };
 
@@ -18,22 +23,25 @@ const createNewProject = async (data: CreateProjectInput) => {
   return ProjectsRepository.create(data);
 };
 
-// UPDATE 
-const updateProject = async (id: string, data: UpdateProjectInput) => {
-  const project = await ProjectsRepository.findById(id);
-  if (!project) throw new Error('Project to update not found');
-  
-  const updated = await ProjectsRepository.update(id, data);
-  
-  return updated;
+// UPDATE
+const updateProject = async (
+  id: string,
+  data: UpdateProjectInput
+) => {
+  const exists = await ProjectsRepository.findById(id);
+
+  if (!exists) throw new Error("Project not found");
+
+  return ProjectsRepository.update(id, data);
 };
 
 // DELETE
 const deleteProject = async (id: string) => {
-  const project = await ProjectsRepository.findById(id);
-  if (!project) throw new Error('Project to delete not found');
-  
-  const success = await ProjectsRepository.deleteOne(id);
+  const exists = await ProjectsRepository.findById(id);
+
+  if (!exists) throw new Error("Project not found");
+
+  return ProjectsRepository.deleteOne(id);
 };
 
 export const ProjectsService = {
@@ -41,5 +49,5 @@ export const ProjectsService = {
   getProjectById,
   createNewProject,
   updateProject,
-  deleteProject
+  deleteProject,
 };
