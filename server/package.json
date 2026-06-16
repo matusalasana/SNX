@@ -10,10 +10,11 @@
     "clean": "rm -rf dist",
     "generate": "drizzle-kit generate",
     "push": "drizzle-kit push",
-    "seed": "node src/db/seed",
+    "seed": "tsx src/db/seeds/index.ts",
     "check": "tsc --noEmit"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.4.0",
     "@neondatabase/serverless": "^1.1.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
