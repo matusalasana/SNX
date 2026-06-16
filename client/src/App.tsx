@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import Home from "./pages/public/Home";
 import Projects from "./pages/public/Projects";
@@ -14,21 +15,25 @@ import AdminBlogEditor from "./pages/admin/AdminBlogEditor";
 import AdminBlogManagement from "./pages/admin/AdminBlogManagement";
 import AdminProjectsManagement from "./pages/admin/AdminProjectsManagement";
 import AdminDashboard from "./pages/admin/Dashboard";
+import Test from "./pages/public/Test";
 
 const App = () => {
   return (
+    <>
+    <Toaster />
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/projects" element={<Projects />} />
-      <Route path="/projects/:slug" element={<ProjectDetails />} />
+      <Route path="/projects/:id" element={<ProjectDetails />} />
 
       <Route path="/blog" element={<Blog />} />
-      <Route path="/blog/:slug" element={<BlogDetails />} />
+      <Route path="/blog/:id" element={<BlogDetails />} />
 
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/test" element={<Test /> } />
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminDashboard />} />
@@ -38,6 +43,7 @@ const App = () => {
       <Route path="/admin/blog/:id/edit" element={<AdminBlogEditor />} />
       <Route path="/admin/messages" element={<AdminMessages />} />
     </Routes>
+    </>
   );
 };
 
