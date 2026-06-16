@@ -7,6 +7,6 @@ const seed = async() => {
   }catch(err){
     console.log(err.cause || err.message);
   }
-}
+};
 
 seed();
