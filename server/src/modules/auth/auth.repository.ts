@@ -11,12 +11,12 @@ const findByUsername = async (
 
 const findById = async (id: string) => {
   const result = await sql`
-    SELECT 
-      id, 
-      username, 
-      email, 
-      avatar_url, 
-      bio FROM users 
+    SELECT
+      id,
+      username,
+      email,
+      avatar_url,
+      bio FROM users
     WHERE id = ${id}
   `;
   return result[0] || null;
@@ -33,7 +33,7 @@ const register = async(
     INSERT INTO users (
       username,
       email,
-      password_hash
+      password
     )
     VALUES (
       ${username},
