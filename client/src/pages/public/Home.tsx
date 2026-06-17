@@ -16,6 +16,7 @@ import Hero from "../../components/home/Hero"
 import FeaturedProjects from "../../components/home/FeaturedProjects"
 import Skills from "../../components/home/Skills"
 import Experiences from "../../components/home/Experiences"
+import RecentBlogs from "../../components/home/RecentBlogs"
 
 
 const techStack = {
@@ -47,6 +48,7 @@ export default function Home() {
       <FeaturedProjects />
       <Skills />
       <Experiences />
+      <RecentBlogs />
 
       {/* --- TECHNICAL WRITING --- */}
       <section className="max-w-5xl mx-auto px-6 py-16 border-t border-gray-900">
