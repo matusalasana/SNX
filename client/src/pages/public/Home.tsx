@@ -52,7 +52,7 @@ const articles = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#0B0D13] text-[#F3F4F6] font-sans antialiased selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-[#0B0D13] text-[#F3F4F6] font-sans antialiased selection:bg-indigo-500/30 px-3 lg:px-10">
 
       <Hero />
       <FeaturedProjects />
