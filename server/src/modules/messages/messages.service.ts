@@ -1,33 +1,58 @@
-import { MessagesRepository } from './messages.repository';
-import { CreateMessageInput } from './messages.validation';
+import { MessagesRepository }
+from "./messages.repository";
 
-const getAllMessages = async () => {
-  return MessagesRepository.findAll();
-};
+import {
+  CreateMessageInput,
+} from "./messages.validation";
 
-const createNewMessage = async (data: CreateMessageInput) => {
-  return MessagesRepository.create(data);
-};
+const getAllMessages =
+  async () => {
+    return MessagesRepository.findAll();
+  };
 
-const markAsRead = async (id: string, isRead: boolean) => {
-  const updated = await MessagesRepository.updateReadStatus(id, isRead);
-  if (!updated) {
-    throw new Error('Message not found');
+const createNewMessage =
+  async (
+    data: CreateMessageInput
+  ) => {
+    return MessagesRepository.create(data);
+  };
+
+const markAsRead = async (
+  id: string,
+  isRead: boolean
+) => {
+  const exists =
+    await MessagesRepository.findById(id);
+
+  if (!exists) {
+    throw new Error(
+      "Message not found"
+    );
   }
-  return updated;
+
+  return MessagesRepository.updateReadStatus(
+    id,
+    isRead
+  );
 };
 
-const deleteMessage = async (id: string) => {
-  const success = await MessagesRepository.deleteOne(id);
-  if (!success) {
-    throw new Error('Message not found');
-  }
-  return success;
-};
+const deleteMessage =
+  async (id: string) => {
+    const exists =
+      await MessagesRepository.findById(id);
+
+    if (!exists) {
+      throw new Error(
+        "Message not found"
+      );
+    }
+
+    return MessagesRepository.deleteOne(id);
+  };
 
 export const MessagesService = {
   getAllMessages,
   createNewMessage,
   markAsRead,
-  deleteMessage
+  deleteMessage,
 };

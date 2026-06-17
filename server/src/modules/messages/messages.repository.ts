@@ -1,34 +1,73 @@
-import { dbQuery } from '../../db/client';
-import { CreateMessageInput } from './messages.validation';
+import { db } from "../../db";
+import { messages } from "../../db/schema/messages";
+
+import {
+  desc,
+  eq,
+} from "drizzle-orm";
+
+import {
+  CreateMessageInput,
+} from "./messages.validation";
 
 const findAll = async () => {
-  const sql = 'SELECT * FROM contact_messages ORDER BY created_at DESC';
-  const result = await dbQuery(sql);
-  return result.rows;
+  return db
+    .select()
+    .from(messages)
+    .orderBy(desc(messages.createdAt));
 };
 
-const findById = async (id: string) => {
-  const sql = 'SELECT * FROM contact_messages WHERE id = $1';
-  const result = await dbQuery(sql, [id]);
-  return result.rows[0] || null;
+const findById = async (
+  id: string
+) => {
+  const result = await db
+    .select()
+    .from(messages)
+    .where(eq(messages.id, id));
+
+  return result[0] ?? null;
 };
 
-const create = async (data: CreateMessageInput) => {
-  const sql = 'INSERT INTO contact_messages (name, email, subject, message) VALUES ($1, $2, $3, $4) RETURNING *';
-  const result = await dbQuery(sql, [data.name, data.email, data.subject, data.message]);
-  return result.rows[0];
+const create = async (
+  data: CreateMessageInput
+) => {
+  const result = await db
+    .insert(messages)
+    .values({
+      name: data.name,
+      email: data.email,
+      subject: data.subject,
+      message: data.message,
+    })
+    .returning();
+
+  return result[0];
 };
 
-const updateReadStatus = async (id: string, isRead: boolean) => {
-  const sql = 'UPDATE contact_messages SET is_read = $1 WHERE id = $2 RETURNING *';
-  const result = await dbQuery(sql, [isRead, id]);
-  return result.rows[0] || null;
+const updateReadStatus = async (
+  id: string,
+  isRead: boolean
+) => {
+  const result = await db
+    .update(messages)
+    .set({
+      isRead,
+    })
+    .where(eq(messages.id, id))
+    .returning();
+
+  return result[0] ?? null;
 };
 
-const deleteOne = async (id: string) => {
-  const sql = 'DELETE FROM contact_messages WHERE id = $1 RETURNING *';
-  const result = await dbQuery(sql, [id]);
-  return (result.rowCount ?? 0) > 0;
+const deleteOne = async (
+  id: string
+) => {
+  const result = await db
+    .delete(messages)
+    .where(eq(messages.id, id))
+    .returning();
+
+  return result.length > 0;
 };
 
 export const MessagesRepository = {
@@ -36,5 +75,5 @@ export const MessagesRepository = {
   findById,
   create,
   updateReadStatus,
-  deleteOne
+  deleteOne,
 };

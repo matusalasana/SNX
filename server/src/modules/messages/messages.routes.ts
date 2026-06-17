@@ -1,15 +1,46 @@
-import { Router } from 'express';
-import { MessagesController } from './messages.controller';
-import { requireAuth } from '../../middleware/auth.middleware';
+import { Router } from "express";
+
+import { MessagesController }
+from "./messages.controller";
+
+import { requireAuth }
+from "../../middleware/auth.middleware";
+
+import { validate }
+from "../../middleware/validation.middleware";
+
+import {
+  createMessageSchema,
+  updateMessageSchema,
+} from "./messages.validation";
 
 const router = Router();
 
-// Public route to submit messages
-router.post('/', MessagesController.createMessage);
+// Public contact form
+router.post(
+  "/",
+  validate(createMessageSchema),
+  MessagesController.createMessage
+);
 
-// Protected admin routes to inspect and process recruiter messages
-router.get('/', requireAuth, MessagesController.getMessages);
-router.put('/:id/read', requireAuth, MessagesController.markAsRead);
-router.delete('/:id', requireAuth, MessagesController.deleteMessage);
+// Admin routes
+router.get(
+  "/",
+  requireAuth,
+  MessagesController.getMessages
+);
+
+router.patch(
+  "/:id/read",
+  requireAuth,
+  validate(updateMessageSchema),
+  MessagesController.markAsRead
+);
+
+router.delete(
+  "/:id",
+  requireAuth,
+  MessagesController.deleteMessage
+);
 
 export default router;
