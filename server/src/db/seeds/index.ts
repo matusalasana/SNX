@@ -12,22 +12,22 @@ const seed = async() => {
     console.log("✅ DATABASE RESET SUCCESSFULLY")
     
     const projects = await seedProjects();
-    console.log(`✅ SEEDED ${projects.length} PROJECTS`)
+    console.log(`✅ SEEDED ${projects?.length ?? 0} PROJECTS`)
     
     const blogs = await seedBlogs();
-    console.log(`✅ SEEDED ${blogs.length} BLOGS`)
+    console.log(`✅ SEEDED ${blogs?.length ?? 0} BLOGS`)
     
     const experiences = await seedExperiences();
-    console.log(`✅ SEEDED ${experiences.length} EXPERIENCES`)
+    console.log(`✅ SEEDED ${experiences?.length ?? 0} EXPERIENCES`)
     
     const messages = await seedMessages();
-    console.log(`✅ SEEDED ${messages.length} MESSAGES`)
+    console.log(`✅ SEEDED ${messages?.length ?? 0} MESSAGES`)
     
     const skills = await seedSkills();
-    console.log(`✅ SEEDED ${skills.length} SKILLS`)
+    console.log(`✅ SEEDED ${skills?.length ?? 0} SKILLS`)
     
-  }catch(err){
-    console.log(err.cause || err.message);
+  }catch (err: any) {
+    console.log(err?.cause || err?.message);
   }
 };
 

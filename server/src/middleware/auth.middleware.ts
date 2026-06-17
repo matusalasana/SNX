@@ -25,6 +25,6 @@ export const requireAuth = (
     return;
   }
 
-  req.user = decoded
+  req.user = decoded as string
   next();
 };

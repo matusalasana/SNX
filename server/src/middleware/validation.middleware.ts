@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction} from "express";
-export const validate = (schema) => (
+export const validate = (schema: any) => (
   req: Request, 
   res: Response, 
   next: NextFunction) => {

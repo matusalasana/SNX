@@ -54,7 +54,7 @@ const register = async(req: Request, res: Response) => {
       user,
       token
     })
-  }catch(err){
+  }catch(err: any){
     console.log("Register error:", err.message);
     res.status(400).json({
       message: err.cause || err.message

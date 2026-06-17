@@ -9,12 +9,21 @@ export const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   CLIENT_ORIGIN,
-]
+];
 
 app.use(cors({
-  origin: CLIENT_ORIGIN,
-  credentials: true
-}))
+  origin: (origin, callback) => {
+    // allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: '16kb' }));
 

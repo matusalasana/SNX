@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { db } from "../index.ts";
+import { db } from "../index";
 import { messages } from "../schema/messages";
 
 export const seedMessages = async () => {
@@ -34,7 +34,7 @@ export const seedMessages = async () => {
       .insert(messages)
       .values(data)
       .returning();
-  } catch (err) {
-    console.log(err.cause || err.message);
+  } catch (err: any) {
+    console.log(err?.cause || err?.message);
   }
 };

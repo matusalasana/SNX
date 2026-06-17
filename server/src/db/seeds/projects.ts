@@ -1,4 +1,4 @@
-import { db } from "../index.ts";
+import { db } from "../index";
 import { projects } from "../schema/projects";
 
 export const seedProjects = async () => {
@@ -95,7 +95,7 @@ export const seedProjects = async () => {
       .insert(projects)
       .values(data)
       .returning();
-  } catch (err) {
-    console.log(err.cause || err.message);
+  } catch (err: any) {
+    console.log(err?.cause || err?.message);
   }
 };

@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { db } from "../index.ts";
+import { db } from "../index";
 import { skills } from "../schema/skills";
 
 export const seedSkills = async () => {
@@ -81,7 +81,7 @@ export const seedSkills = async () => {
       .insert(skills)
       .values(data)
       .returning();
-  } catch (err) {
-    console.log(err.cause || err.message);
+  } catch (err: any) {
+    console.log(err?.cause || err?.message);
   }
 };

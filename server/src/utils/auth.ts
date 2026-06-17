@@ -2,9 +2,12 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import {
   JWT_SECRET,
-  JWT_EXPIRY,
   SALT_ROUNDS
 } from "../configs/env";
+
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined");
+}
 
 export const hashPassword = async (password: string) => {
   return bcrypt.hash(password, SALT_ROUNDS);
@@ -20,8 +23,8 @@ export const comparePassword = async (
   }
 };
 
-export const generateToken = (payload: { userId: string; username: string }): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRY });
+export const generateToken = (payload: { userId: string; email: string }): string => {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
 };
 
 export const verifyToken = (token: string) => {

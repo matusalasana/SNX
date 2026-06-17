@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { db } from "../index.ts";
+import { db } from "../index";
 import { experiences } from "../schema/experiences";
 
 export const seedExperiences = async () => {
@@ -36,7 +36,7 @@ export const seedExperiences = async () => {
       .insert(experiences)
       .values(data)
       .returning();
-  } catch (err) {
-    console.log(err.cause || err.message);
+  } catch (err: any) {
+    console.log(err?.cause || err?.message);
   }
 };

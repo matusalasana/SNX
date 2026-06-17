@@ -17,7 +17,7 @@ export const connectDB = async () => {
     await db.select();
     console.log(`✅ SNX Database Connected!`);
     return true;
-  } catch (err) {
+  } catch (err: any) {
     console.log('❌ SNX Database connection failed:', err);
     return false;
   }

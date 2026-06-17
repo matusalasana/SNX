@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { db } from "../index.ts";
+import { db } from "../index";
 
 
 export const resetDatabase = async () => {
@@ -14,4 +14,4 @@ export const resetDatabase = async () => {
   `);
 };
 
-await resetDatabase();
+resetDatabase();
