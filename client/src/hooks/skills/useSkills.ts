@@ -3,7 +3,7 @@ import api from "../../api";
 
 const getSkills = async () => {
   const res = await api.get("/skills");
-  return res.data;
+  return res.data.data;
 };
 
 export const useSkills = () => {

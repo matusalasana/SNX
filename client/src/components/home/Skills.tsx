@@ -1,6 +1,5 @@
 import { useSkills } from "../../hooks/skills/useSkills";
 import { Code2, Server, Database, Cloud, Terminal } from 'lucide-react';
-import LoadingSkeleton from "./LoadingSkeleton";
 import { Skeleton } from "../../utils/skeleton";
 
 const CATEGORIES = [
