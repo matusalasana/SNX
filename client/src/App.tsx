@@ -16,10 +16,12 @@ import AdminBlogManagement from "./pages/admin/AdminBlogManagement";
 import AdminProjectsManagement from "./pages/admin/AdminProjectsManagement";
 import AdminDashboard from "./pages/admin/Dashboard";
 import Test from "./pages/public/Test";
+import Navbar from "./components/common/Navbar";
 
 const App = () => {
   return (
     <>
+    <Navbar />
     <Toaster />
     <Routes>
       {/* Public Routes */}

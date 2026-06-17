@@ -1,17 +1,49 @@
-import { Router } from 'express';
-import { BlogsController } from './blogs.controller';
-import { requireAuth } from '../../middleware/auth.middleware';
+import { Router } from "express";
+
+import { BlogsController }
+from "./blogs.controller";
+
+import { requireAuth }
+from "../../middleware/auth.middleware";
+
+import { validate }
+from "../../middleware/validation.middleware";
+
+import {
+  createBlogSchema,
+  updateBlogSchema,
+} from "./blogs.validation";
 
 const router = Router();
 
-// Public routes
-router.get('/', BlogsController.getBlogs);
-router.get('/slug/:slug', BlogsController.getBlogBySlug);
-router.get('/:id', BlogsController.getBlogById);
+router.get(
+  "/",
+  BlogsController.getBlogs
+);
 
-// Admin-only protected routes
-router.post('/', requireAuth, BlogsController.createBlog);
-router.put('/:id', requireAuth, BlogsController.updateBlog);
-router.delete('/:id', requireAuth, BlogsController.deleteBlog);
+router.get(
+  "/:id",
+  BlogsController.getBlogById
+);
+
+router.post(
+  "/",
+  requireAuth,
+  validate(createBlogSchema),
+  BlogsController.createBlog
+);
+
+router.patch(
+  "/:id",
+  requireAuth,
+  validate(updateBlogSchema),
+  BlogsController.updateBlog
+);
+
+router.delete(
+  "/:id",
+  requireAuth,
+  BlogsController.deleteBlog
+);
 
 export default router;

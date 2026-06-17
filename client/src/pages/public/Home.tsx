@@ -51,47 +51,37 @@ const articles = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#0B0D13] text-[#F3F4F6] font-sans antialiased selection:bg-indigo-500/30">
-      
-      {/* --- HEADER / NAVIGATION --- */}
-      <header className="sticky top-0 z-50 backdrop-blur-md border-b border-gray-800/40 bg-[#0B0D13]/70">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="#" className="font-bold tracking-wider text-sm text-white">SNX</a>
-          
-          <nav className="hidden md:flex items-center gap-8 text-sm text-gray-400 font-medium">
-            <a href="#projects" className="text-white hover:text-white transition-colors">Projects</a>
-            <a href="#experience" className="hover:text-white transition-colors">Experience</a>
-            <a href="#skills" className="hover:text-white transition-colors">Skills</a>
-            <a href="#contact" className="hover:text-white transition-colors">Contact</a>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Portfolio">
-              <Briefcase className="w-4 h-4" />
-            </a>
-            <button className="bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-xs font-semibold px-4 py-2 rounded transition-all shadow-lg shadow-indigo-600/20">
-              Hire Me
-            </button>
-          </div>
-        </div>
-      </header>
 
       {/* --- HERO SECTION --- */}
       <section className="relative max-w-5xl mx-auto px-6 pt-24 pb-20 text-center flex flex-col items-center">
         {/* Status Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/5 text-emerald-400 text-xs font-medium mb-6 tracking-wide uppercase">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Available for new projects
+          Active Now
         </div>
 
         {/* Headline */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-3xl leading-[1.15] mb-6">
-          SNX / Creative Developer <br /> & Architect
-        </h1>
+{/* Headline */}
+<h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white max-w-3xl leading-[1.05] mb-6">
+  Sana Matusala
+  <br />
+  <span className="relative">
+    <span className="text-white/90">Full Stack Developer</span>
+    <span className="absolute inset-0 blur-xl opacity-40 text-primary">
+      Full Stack Developer
+    </span>
+  </span>
+</h1>
 
-        {/* Subtitle */}
-        <p className="text-gray-400 max-w-xl text-base md:text-lg mb-10 leading-relaxed font-light">
-          Crafting high-performance digital experiences with a focus on technical precision and premium SaaS aesthetics.
-        </p>
+{/* Subtitle */}
+<p className="text-white/50 max-w-xl text-base md:text-lg leading-relaxed font-light">
+  Designing and engineering web systems that merge performance, scalability, and elegant user experience.
+</p>
+
+{/* Subtitle */}
+<p className="text-zinc-400 max-w-xl text-base md:text-lg leading-relaxed font-light">
+  Building fast, scalable web applications with clean architecture, modern tooling, and developer-first design systems.
+</p>
 
         {/* Call to Actions */}
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">

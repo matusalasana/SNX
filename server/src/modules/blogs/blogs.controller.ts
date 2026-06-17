@@ -1,81 +1,111 @@
-import { Request, Response } from 'express';
-import { BlogsService } from './blogs.service';
-import { createBlogSchema, updateBlogSchema } from './blogs.validation';
+import {
+  Request,
+  Response,
+} from "express";
 
-const getBlogs = async (req: Request, res: Response): Promise<void> => {
+import { BlogsService }
+from "./blogs.service";
+
+const getBlogs = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const includeDrafts = req.query.admin === 'true';
-    const list = await BlogsService.getAllBlogs(includeDrafts);
-    res.json(list);
+    const includeDrafts =
+      req.query.admin === "true";
+
+    const blogs =
+      await BlogsService.getAllBlogs(
+        includeDrafts
+      );
+
+    res.status(200).json(blogs);
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
-const getBlogBySlug = async (req: Request, res: Response): Promise<void> => {
+const getBlogById = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { slug } = req.params;
-    const blog = await BlogsService.getBlogBySlug(slug);
-    res.json(blog);
+    const blog =
+      await BlogsService.getBlogById(
+        req.params.id
+      );
+
+    res.status(200).json(blog);
   } catch (err: any) {
-    res.status(404).json({ error: err.message });
+    res.status(404).json({
+      error: err.message,
+    });
   }
 };
 
-const getBlogById = async (req: Request, res: Response): Promise<void> => {
+const createBlog = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { id } = req.params;
-    const blog = await BlogsService.getBlogById(id);
-    res.json(blog);
+    const blog =
+      await BlogsService.createNewBlog(
+        req.body
+      );
+
+    res.status(201).json(blog);
   } catch (err: any) {
-    res.status(404).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
-const createBlog = async (req: Request, res: Response): Promise<void> => {
+const updateBlog = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const result = createBlogSchema.safeParse(req.body);
-    if (!result.success) {
-      res.status(400).json({ error: 'Validation failed', details: result.error.format() });
-      return;
-    }
-    const newBlog = await BlogsService.createNewBlog(result.data);
-    res.status(201).json(newBlog);
+    const blog =
+      await BlogsService.updateBlog(
+        req.params.id,
+        req.body
+      );
+
+    res.status(200).json(blog);
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
-const updateBlog = async (req: Request, res: Response): Promise<void> => {
+const deleteBlog = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { id } = req.params;
-    const result = updateBlogSchema.safeParse(req.body);
-    if (!result.success) {
-      res.status(400).json({ error: 'Validation failed', details: result.error.format() });
-      return;
-    }
-    const updated = await BlogsService.updateBlog(id, result.data);
-    res.json(updated);
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
-  }
-};
+    await BlogsService.deleteBlog(
+      req.params.id
+    );
 
-const deleteBlog = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { id } = req.params;
-    await BlogsService.deleteBlog(id);
-    res.json({ message: 'Blog post deleted successfully' });
+    res.json({
+      message:
+        "Blog deleted successfully",
+    });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
 export const BlogsController = {
   getBlogs,
-  getBlogBySlug,
   getBlogById,
   createBlog,
   updateBlog,
-  deleteBlog
+  deleteBlog,
 };
