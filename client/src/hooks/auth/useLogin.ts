@@ -2,9 +2,9 @@ import api from "../../api"
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { getErrorMessage } from "../../utils/getErrorMessage";
-// import { type LoginInput } from "../../types/auth"
+import { type LoginInput } from "../../types/auth"
 
-const loginUser = async (data) => {
+const loginUser = async (data: LoginInput) => {
   const res = await api.post(`/auth/login`, data)
   return res.data.user
 }

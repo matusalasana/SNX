@@ -3,26 +3,27 @@ import api from "../../api";
 import { toast } from "react-hot-toast";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
-const deleteProject = async (id: string) => {
-  const res = await api.delete(`/projects/${id}`);
+const deleteMessage = async (id: string) => {
+  const res = await api.delete(`/messages/${id}`);
+
   return res.data;
 };
 
-export const useDeleteProject = () => {
+export const useDeleteMessage = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteProject,
+    mutationFn: deleteMessage,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["projects"],
-      });
+      toast.success("Message deleted");
 
-      toast.success("Project deleted successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["messages"],
+      });
     },
 
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getErrorMessage(error));
     },
   });

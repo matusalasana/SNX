@@ -2,27 +2,35 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import { toast } from "react-hot-toast";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { Skill } from "../../types/skills"
 
-const deleteProject = async (id: string) => {
-  const res = await api.delete(`/projects/${id}`);
+type UpdateSkillInput = {
+  id: string;
+  data: Skill;
+};
+
+const updateSkill = async ({ id, data }: UpdateSkillInput) => {
+  const res = await api.patch(`/skills/${id}`, data);
+
   return res.data;
 };
 
-export const useDeleteProject = () => {
+export const useUpdateSkill = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteProject,
+    mutationFn: updateSkill,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["projects"],
-      });
+      toast.success("Skill updated successfully");
 
-      toast.success("Project deleted successfully");
+      // refresh list
+      queryClient.invalidateQueries({
+        queryKey: ["skills"],
+      });
     },
 
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getErrorMessage(error));
     },
   });

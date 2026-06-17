@@ -2,27 +2,29 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import { toast } from "react-hot-toast";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { Blog } from "../../types/blogs"
 
-const deleteProject = async (id: string) => {
-  const res = await api.delete(`/projects/${id}`);
+const createBlog = async (data: Blog) => {
+  const res = await api.post("/blogs", data);
+
   return res.data;
 };
 
-export const useDeleteProject = () => {
+export const useCreateBlog = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteProject,
+    mutationFn: createBlog,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["projects"],
-      });
+      toast.success("Blog published successfully");
 
-      toast.success("Project deleted successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["blogs"],
+      });
     },
 
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getErrorMessage(error));
     },
   });

@@ -1,11 +1,11 @@
 export interface Project {
   id: string;
   title: string;
-  description: string | null;
+  description: string;
   category: string;
   tags: string[];
-  thumbnailUrl: string | null;
-  githubUrl: string | null;
+  thumbnailUrl: string;
+  githubUrl: string;
   liveUrl: string | null;
   order: number;
   createdAt: string;

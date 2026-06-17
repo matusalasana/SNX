@@ -2,27 +2,29 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import { toast } from "react-hot-toast";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { Experience } from "../../types/experiences"
 
-const deleteProject = async (id: string) => {
-  const res = await api.delete(`/projects/${id}`);
+const createExperience = async (data: Experience) => {
+  const res = await api.post("/experiences", data);
+
   return res.data;
 };
 
-export const useDeleteProject = () => {
+export const useCreateExperience = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteProject,
+    mutationFn: createExperience,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["projects"],
-      });
+      toast.success("Experience added successfully");
 
-      toast.success("Project deleted successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["experiences"],
+      });
     },
 
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getErrorMessage(error));
     },
   });

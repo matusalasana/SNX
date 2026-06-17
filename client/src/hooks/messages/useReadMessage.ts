@@ -2,27 +2,33 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import { toast } from "react-hot-toast";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { Message } from "../../types/messages";
 
-const deleteProject = async (id: string) => {
-  const res = await api.delete(`/projects/${id}`);
+type ReadMessageInput = {
+  id: string;
+  data: Message;
+};
+
+const readMessage = async ({ id, data }: ReadMessageInput) => {
+  const res = await api.patch(`/messages/${id}/read`);
+
   return res.data;
 };
 
-export const useDeleteProject = () => {
+export const useReadMessage = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteProject,
+    mutationFn: readMessage,
 
     onSuccess: () => {
+      toast.success("Message read");
+
       queryClient.invalidateQueries({
-        queryKey: ["projects"],
+        queryKey: ["messages"],
       });
-
-      toast.success("Project deleted successfully");
-    },
-
-    onError: (error: any) => {
+      
+    onError: (error) => {
       toast.error(getErrorMessage(error));
     },
   });
