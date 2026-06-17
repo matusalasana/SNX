@@ -12,6 +12,7 @@ import {
   FileText,
   Briefcase
 } from 'lucide-react';
+import Hero from "../../components/home/Hero"
 
 // --- Mock Data ---
 const projects = [
@@ -52,48 +53,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#0B0D13] text-[#F3F4F6] font-sans antialiased selection:bg-indigo-500/30">
 
-      {/* --- HERO SECTION --- */}
-      <section className="relative max-w-5xl mx-auto px-6 pt-24 pb-20 text-center flex flex-col items-center">
-        {/* Status Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/5 text-emerald-400 text-xs font-medium mb-6 tracking-wide uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Active Now
-        </div>
-
-        {/* Headline */}
-{/* Headline */}
-<h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white max-w-3xl leading-[1.05] mb-6">
-  Sana Matusala
-  <br />
-  <span className="relative">
-    <span className="text-white/90">Full Stack Developer</span>
-    <span className="absolute inset-0 blur-xl opacity-40 text-primary">
-      Full Stack Developer
-    </span>
-  </span>
-</h1>
-
-{/* Subtitle */}
-<p className="text-white/50 max-w-xl text-base md:text-lg leading-relaxed font-light">
-  Designing and engineering web systems that merge performance, scalability, and elegant user experience.
-</p>
-
-{/* Subtitle */}
-<p className="text-zinc-400 max-w-xl text-base md:text-lg leading-relaxed font-light">
-  Building fast, scalable web applications with clean architecture, modern tooling, and developer-first design systems.
-</p>
-
-        {/* Call to Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <a href="#projects" className="group inline-flex items-center gap-2 bg-[#A5B4FC] hover:bg-[#C7D2FE] text-neutral-950 font-semibold px-6 py-3 rounded-md text-sm transition-all shadow-md">
-            View Projects 
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
-          <a href="#" className="inline-flex items-center gap-2 border border-gray-800 bg-gray-900/40 hover:bg-gray-800/60 text-gray-300 hover:text-white px-6 py-3 rounded-md text-sm font-medium transition-all backdrop-blur-sm">
-            Read Resume
-          </a>
-        </div>
-      </section>
+      <Hero />
 
       {/* --- SELECTED WORKS --- */}
       <section id="projects" className="max-w-5xl mx-auto px-6 py-16 border-t border-gray-900">
