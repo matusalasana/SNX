@@ -1,44 +1,96 @@
-import { faker } from "@faker-js/faker";
 import { db } from "../index.ts";
 import { projects } from "../schema/projects";
 
-export const seedProjects = async() => {
-  try{
-    const data = Array.from({ length: 100 }, () => {
-      return {
-        title: faker.hacker.adjective(),
-        category: faker.helpers.arrayElement([
-          "Frontend",
-          "Backend",
-          "API",
-          "Database",
-          "DevOps",
-          "Other"
-        ]),
-        tags: faker.helpers.arrayElements(
-          [
-            "JavaScript",
-            "Typescript",
-            "Postgresql",
-            "ExpressJs",
-            "ReactJs",
-            "NodeJs",
-            "Python",
-            "Java",
-          ],
-          { min: 1, max: 4 }
-        ),
-        description: faker.lorem.sentence(2),
-        thumbnailUrl: faker.image.url(),
-        githubUrl: faker.image.url(),
-        liveUrl: faker.image.url(),
-        order: faker.number.int({ min: 1, max:100}),
-      };
-    });
-  
-    return await db.insert(projects).values(data).returning();
+export const seedProjects = async () => {
+  try {
+    const data = [
+      {
+        title: "SNX Portfolio",
+        category: "Full Stack",
+        tags: [
+          "React",
+          "TypeScript",
+          "Express",
+          "PostgreSQL",
+          "Drizzle ORM",
+        ],
+        thumbnailUrl: "https://picsum.photos/800/600?random=1",
+        description:
+          "A modern developer portfolio platform built with React, Express, PostgreSQL, and Drizzle ORM.",
+        githubUrl: "https://github.com/example/snx-portfolio",
+        liveUrl: "https://snx-demo.vercel.app",
+        order: 1,
+      },
+      {
+        title: "Expense Tracker",
+        category: "Full Stack",
+        tags: [
+          "React",
+          "Node.js",
+          "Express",
+          "PostgreSQL",
+        ],
+        thumbnailUrl: "https://picsum.photos/800/600?random=2",
+        description:
+          "Personal finance management application with budgeting and transaction tracking.",
+        githubUrl: "https://github.com/example/expense-tracker",
+        liveUrl: "https://expense-demo.vercel.app",
+        order: 2,
+      },
+      {
+        title: "E-Commerce API",
+        category: "Backend",
+        tags: [
+          "Node.js",
+          "Express",
+          "PostgreSQL",
+          "JWT",
+        ],
+        thumbnailUrl: "https://picsum.photos/800/600?random=3",
+        description:
+          "RESTful API for e-commerce platforms with authentication, products, and order management.",
+        githubUrl: "https://github.com/example/ecommerce-api",
+        liveUrl: null,
+        order: 3,
+      },
+      {
+        title: "Task Management App",
+        category: "Frontend",
+        tags: [
+          "React",
+          "TypeScript",
+          "TailwindCSS",
+        ],
+        thumbnailUrl: "https://picsum.photos/800/600?random=4",
+        description:
+          "Kanban-style task management application with drag-and-drop functionality.",
+        githubUrl: "https://github.com/example/task-manager",
+        liveUrl: "https://task-demo.vercel.app",
+        order: 4,
+      },
+      {
+        title: "Inventory Management System",
+        category: "Full Stack",
+        tags: [
+          "React",
+          "Express",
+          "PostgreSQL",
+          "Docker",
+        ],
+        thumbnailUrl: "https://picsum.photos/800/600?random=5",
+        description:
+          "Inventory and stock management system for small and medium-sized businesses.",
+        githubUrl: "https://github.com/example/inventory-system",
+        liveUrl: "https://inventory-demo.vercel.app",
+        order: 5,
+      },
+    ];
 
-  }catch (err) {
+    return await db
+      .insert(projects)
+      .values(data)
+      .returning();
+  } catch (err) {
     console.log(err.cause || err.message);
   }
 };
