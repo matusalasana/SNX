@@ -14,20 +14,9 @@ import {
 } from 'lucide-react';
 import Hero from "../../components/home/Hero"
 import FeaturedProjects from "../../components/home/FeaturedProjects"
+import Skills from "../../components/home/Skills"
+import Experiences from "../../components/home/Experiences"
 
-// --- Mock Data ---
-const projects = [
-  {
-    title: "Quantum Analytics Engine",
-    description: "Real-time data processing and visualization for enterprise IoT networks.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    title: "CoreShield OS",
-    description: "A lightweight, security-first runtime for decentralized edge computing.",
-    image: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=800&q=80",
-  }
-];
 
 const techStack = {
   frontend: ["React/Next.js", "Tailwind CSS", "TypeScript", "Three.js", "Framer Motion"],
@@ -56,58 +45,8 @@ export default function Home() {
 
       <Hero />
       <FeaturedProjects />
-
-      {/* --- TECHNICAL STACK --- */}
-      <section id="skills" className="max-w-5xl mx-auto px-6 py-16 border-t border-gray-900">
-        <h2 className="text-2xl font-bold text-white mb-10">Technical Stack</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Frontend Category */}
-          <div className="p-6 rounded-lg border border-gray-800/60 bg-[#111319]/30 backdrop-blur-sm">
-            <div className="flex items-center gap-2 text-indigo-400 mb-6">
-              <Code2 className="w-4 h-4" />
-              <h3 className="font-semibold text-sm tracking-wide uppercase text-white">Frontend</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {techStack.frontend.map((tech, i) => (
-                <span key={i} className="px-3 py-1.5 text-xs rounded border border-gray-800 bg-gray-900/40 text-gray-400">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Backend Category */}
-          <div className="p-6 rounded-lg border border-gray-800/60 bg-[#111319]/30 backdrop-blur-sm">
-            <div className="flex items-center gap-2 text-emerald-400 mb-6">
-              <Database className="w-4 h-4" />
-              <h3 className="font-semibold text-sm tracking-wide uppercase text-white">Backend</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {techStack.backend.map((tech, i) => (
-                <span key={i} className="px-3 py-1.5 text-xs rounded border border-gray-800 bg-gray-900/40 text-gray-400">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Tools Category */}
-          <div className="p-6 rounded-lg border border-gray-800/60 bg-[#111319]/30 backdrop-blur-sm">
-            <div className="flex items-center gap-2 text-amber-400 mb-6">
-              <Wrench className="w-4 h-4" />
-              <h3 className="font-semibold text-sm tracking-wide uppercase text-white">Tools</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {techStack.tools.map((tech, i) => (
-                <span key={i} className="px-3 py-1.5 text-xs rounded border border-gray-800 bg-gray-900/40 text-gray-400">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <Skills />
+      <Experiences />
 
       {/* --- TECHNICAL WRITING --- */}
       <section className="max-w-5xl mx-auto px-6 py-16 border-t border-gray-900">

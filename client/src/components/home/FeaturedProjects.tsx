@@ -9,15 +9,34 @@ import {
   Twitter,
   FileText
 } from 'lucide-react';
-import LoadingSkeleton from "./LoadingSkeleton";
+import { Skeleton } from "../../utils/skeleton";
 
 const FeaturedProjects = () => {
   const { data: projects=[], isLoading } = useProjects();
   const featured = projects.filter(p => p.featured==true);
   
   if(isLoading){
-    return <LoadingSkeleton className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" />
+    return (
+      <div className="grid gap-6 md:grid-cols-2">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div
+            key={i}
+            className="rounded-2xl border border-zinc-800 p-5 space-y-4"
+          >
+            <Skeleton className="h-48 w-full rounded-xl" />
+    
+            <div className="flex gap-2 items-center justify-center">
+              <Skeleton className="h-8 w-16 rounded-full" />
+              <Skeleton className="h-8 w-16 rounded-full" />
+              <Skeleton className="h-8 w-20 rounded-full" />
+              <Skeleton className="h-8 w-16 rounded-full" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
+  
   return (
     <div>
       {/* --- WORKS GRID --- */}
