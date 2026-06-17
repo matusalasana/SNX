@@ -1,43 +1,67 @@
-import { Request, Response } from 'express';
-import { ExperiencesService } from './experiences.service';
-import { createExperienceSchema } from './experiences.validation';
+import {
+  Request,
+  Response,
+} from "express";
 
-const getExperiences = async (req: Request, res: Response): Promise<void> => {
+import { ExperiencesService }
+from "./experiences.service";
+
+const getExperiences = async (
+  _: Request,
+  res: Response
+) => {
   try {
-    const list = await ExperiencesService.getAllExperiences();
-    res.json(list);
+    const experiences =
+      await ExperiencesService.getAllExperiences();
+
+    res.status(200).json(experiences);
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
-const createExperience = async (req: Request, res: Response): Promise<void> => {
+const createExperience = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const validated = createExperienceSchema.safeParse(req.body);
-    if (!validated.success) {
-      res.status(400).json({ error: 'Validation failed', details: validated.error.format() });
-      return;
-    }
-    const newExp = await ExperiencesService.createNewExperience(validated.data);
-    res.status(201).json(newExp);
+    const experience =
+      await ExperiencesService.createNewExperience(
+        req.body
+      );
+
+    res.status(201).json(experience);
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
-const deleteExperience = async (req: Request, res: Response): Promise<void> => {
+const deleteExperience = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { id } = req.params;
-    await ExperiencesService.deleteExperience(id);
-    res.json({ message: 'Experience record successfully removed' });
+    await ExperiencesService.deleteExperience(
+      req.params.id
+    );
+
+    res.json({
+      message:
+        "Experience deleted successfully",
+    });
   } catch (err: any) {
-    const statusCode = err.message === 'Experience record not found' ? 404 : 500;
-    res.status(statusCode).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
 export const ExperiencesController = {
   getExperiences,
   createExperience,
-  deleteExperience
+  deleteExperience,
 };

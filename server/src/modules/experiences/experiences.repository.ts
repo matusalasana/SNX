@@ -1,33 +1,63 @@
-import { dbQuery } from '../../db/client';
-import { CreateExperienceInput } from './experiences.validation';
+import { db } from "../../db";
+import { experiences } from "../../db/schema/experiences";
+
+import {
+  desc,
+  eq,
+} from "drizzle-orm";
+
+import {
+  CreateExperienceInput,
+} from "./experiences.validation";
 
 const findAll = async () => {
-  const sql = 'SELECT * FROM experiences ORDER BY created_at DESC';
-  const result = await dbQuery(sql);
-  return result.rows;
+  return db
+    .select()
+    .from(experiences)
+    .orderBy(desc(experiences.createdAt));
 };
 
-const findById = async (id: string) => {
-  const sql = 'SELECT * FROM experiences WHERE id = $1';
-  const result = await dbQuery(sql, [id]);
-  return result.rows[0] || null;
+const findById = async (
+  id: string
+) => {
+  const result = await db
+    .select()
+    .from(experiences)
+    .where(eq(experiences.id, id));
+
+  return result[0] ?? null;
 };
 
-const create = async (data: CreateExperienceInput) => {
-  const sql = 'INSERT INTO experiences (company, role, description, duration) VALUES ($1, $2, $3, $4) RETURNING *';
-  const result = await dbQuery(sql, [data.company, data.role, data.description, data.duration]);
-  return result.rows[0];
+const create = async (
+  data: CreateExperienceInput
+) => {
+  const result = await db
+    .insert(experiences)
+    .values({
+      company: data.company,
+      role: data.role,
+      description: data.description,
+      duration: data.duration,
+    })
+    .returning();
+
+  return result[0];
 };
 
-const deleteOne = async (id: string) => {
-  const sql = 'DELETE FROM experiences WHERE id = $1 RETURNING *';
-  const result = await dbQuery(sql, [id]);
-  return (result.rowCount ?? 0) > 0;
+const deleteOne = async (
+  id: string
+) => {
+  const result = await db
+    .delete(experiences)
+    .where(eq(experiences.id, id))
+    .returning();
+
+  return result.length > 0;
 };
 
 export const ExperiencesRepository = {
   findAll,
   findById,
   create,
-  deleteOne
+  deleteOne,
 };

@@ -1,5 +1,5 @@
-import { db } from "@/db";
-import { blogs } from "@/db/schema/blogs";
+import { db } from "../../db";
+import { blogs } from "../../db/schema/blogs";
 
 import {
   desc,
