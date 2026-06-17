@@ -1,24 +1,38 @@
-import { SkillsRepository } from './skills.repository';
-import { CreateSkillInput } from './skills.validation';
+import { SkillsRepository }
+from "./skills.repository";
 
-const getAllSkills = async () => {
-  return SkillsRepository.findAll();
-};
+import {
+  CreateSkillInput,
+} from "./skills.validation";
 
-const createNewSkill = async (data: CreateSkillInput) => {
-  return SkillsRepository.create(data);
-};
+const getAllSkills =
+  async () => {
+    return SkillsRepository.findAll();
+  };
 
-const deleteSkill = async (id: string) => {
-  const success = await SkillsRepository.deleteOne(id);
-  if (!success) {
-    throw new Error('Skill not found');
-  }
-  return success;
-};
+const createNewSkill =
+  async (
+    data: CreateSkillInput
+  ) => {
+    return SkillsRepository.create(data);
+  };
+
+const deleteSkill =
+  async (id: string) => {
+    const exists =
+      await SkillsRepository.findById(id);
+
+    if (!exists) {
+      throw new Error(
+        "Skill not found"
+      );
+    }
+
+    return SkillsRepository.deleteOne(id);
+  };
 
 export const SkillsService = {
   getAllSkills,
   createNewSkill,
-  deleteSkill
+  deleteSkill,
 };

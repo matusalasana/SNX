@@ -1,43 +1,72 @@
-import { Request, Response } from 'express';
-import { SkillsService } from './skills.service';
-import { createSkillSchema } from './skills.validation';
+import {
+  Request,
+  Response,
+} from "express";
 
-const getSkills = async (req: Request, res: Response): Promise<void> => {
+import { SkillsService }
+from "./skills.service";
+
+const getSkills = async (
+  _: Request,
+  res: Response
+) => {
   try {
-    const list = await SkillsService.getAllSkills();
-    res.json(list);
+    const skills =
+      await SkillsService.getAllSkills();
+
+    res.status(200).json(skills);
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
-const createSkill = async (req: Request, res: Response): Promise<void> => {
+const createSkill = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const validated = createSkillSchema.safeParse(req.body);
-    if (!validated.success) {
-      res.status(400).json({ error: 'Validation failed', details: validated.error.format() });
-      return;
-    }
-    const newSkill = await SkillsService.createNewSkill(validated.data);
-    res.status(201).json(newSkill);
+    const skill =
+      await SkillsService.createNewSkill(
+        req.body
+      );
+
+    res.status(201).json(skill);
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
-const deleteSkill = async (req: Request, res: Response): Promise<void> => {
+const deleteSkill = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { id } = req.params;
-    await SkillsService.deleteSkill(id);
-    res.json({ message: 'Skill successfully removed' });
+    await SkillsService.deleteSkill(
+      req.params.id
+    );
+
+    res.json({
+      message:
+        "Skill successfully removed",
+    });
   } catch (err: any) {
-    const statusCode = err.message === 'Skill not found' ? 404 : 500;
-    res.status(statusCode).json({ error: err.message });
+    res.status(
+      err.message ===
+        "Skill not found"
+        ? 404
+        : 500
+    ).json({
+      error: err.message,
+    });
   }
 };
 
 export const SkillsController = {
   getSkills,
   createSkill,
-  deleteSkill
+  deleteSkill,
 };

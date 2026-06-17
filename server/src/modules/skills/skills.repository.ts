@@ -1,33 +1,67 @@
-import { dbQuery } from '../../db/client';
-import { CreateSkillInput, UpdateSkillInput } from './skills.validation';
+import { db } from "../../db";
+import { skills } from "../../db/schema/skills";
+
+import {
+  asc,
+  eq,
+} from "drizzle-orm";
+
+import {
+  CreateSkillInput,
+} from "./skills.validation";
 
 const findAll = async () => {
-  const sql = 'SELECT * FROM skills ORDER BY category ASC, name ASC';
-  const result = await dbQuery(sql);
-  return result.rows;
+  return db
+    .select()
+    .from(skills)
+    .orderBy(
+      asc(skills.category),
+      asc(skills.name)
+    );
 };
 
-const findById = async (id: string) => {
-  const sql = 'SELECT * FROM skills WHERE id = $1';
-  const result = await dbQuery(sql, [id]);
-  return result.rows[0] || null;
+const findById = async (
+  id: string
+) => {
+  const result = await db
+    .select()
+    .from(skills)
+    .where(eq(skills.id, id));
+
+  return result[0] ?? null;
 };
 
-const create = async (data: CreateSkillInput) => {
-  const sql = 'INSERT INTO skills (name, category, proficiency, icon_name) VALUES ($1, $2, $3, $4) RETURNING *';
-  const result = await dbQuery(sql, [data.name, data.category, data.proficiency, data.icon_name ?? 'Code']);
-  return result.rows[0];
+const create = async (
+  data: CreateSkillInput
+) => {
+  const result = await db
+    .insert(skills)
+    .values({
+      name: data.name,
+      category: data.category,
+      proficiency: data.proficiency,
+      iconName:
+        data.iconName ?? "Code",
+    })
+    .returning();
+
+  return result[0];
 };
 
-const deleteOne = async (id: string) => {
-  const sql = 'DELETE FROM skills WHERE id = $1 RETURNING *';
-  const result = await dbQuery(sql, [id]);
-  return (result.rowCount ?? 0) > 0;
+const deleteOne = async (
+  id: string
+) => {
+  const result = await db
+    .delete(skills)
+    .where(eq(skills.id, id))
+    .returning();
+
+  return result.length > 0;
 };
 
 export const SkillsRepository = {
   findAll,
   findById,
   create,
-  deleteOne
+  deleteOne,
 };
