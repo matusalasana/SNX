@@ -13,3 +13,5 @@ export const resetDatabase = async () => {
     RESTART IDENTITY CASCADE;
   `);
 };
+
+await resetDatabase();

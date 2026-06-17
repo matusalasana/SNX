@@ -11,6 +11,7 @@
     "generate": "drizzle-kit generate",
     "push": "drizzle-kit push",
     "seed": "tsx src/db/seeds/index.ts",
+    "resetDB": "tsx src/db/seeds/reset.ts",
     "check": "tsc --noEmit"
   },
   "dependencies": {
