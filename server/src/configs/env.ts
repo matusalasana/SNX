@@ -10,14 +10,8 @@ export const SERVER_ORIGIN = process.env.SERVER_ORIGIN ||  "http://localhost:300
 
 // JWT 
 const jwtSecret = process.env.JWT_SECRET;
-const jwtExpiry = process.env.JWT_EXPIRY;
-
 if (!jwtSecret) {
   throw new Error("JWT_SECRET environment variable is required");
-}
-
-if (!jwtExpiry) {
-  throw new Error("JWT_EXPIRY environment variable is required");
 }
 
 export const JWT_SECRET: string = jwtSecret;
