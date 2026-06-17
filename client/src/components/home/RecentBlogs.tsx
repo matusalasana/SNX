@@ -2,24 +2,8 @@ import { ArrowUpRight, Clock } from "lucide-react";
 import { useBlogs } from "../../hooks/blogs/useBlogs";
 import { Skeleton } from "../../utils/skeleton";
 
-type BlogPost = {
-  id: string;
-  title: string;
-  summary: string;
-  readTime: string;
-  category: string;
-  tags: string[];
-  createdAt: string;
-};
-
 export default function BlogPosts() {
   const { data: blogs = [], isLoading } = useBlogs();
-
-  const sortedBlogs = [...blogs].sort(
-    (a, b) =>
-      new Date(b.createdAt).getTime() -
-      new Date(a.createdAt).getTime()
-  );
 
   if (isLoading) {
     return (
@@ -47,7 +31,7 @@ export default function BlogPosts() {
     );
   }
 
-  if (!sortedBlogs.length) {
+  if (!blogs.length) {
     return (
       <section className="max-w-5xl mx-auto py-24 border-t border-zinc-900 text-center">
         <p className="text-zinc-500">No blog posts yet.</p>
