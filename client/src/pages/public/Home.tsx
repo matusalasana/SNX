@@ -19,6 +19,7 @@ import Experiences from "../../components/home/Experiences"
 import RecentBlogs from "../../components/home/RecentBlogs"
 import Stats from "../../components/home/Stats"
 import CurrentlyWorking from "../../components/home/CurrentlyWorking"
+import ContactCTA from "../../components/home/ContactCTA"
 
 
 const techStack = {
@@ -53,57 +54,8 @@ export default function Home() {
       <RecentBlogs />
       <Stats />
       <CurrentlyWorking />
+      <ContactCTA />
 
-      {/* --- TECHNICAL WRITING --- */}
-      <section className="max-w-5xl mx-auto px-6 py-16 border-t border-gray-900">
-        <h2 className="text-2xl font-bold text-white mb-8">Technical Writing</h2>
-        
-        <div className="divide-y divide-gray-800/60">
-          {articles.map((article, index) => (
-            <a 
-              key={index} 
-              href="#" 
-              className="group flex flex-col sm:flex-row sm:items-center justify-between py-6 first:pt-0 last:pb-0 transition-all"
-            >
-              <div className="mb-2 sm:mb-0">
-                <span className="block text-[10px] font-bold tracking-widest text-gray-500 uppercase mb-1">
-                  {article.date}
-                </span>
-                <h3 className="text-base font-semibold text-gray-200 group-hover:text-indigo-400 transition-colors">
-                  {article.title}
-                </h3>
-              </div>
-              <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* --- CTA / FOOTER HERO --- */}
-      <section id="contact" className="max-w-5xl mx-auto px-6 py-12">
-        <div className="relative rounded-xl border border-gray-800/50 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-950/20 via-[#111319]/50 to-[#111319]/50 p-12 text-center overflow-hidden">
-          
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            Let's Build Something Together
-          </h2>
-          <p className="text-gray-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
-            I am currently open to freelance opportunities, contract roles, or collaborating on open-source projects.
-          </p>
-
-          <div className="flex items-center justify-center gap-3">
-            <button className="inline-flex items-center gap-2 bg-[#C7D2FE] hover:bg-white text-neutral-950 font-semibold px-5 py-2.5 rounded-md text-xs transition-colors">
-              Send a Message
-            </button>
-            <a 
-              href="mailto:example@domain.com" 
-              className="p-2.5 rounded-md border border-gray-800 bg-gray-900/60 hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
-              aria-label="Email Me"
-            >
-              <Mail className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* --- FOOTER --- */}
       <footer className="max-w-5xl mx-auto px-6 pt-12 pb-8 border-t border-gray-900/60 text-xs text-gray-500 flex flex-col md:flex-row items-center justify-between gap-4">

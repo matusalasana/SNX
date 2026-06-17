@@ -1,6 +1,7 @@
 import { ArrowUpRight, Clock } from "lucide-react";
 import { useBlogs } from "../../hooks/blogs/useBlogs";
 import { Skeleton } from "../../utils/skeleton";
+import { Blog } from "../../types/blogs"
 
 export default function BlogPosts() {
   const { data: blogs = [], isLoading } = useBlogs();
@@ -60,7 +61,7 @@ export default function BlogPosts() {
 
       {/* Posts */}
       <div className="space-y-4">
-        {sortedBlogs.slice(0, 4).map((post: BlogPost) => (
+        {blogs.slice(0, 4).map((post: Blog) => (
           <div
             key={post.id}
             className="
