@@ -46,7 +46,7 @@ const deleteExperience = async (
 ) => {
   try {
     await ExperiencesService.deleteExperience(
-      req.params.id
+      req.params.id as string
     );
 
     res.json({

@@ -16,7 +16,7 @@ const getProjects = async (_: Request, res: Response) => {
 const getProjectById = async (req: Request, res: Response) => {
   try {
     const project = await ProjectsService.getProjectById(
-      req.params.id
+      req.params.id as string
     );
 
     res.status(200).json(project);
@@ -42,7 +42,7 @@ const createProject = async (req: Request, res: Response) => {
 const updateProject = async (req: Request, res: Response) => {
   try {
     const updated = await ProjectsService.updateProject(
-      req.params.id,
+      req.params.id as string,
       req.body
     );
 
@@ -55,7 +55,7 @@ const updateProject = async (req: Request, res: Response) => {
 // DELETE
 const deleteProject = async (req: Request, res: Response) => {
   try {
-    await ProjectsService.deleteProject(req.params.id);
+    await ProjectsService.deleteProject(req.params.id as string);
 
     res.json({ message: "Project deleted successfully" });
   } catch (err: any) {

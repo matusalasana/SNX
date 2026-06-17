@@ -34,7 +34,7 @@ const getBlogById = async (
   try {
     const blog =
       await BlogsService.getBlogById(
-        req.params.id
+        req.params.id as string
       );
 
     res.status(200).json(blog);
@@ -70,7 +70,7 @@ const updateBlog = async (
   try {
     const blog =
       await BlogsService.updateBlog(
-        req.params.id,
+        req.params.id as string,
         req.body
       );
 
@@ -88,7 +88,7 @@ const deleteBlog = async (
 ) => {
   try {
     await BlogsService.deleteBlog(
-      req.params.id
+      req.params.id as string
     );
 
     res.json({

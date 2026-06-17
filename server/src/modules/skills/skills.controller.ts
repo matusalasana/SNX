@@ -46,7 +46,7 @@ const deleteSkill = async (
 ) => {
   try {
     await SkillsService.deleteSkill(
-      req.params.id
+      req.params.id as string
     );
 
     res.json({

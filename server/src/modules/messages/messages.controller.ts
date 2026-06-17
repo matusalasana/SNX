@@ -29,7 +29,10 @@ const markAsRead = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const { is_read } = req.body;
-    const updated = await MessagesService.markAsRead(id, is_read);
+    const updated = await MessagesService.markAsRead(
+      id as string, 
+      is_read
+    );
     res.json(updated);
   } catch (err: any) {
     const statusCode = err.message === 'Message not found' ? 404 : 500;
@@ -40,7 +43,7 @@ const markAsRead = async (req: Request, res: Response): Promise<void> => {
 const deleteMessage = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    await MessagesService.deleteMessage(id);
+    await MessagesService.deleteMessage(id as string);
     res.json({ message: 'Message successfully deleted' });
   } catch (err: any) {
     const statusCode = err.message === 'Message not found' ? 404 : 500;
