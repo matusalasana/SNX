@@ -1,12 +1,18 @@
 import express from "express";
 import routes from "./routes/index";
 import cors from "cors";
+import { CLIENT_ORIGIN } from "./configs/env"
 
 
 export const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  CLIENT_ORIGIN,
+]
+
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: allowedOrigins,
   credentials: true
 }))
 app.use(express.json());
