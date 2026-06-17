@@ -4,6 +4,7 @@ import {
   text,
   timestamp,
   integer,
+  boolean,
   pgTable,
 } from "drizzle-orm/pg-core";
 
@@ -20,6 +21,10 @@ export const projects = pgTable("projects", {
     .default([]),
 
   thumbnailUrl: text("thumbnail_url"),
+  
+  featured: boolean("featured")
+    .notNull()
+    .default(false),
 
   description: text("description"),
 

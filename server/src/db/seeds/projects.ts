@@ -15,6 +15,7 @@ export const seedProjects = async () => {
           "Drizzle ORM",
         ],
         thumbnailUrl: "https://picsum.photos/800/600?random=1",
+        featured: true,
         description:
           "A modern developer portfolio platform built with React, Express, PostgreSQL, and Drizzle ORM.",
         githubUrl: "https://github.com/example/snx-portfolio",
@@ -24,6 +25,7 @@ export const seedProjects = async () => {
       {
         title: "Expense Tracker",
         category: "Full Stack",
+        featured: true,
         tags: [
           "React",
           "Node.js",
@@ -40,6 +42,7 @@ export const seedProjects = async () => {
       {
         title: "E-Commerce API",
         category: "Backend",
+        featured: true,
         tags: [
           "Node.js",
           "Express",
@@ -55,6 +58,7 @@ export const seedProjects = async () => {
       },
       {
         title: "Task Management App",
+        featured: false,
         category: "Frontend",
         tags: [
           "React",
@@ -71,6 +75,7 @@ export const seedProjects = async () => {
       {
         title: "Inventory Management System",
         category: "Full Stack",
+        featured: false,
         tags: [
           "React",
           "Express",

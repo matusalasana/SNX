@@ -1,0 +1,1 @@
+ALTER TABLE "projects" ALTER COLUMN "is_featured" SET DATA TYPE boolean;
