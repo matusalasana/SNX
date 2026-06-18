@@ -53,7 +53,7 @@ export default function ProjectCard({
             <div className="absolute top-4 left-4">
               <span className="flex items-center gap-1 rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-1 text-xs text-amber-400">
                 <Star className="h-3 w-3 fill-current" />
-                Featured
+                New
               </span>
             </div>
           )}

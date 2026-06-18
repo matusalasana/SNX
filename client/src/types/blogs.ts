@@ -1,13 +1,14 @@
 
 export interface Blog {
+  id: string;
   title: string;
-  content: string;
   summary: string;
-  thumbnailUrl: string;
-  status: "draft" | "published";
+  thumbnailUrl: string | null;
+  status: "published" | "draft";
   readTime: string;
   author: string;
   tags: string[];
-  category?: string;
+  category: string | null;
   featured: boolean;
+  createdAt: string;
 };

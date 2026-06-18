@@ -1,30 +1,51 @@
-import { ArrowUpRight, Clock } from "lucide-react";
 import { useBlogs } from "../../hooks/blogs/useBlogs";
+import BlogCard from "../common/BlogCard";
 import { Skeleton } from "../../utils/skeleton";
-import { Blog } from "../../types/blogs"
 
-export default function BlogPosts() {
+export default function RecentBlogs() {
   const { data: blogs = [], isLoading } = useBlogs();
+
+  // sort newest first
+  const recentBlogs = [...blogs]
+    .filter((b) => b.status === "published")
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime()
+    )
+    .slice(0, 3);
 
   if (isLoading) {
     return (
-      <section className="max-w-5xl mx-auto py-24 border-t border-zinc-900">
-        <div className="mb-14">
-          <Skeleton className="h-4 w-24 mb-4" />
-          <Skeleton className="h-10 w-64 mb-4" />
-          <Skeleton className="h-4 w-full max-w-xl" />
+      <section className="max-w-6xl mx-auto py-24 border-t border-zinc-900">
+        {/* Header Skeleton */}
+        <div className="mb-12 space-y-3">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-10 w-64" />
+          <Skeleton className="h-4 w-96 max-w-full" />
         </div>
 
-        <div className="space-y-4">
+        {/* Cards Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-zinc-800/60 p-6"
+              className="rounded-2xl border border-zinc-800/60 overflow-hidden"
             >
-              <Skeleton className="h-5 w-40 mb-3" />
-              <Skeleton className="h-4 w-32 mb-4" />
-              <Skeleton className="h-4 w-full mb-2" />
-              <Skeleton className="h-4 w-5/6" />
+              <Skeleton className="aspect-[16/9] w-full" />
+
+              <div className="p-6 space-y-4">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-6 w-3/4" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+
+                <div className="flex gap-2 pt-2">
+                  <Skeleton className="h-6 w-14 rounded-lg" />
+                  <Skeleton className="h-6 w-16 rounded-lg" />
+                  <Skeleton className="h-6 w-12 rounded-lg" />
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -32,109 +53,40 @@ export default function BlogPosts() {
     );
   }
 
-  if (!blogs.length) {
+  if (!recentBlogs.length) {
     return (
-      <section className="max-w-5xl mx-auto py-24 border-t border-zinc-900 text-center">
+      <section className="max-w-6xl mx-auto py-24 border-t border-zinc-900 text-center">
         <p className="text-zinc-500">No blog posts yet.</p>
       </section>
     );
   }
 
   return (
-    <section className="max-w-5xl mx-auto py-24 border-t border-zinc-900">
-      {/* Heading */}
-      <div className="mb-12">
+    <section className="max-w-6xl mx-auto py-24 border-t border-zinc-900">
+      {/* Header */}
+      <div className="mb-14">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-10 h-px bg-gradient-to-r from-amber-400 to-transparent" />
+
           <span className="text-xs uppercase tracking-[0.25em] text-amber-400">
             Writing
           </span>
         </div>
 
-        <h2 className="text-3xl font-bold text-white">Recent Posts</h2>
+        <h2 className="text-3xl font-bold text-white tracking-tight">
+          Recent Articles
+        </h2>
 
-        <p className="text-zinc-400 mt-3 max-w-2xl">
-          Thoughts, engineering notes, and things I learn while building
-          full-stack systems.
+        <p className="mt-3 text-zinc-400 max-w-2xl">
+          Thoughts, notes, and lessons learned while building modern
+          full-stack applications and APIs.
         </p>
       </div>
 
-      {/* Posts */}
-      <div className="space-y-4">
-        {blogs.slice(0, 4).map((post: Blog) => (
-          <div
-            key={post.id}
-            className="
-              group relative overflow-hidden
-              p-5 rounded-2xl
-              border border-zinc-800/60
-              bg-zinc-900/20
-              hover:border-amber-500/30
-              transition-all duration-300
-            "
-          >
-            {/* Glow */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition">
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-amber-500/10 blur-3xl" />
-            </div>
-
-            <div className="relative flex items-start justify-between gap-4">
-              {/* Left */}
-              <div className="flex-1">
-                {/* Meta */}
-                <div className="flex items-center gap-3 text-xs text-zinc-500 mb-2">
-                  <span className="text-amber-400">{post.category}</span>
-
-                  <span>•</span>
-
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    {post.readTime}
-                  </span>
-
-                  <span>•</span>
-
-                  <span>
-                    {new Date(post.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-white font-medium group-hover:text-amber-300 transition line-clamp-1">
-                  {post.title}
-                </h3>
-
-                {/* Summary */}
-                <p className="text-sm text-zinc-400 mt-2 line-clamp-2">
-                  {post.summary}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {post.tags?.slice(0, 3).map((tag, i) => (
-                    <span
-                      key={i}
-                      className="
-                        text-xs px-2 py-1
-                        rounded-md
-                        border border-zinc-800
-                        bg-zinc-900/40
-                        text-zinc-400
-                        hover:text-amber-300
-                        hover:border-amber-500/30
-                        transition
-                      "
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Arrow */}
-              <ArrowUpRight className="w-4 h-4 text-zinc-500 group-hover:text-amber-400 transition" />
-            </div>
-          </div>
+      {/* Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {recentBlogs.map((blog) => (
+          <BlogCard key={blog.id} blog={blog} />
         ))}
       </div>
     </section>
