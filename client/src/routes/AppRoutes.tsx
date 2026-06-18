@@ -21,6 +21,8 @@ import AdminBlogEditor from "../pages/admin/AdminBlogEditor";
 import AdminBlogManagement from "../pages/admin/AdminBlogManagement";
 import AdminProjectsManagement from "../pages/admin/AdminProjectsManagement";
 
+const VITE_ADMIN_LOGIN_URL = import.meta.env.VITE_ADMIN_LOGIN_URL;
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -42,7 +44,7 @@ export const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "login",
+        path: VITE_ADMIN_LOGIN_URL,
         element: <Login />,
       },
       {
