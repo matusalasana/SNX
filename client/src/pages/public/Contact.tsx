@@ -41,7 +41,7 @@ export default function Contact() {
                 <h2 className="font-semibold">Email</h2>
               </div>
               <p className="text-zinc-400 text-sm">
-                youremail@example.com
+                matusalasana@gmail.com
               </p>
             </div>
 
@@ -64,14 +64,14 @@ export default function Contact() {
 
               <div className="flex gap-4 text-zinc-400">
                 <a
-                  href="#"
+                  href="https://github.com/matusalasana"
                   className="hover:text-amber-400 transition"
                 >
                   <Github />
                 </a>
 
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/in/sana-matusala-b111a7366"
                   className="hover:text-amber-400 transition"
                 >
                   <Linkedin />

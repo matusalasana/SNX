@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useLogin } from "../../hooks/auth/useLogin";
+import { useAuth } from "../../hooks/auth/useAuth";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -15,7 +17,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, isPending } = useLogin();
-
+  const { data: user, isLoading } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -25,6 +28,12 @@ export default function Login() {
   });
 
   const onSubmit = (data: LoginFormData) => login(data);
+  
+  useEffect(() => {
+    if (user) {
+      navigate("/admin", { replace: true });
+    }
+  }, [user, navigate]);
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4 bg-black">
