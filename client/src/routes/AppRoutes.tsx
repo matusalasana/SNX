@@ -3,6 +3,10 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import AdminLayout from "../layouts/AdminLayout";
 
+
+// Components
+import ProtectedRoutes from "../components/auth/ProtectedRoutes";
+
 // Public pages
 import Home from "../pages/public/Home";
 import Projects from "../pages/public/Projects";
@@ -82,27 +86,32 @@ export const router = createBrowserRouter([
   // Admin section
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: <ProtectedRoutes />, 
     children: [
       {
-        index: true,
-        element: <AdminDashboard />,
-      },
-      {
-        path: "messages",
-        element: <AdminMessages />,
-      },
-      {
-        path: "blogs",
-        element: <AdminBlogs />,
-      },
-      {
-        path: "blogs/new",
-        element: <AdminBlogEditor />,
-      },
-      {
-        path: "projects",
-        element: <AdminProjectsManagement />,
+        element: <AdminLayout />,
+        children: [
+          {
+            index: true,
+            element: <AdminDashboard />,
+          },
+          {
+            path: "messages",
+            element: <AdminMessages />,
+          },
+          {
+            path: "blogs",
+            element: <AdminBlogs />,
+          },
+          {
+            path: "blogs/new",
+            element: <AdminBlogEditor />,
+          },
+          {
+            path: "projects",
+            element: <AdminProjectsManagement />,
+          },
+        ],
       },
     ],
   },

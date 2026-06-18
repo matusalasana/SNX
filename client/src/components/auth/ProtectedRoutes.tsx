@@ -1,12 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/auth/useAuth";
 
 const ProtectedRoutes = () => {
   const { data: user, isLoading, isError } = useAuth();
 
   // Handle error first (more predictable)
   if (isError) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   if (isLoading) {
@@ -36,7 +36,7 @@ const ProtectedRoutes = () => {
 
   // Not authenticated
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;
