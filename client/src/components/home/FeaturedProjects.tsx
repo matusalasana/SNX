@@ -1,4 +1,4 @@
-import { useProjects } from "../../hooks/projects/useProjects"
+import { useProjects } from "../../hooks/projects/useProjects";
 import { 
   Search, 
   ExternalLink, 
