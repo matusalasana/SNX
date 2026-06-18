@@ -1,186 +1,159 @@
 import { useParams, Link } from "react-router-dom";
+import { useBlog } from "../../hooks/blogs/useBlog";
 import {
-  ArrowLeft,
-  ExternalLink,
-  Github,
+  Clock,
   Calendar,
-  Layers3,
+  ArrowLeft,
+  Star,
 } from "lucide-react";
-import { useProject } from "../../hooks/projects/useProject";
 import { Skeleton } from "../../utils/skeleton";
 
+export default function BlogDetails() {
+  const { id } = useParams<{ id: string }>();
 
-export default function ProjectDetails() {
-  const { id } = useParams();
-
-  const { data: project, isLoading } = useProject(id!);
+  const { data: blog, isLoading } = useBlog(id!);
 
   if (isLoading) {
     return (
-      <section className="max-w-5xl mx-auto px-6 py-24">
-        <Skeleton className="h-10 w-40 mb-8" />
-        <Skeleton className="h-14 w-96 mb-4" />
-        <Skeleton className="h-6 w-full max-w-2xl mb-8" />
-        <Skeleton className="h-[400px] w-full rounded-3xl" />
-      </section>
+      <div className="max-w-3xl mx-auto py-24 px-6 space-y-6">
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="aspect-[16/9] w-full rounded-2xl" />
+        <Skeleton className="h-40 w-full" />
+      </div>
     );
   }
 
-  if (!project) {
+  if (!blog) {
     return (
-      <section className="max-w-5xl mx-auto px-6 py-24 text-center">
-        <h1 className="text-3xl font-bold text-white">
-          Project not found
-        </h1>
-      </section>
+      <div className="max-w-3xl mx-auto py-24 px-6 text-center">
+        <p className="text-zinc-400">Blog post not found.</p>
+
+        <Link
+          to="/blog"
+          className="inline-flex items-center gap-2 mt-4 text-amber-400 hover:text-amber-300"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to blog
+        </Link>
+      </div>
     );
   }
 
   return (
-    <section className="max-w-5xl mx-auto px-6 py-24">
+    <article className="max-w-3xl mx-auto py-24 px-6">
       {/* Back */}
       <Link
-        to="/projects"
-        className="inline-flex items-center gap-2 text-zinc-400 hover:text-amber-400 transition mb-10"
+        to="/blog"
+        className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-amber-400 transition mb-10"
       >
         <ArrowLeft className="w-4 h-4" />
-        Back to Projects
+        Back to articles
       </Link>
 
-      {/* Hero */}
-      <div className="mb-10">
-        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-amber-400 mb-4">
-          <div className="w-10 h-px bg-gradient-to-r from-amber-400 to-transparent" />
-          Featured Project
+      {/* Meta */}
+      <header className="space-y-4 mb-10">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500">
+          {blog.category && (
+            <span className="text-amber-400 uppercase tracking-wider">
+              {blog.category}
+            </span>
+          )}
+
+          {blog.featured && (
+            <span className="flex items-center gap-1 text-amber-400">
+              <Star className="w-3 h-3 fill-amber-400" />
+              Featured
+            </span>
+          )}
+
+          <span className="flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            {blog.readTime}
+          </span>
+
+          <span className="flex items-center gap-1">
+            <Calendar className="w-3 h-3" />
+            {new Date(blog.createdAt).toLocaleDateString()}
+          </span>
+
+          <span>•</span>
+
+          <span>By {blog.author}</span>
         </div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-white">
-          {project.title}
+        {/* Title */}
+        <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+          {blog.title}
         </h1>
 
-        <p className="mt-5 text-lg text-zinc-400 max-w-3xl">
-          {project.description}
+        {/* Summary */}
+        <p className="text-zinc-400 text-lg leading-relaxed">
+          {blog.summary}
         </p>
-      </div>
+      </header>
 
       {/* Thumbnail */}
-      {project.thumbnailUrl && (
-        <div className="mb-14 overflow-hidden rounded-3xl border border-zinc-800">
+      {blog.thumbnailUrl && (
+        <div className="mb-10 rounded-2xl overflow-hidden border border-zinc-800/60">
           <img
-            src={project.thumbnailUrl}
-            alt={project.title}
+            src={blog.thumbnailUrl}
+            alt={blog.title}
             className="w-full object-cover"
           />
         </div>
       )}
 
-      {/* Metadata */}
-      <div className="grid md:grid-cols-3 gap-6 mb-14">
-        <div className="rounded-2xl border border-zinc-800 p-5 bg-zinc-900/20">
-          <Calendar className="w-5 h-5 text-amber-400 mb-3" />
-          <p className="text-zinc-500 text-sm">Created</p>
-          <p className="text-white">
-            {new Date(project.createdAt).toLocaleDateString()}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-zinc-800 p-5 bg-zinc-900/20">
-          <Layers3 className="w-5 h-5 text-amber-400 mb-3" />
-          <p className="text-zinc-500 text-sm">Category</p>
-          <p className="text-white">{project.category}</p>
-        </div>
-
-        <div className="rounded-2xl border border-zinc-800 p-5 bg-zinc-900/20">
-          <Github className="w-5 h-5 text-amber-400 mb-3" />
-          <p className="text-zinc-500 text-sm">Status</p>
-          <p className="text-white">
-            {project.featured ? "Featured" : "Standard"}
-          </p>
-        </div>
+      {/* Content */}
+      <div className="text-zinc-300 leading-relaxed whitespace-pre-line">
+        {blog.content}
       </div>
 
-      {/* Overview */}
-      <div className="mb-14">
-        <h2 className="text-2xl font-semibold text-white mb-4">
-          Overview
-        </h2>
-
-        <div className="prose prose-invert max-w-none">
-          <p className="text-zinc-400 leading-relaxed">
-            {project.content}
-          </p>
-        </div>
-      </div>
-
-      {/* Technologies */}
-      {project.technologies?.length > 0 && (
-        <div className="mb-14">
-          <h2 className="text-2xl font-semibold text-white mb-4">
-            Tech Stack
-          </h2>
-
-          <div className="flex flex-wrap gap-3">
-            {project.technologies.map((tech: string) => (
-              <span
-                key={tech}
-                className="
-                  px-4 py-2
-                  rounded-xl
-                  border border-zinc-800
-                  bg-zinc-900/40
-                  text-zinc-300
-                  hover:border-amber-500/30
-                  hover:text-amber-300
-                  transition
-                "
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Links */}
-      <div className="flex flex-wrap gap-4">
-        {project.liveUrl && (
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noreferrer"
+      {/* Tags */}
+      <div className="mt-10 flex flex-wrap gap-2">
+        {blog.tags.map((tag) => (
+          <span
+            key={tag}
             className="
-              inline-flex items-center gap-2
-              px-6 py-3 rounded-xl
-              bg-amber-500 text-black
-              font-medium
-              hover:bg-amber-400
-              transition
+              text-xs px-3 py-1
+              rounded-lg
+              border border-zinc-800
+              bg-zinc-900/40
+              text-zinc-400
             "
           >
-            <ExternalLink className="w-4 h-4" />
-            Live Demo
-          </a>
-        )}
-
-        {project.githubUrl && (
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="
-              inline-flex items-center gap-2
-              px-6 py-3 rounded-xl
-              border border-zinc-700
-              text-white
-              hover:border-amber-500/40
-              transition
-            "
-          >
-            <Github className="w-4 h-4" />
-            Source Code
-          </a>
-        )}
+            {tag}
+          </span>
+        ))}
       </div>
-    </section>
+
+      {/* CTA */}
+      <div className="mt-16 p-6 rounded-2xl border border-zinc-800 bg-zinc-900/20">
+        <h3 className="text-white font-semibold mb-2">
+          Enjoyed this article?
+        </h3>
+
+        <p className="text-zinc-400 text-sm mb-4">
+          Let’s connect and build something interesting together.
+        </p>
+
+        <Link
+          to="/contact"
+          className="
+            inline-flex items-center gap-2
+            px-4 py-2
+            rounded-xl
+            bg-amber-500
+            text-black
+            text-sm font-medium
+            hover:bg-amber-400
+            transition
+          "
+        >
+          Contact Me
+        </Link>
+      </div>
+    </article>
   );
 }
