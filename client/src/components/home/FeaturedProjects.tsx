@@ -10,6 +10,7 @@ import {
   FileText
 } from 'lucide-react';
 import { Skeleton } from "../../utils/skeleton";
+import { Link } from "react-router-dom"
 
 const FeaturedProjects = () => {
   const { data: projects=[], isLoading } = useProjects();
@@ -46,6 +47,7 @@ const FeaturedProjects = () => {
               key={project.id} 
               className="group relative flex flex-col rounded-xl border border-gray-800/50 bg-zinc-900/50 overflow-hidden hover:border-gray-800 transition-all duration-300"
             >
+            <Link to={`/projects/${project.id}`}>
               {/* Image Header wrapper using thumbnailUrl fallback */}
               <div className="relative aspect-[16/10] overflow-hidden bg-gray-950">
                 <img 
@@ -99,6 +101,7 @@ const FeaturedProjects = () => {
                   ))}
                 </div>
               </div>
+              </Link>
             </div>
           ))}
         </section>
