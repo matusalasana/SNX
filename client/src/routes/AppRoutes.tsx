@@ -18,7 +18,7 @@ import Test from "../pages/public/Test";
 import AdminDashboard from "../pages/admin/Dashboard";
 import AdminMessages from "../pages/admin/AdminMessages";
 import AdminBlogEditor from "../pages/admin/AdminBlogEditor";
-import AdminBlogManagement from "../pages/admin/AdminBlogManagement";
+import AdminBlogs from "../pages/admin/AdminBlogs";
 import AdminProjectsManagement from "../pages/admin/AdminProjectsManagement";
 
 const VITE_ADMIN_LOGIN_URL = import.meta.env.VITE_ADMIN_LOGIN_URL;
@@ -92,7 +92,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "blogs",
-        element: <AdminBlogManagement />,
+        element: <AdminBlogs />,
       },
       {
         path: "blogs/new",
