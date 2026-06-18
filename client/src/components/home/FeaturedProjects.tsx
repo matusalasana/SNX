@@ -1,112 +1,90 @@
+import { FolderKanban } from "lucide-react";
 import { useProjects } from "../../hooks/projects/useProjects";
-import { 
-  Search, 
-  ExternalLink, 
-  ChevronDown,
-  Briefcase,
-  Github,
-  Linkedin,
-  Twitter,
-  FileText
-} from 'lucide-react';
 import { Skeleton } from "../../utils/skeleton";
-import { Link } from "react-router-dom"
+import ProjectCard from "../common/ProjectCard";
 
-const FeaturedProjects = () => {
-  const { data: projects=[], isLoading } = useProjects();
-  const featured = projects.filter(p => p.featured==true);
-  
-  if(isLoading){
+export default function FeaturedProjects() {
+  const { data: projects = [], isLoading } = useProjects();
+
+  const featuredProjects = projects
+    .filter((project) => project.featured)
+    .sort((a, b) => a.order - b.order);
+
+  if (isLoading) {
     return (
-      <div className="grid gap-6 md:grid-cols-2">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div
-            key={i}
-            className="rounded-2xl border border-zinc-800 p-5 space-y-4"
-          >
-            <Skeleton className="h-48 w-full rounded-xl" />
-    
-            <div className="flex gap-2 items-center justify-center">
-              <Skeleton className="h-8 w-16 rounded-full" />
-              <Skeleton className="h-8 w-16 rounded-full" />
-              <Skeleton className="h-8 w-20 rounded-full" />
-              <Skeleton className="h-8 w-16 rounded-full" />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-  
-  return (
-    <div>
-      {/* --- WORKS GRID --- */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {projects.map((project) => (
-            <div 
-              key={project.id} 
-              className="group relative flex flex-col rounded-xl border border-gray-800/50 bg-zinc-900/50 overflow-hidden hover:border-gray-800 transition-all duration-300"
+      <section className="max-w-5xl mx-auto py-24 border-t border-zinc-900">
+        {/* Heading Skeleton */}
+        <div className="mb-14">
+          <Skeleton className="h-4 w-24 mb-4" />
+          <Skeleton className="h-10 w-64 mb-4" />
+          <Skeleton className="h-4 w-full max-w-xl" />
+        </div>
+
+        {/* Cards Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="rounded-2xl border border-zinc-800/60 overflow-hidden"
             >
-            <Link to={`/projects/${project.id}`}>
-              {/* Image Header wrapper using thumbnailUrl fallback */}
-              <div className="relative aspect-[16/10] overflow-hidden bg-gray-950">
-                <img 
-                  src={project.thumbnailUrl} 
-                  alt={project.title}
-                  className="w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover:opacity-70 group-hover:scale-[1.03] transition-all duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111319]/40 to-transparent pointer-events-none" />
-              </div>
+              <Skeleton className="aspect-[16/10] w-full" />
 
-              {/* Card Meta Content */}
-              <div className="p-6 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-bold tracking-widest text-amber-600 uppercase">
-                      {project.category}
-                    </span>
-                    
-                    { (project.liveUrl || project.githubUrl) && (
-                      <a 
-                        href={project.liveUrl ?? project.githubUrl} 
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-gray-500 hover:text-white transition-colors" 
-                        aria-label={`View ${project.title}`}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
+              <div className="p-6 space-y-4">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-6 w-3/4" />
+                <Skeleton className="h-16 w-full" />
 
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors">
-                    {project.title}
-                  </h3>
-                  
-                  {/* Gracefully handling null text descriptions */}
-                  <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-6">
-                    {project.description ?? "No description provided for this architectural asset."}
-                  </p>
-                </div>
-
-                {/* Tags bottom container */}
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-gray-800/40">
-                  {project.tags.map((tag, idx) => (
-                    <span 
-                      key={idx} 
-                      className="px-2 py-0.5 text-[10px] tracking-wider font-semibold rounded bg-gray-900/60 border border-gray-800/60 text-gray-400 uppercase"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="flex gap-2">
+                  <Skeleton className="h-7 w-16 rounded-lg" />
+                  <Skeleton className="h-7 w-20 rounded-lg" />
+                  <Skeleton className="h-7 w-14 rounded-lg" />
                 </div>
               </div>
-              </Link>
             </div>
           ))}
-        </section>
-    </div>
-  )
-}
+        </div>
+      </section>
+    );
+  }
 
-export default FeaturedProjects
+  if (!featuredProjects.length) return null;
+
+  return (
+    <section className="max-w-5xl mx-auto py-24 border-t border-zinc-900">
+      {/* Heading */}
+      <div className="mb-14">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-10 h-px bg-gradient-to-r from-amber-400 to-transparent" />
+
+          <span className="text-xs uppercase tracking-[0.25em] text-amber-400">
+            Portfolio
+          </span>
+        </div>
+
+        <div className="flex items-center gap-3 mb-4">
+          <FolderKanban className="w-6 h-6 text-amber-400" />
+
+          <h2 className="text-3xl font-bold text-white tracking-tight">
+            Featured Projects
+          </h2>
+        </div>
+
+        <p className="max-w-2xl text-zinc-400">
+          A selection of projects that showcase my skills in
+          full-stack development, system design, and building
+          production-ready applications.
+        </p>
+      </div>
+
+      {/* Featured Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredProjects.map((project) => (
+          <ProjectCard
+            key={project.id}
+            project={project}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
