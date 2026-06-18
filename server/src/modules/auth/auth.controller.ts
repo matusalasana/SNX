@@ -12,7 +12,8 @@ const login = async (req: Request, res: Response) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'none',
+      partitioned: true, // future-proofs 3rd party cookie restrictions 
       maxAge: COOKIE_MAX_AGE
     });
 
