@@ -12,7 +12,7 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-const Login = () => {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, isPending } = useLogin();
 
@@ -27,37 +27,33 @@ const Login = () => {
   const onSubmit = (data: LoginFormData) => login(data);
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 py-10">
-
-      {/* ONLY CONTENT - NO BACKGROUND LAYERS */}
+    <main className="min-h-screen flex items-center justify-center px-4 bg-black">
       <div className="w-full max-w-md">
-
-        <div className="rounded-2xl border border-outline-variant bg-surface-container p-6 sm:p-8 shadow-xl">
-
+        {/* CARD */}
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-xl p-6 sm:p-8 shadow-xl">
+          
           {/* HEADER */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-on-surface">
-              Welcome Back
+            <h1 className="text-3xl font-bold text-white">
+              Welcome Back, Sana
             </h1>
-            <p className="mt-2 text-sm text-on-surface-variant">
+
+            <p className="mt-2 text-sm text-zinc-400">
               Sign in to your account
             </p>
           </div>
 
           {/* FORM */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-
+            
             {/* EMAIL */}
             <div>
-              <label className="mb-2 block text-sm text-on-surface">
+              <label className="mb-2 block text-sm text-zinc-300">
                 Email
               </label>
 
               <div className="relative">
-                <Mail
-                  size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-outline"
-                />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
 
                 <input
                   {...register("email")}
@@ -65,20 +61,21 @@ const Login = () => {
                   placeholder="you@example.com"
                   className="
                     w-full rounded-xl
-                    border border-outline-variant
-                    bg-surface
+                    border border-zinc-800
+                    bg-zinc-950/60
                     px-4 py-3 pl-10
-                    text-on-surface
-                    placeholder:text-on-surface-variant
+                    text-white
+                    placeholder:text-zinc-600
                     outline-none
-                    focus:border-primary
-                    focus:ring-2 focus:ring-primary/20
+                    focus:border-amber-500/50
+                    focus:ring-2 focus:ring-amber-500/10
+                    transition
                   "
                 />
               </div>
 
               {errors.email && (
-                <p className="mt-1 text-sm text-error">
+                <p className="mt-1 text-sm text-red-400">
                   {errors.email.message}
                 </p>
               )}
@@ -86,15 +83,12 @@ const Login = () => {
 
             {/* PASSWORD */}
             <div>
-              <label className="mb-2 block text-sm text-on-surface">
+              <label className="mb-2 block text-sm text-zinc-300">
                 Password
               </label>
 
               <div className="relative">
-                <Lock
-                  size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-outline"
-                />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
 
                 <input
                   {...register("password")}
@@ -102,28 +96,33 @@ const Login = () => {
                   placeholder="Enter password"
                   className="
                     w-full rounded-xl
-                    border border-outline-variant
-                    bg-surface
+                    border border-zinc-800
+                    bg-zinc-950/60
                     px-4 py-3 pl-10 pr-10
-                    text-on-surface
-                    placeholder:text-on-surface-variant
+                    text-white
+                    placeholder:text-zinc-600
                     outline-none
-                    focus:border-primary
-                    focus:ring-2 focus:ring-primary/20
+                    focus:border-amber-500/50
+                    focus:ring-2 focus:ring-amber-500/10
+                    transition
                   "
                 />
 
                 <button
                   type="button"
                   onClick={() => setShowPassword((p) => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-outline"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-amber-400 transition"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
 
               {errors.password && (
-                <p className="mt-1 text-sm text-error">
+                <p className="mt-1 text-sm text-red-400">
                   {errors.password.message}
                 </p>
               )}
@@ -135,23 +134,20 @@ const Login = () => {
               disabled={isPending}
               className="
                 w-full rounded-xl
-                bg-primary
+                bg-amber-500
                 py-3
                 font-medium
                 text-black
+                hover:bg-amber-400
                 transition
-                hover:opacity-90
                 disabled:opacity-50
               "
             >
               {isPending ? "Signing in..." : "Sign In"}
             </button>
-
           </form>
         </div>
       </div>
     </main>
   );
-};
-
-export default Login;
+}
