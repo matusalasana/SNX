@@ -1,6 +1,7 @@
 import express from "express";
 import routes from "./routes/index";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { view } from "./middleware/console.middleware"
 import { CLIENT_ORIGIN } from "./configs/env"
 
@@ -30,6 +31,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(cookieParser())
 app.use(view())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: '16kb' }));
