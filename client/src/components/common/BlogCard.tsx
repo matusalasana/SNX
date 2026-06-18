@@ -26,7 +26,7 @@ export default function BlogCard({blog}: BlogProps) {
         <div className="absolute -top-16 -right-16 w-40 h-40 bg-amber-500/10 blur-3xl" />
       </div>
 
-      <Link to={`/blog/${blog.id}`} className="block">
+      <Link to={`/blogs/${blog.id}`} className="block">
         {/* Thumbnail */}
         <div className="relative aspect-[16/9] overflow-hidden bg-zinc-950">
           {blog.thumbnailUrl ? (

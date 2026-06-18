@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import Layout from "../layouts/Layout";
+import AdminLayout from "../layouts/AdminLayout";
 
 // Public pages
 import Home from "../pages/public/Home";
@@ -68,7 +69,7 @@ export const router = createBrowserRouter([
         element: <Blog />,
       },
       {
-        path: "blog/:id",
+        path: "blogs/:id",
         element: <BlogDetails />,
       },
       {
@@ -81,6 +82,7 @@ export const router = createBrowserRouter([
   // Admin section
   {
     path: "/admin",
+    element: <AdminLayout />,
     children: [
       {
         index: true,
@@ -96,10 +98,6 @@ export const router = createBrowserRouter([
       },
       {
         path: "blogs/new",
-        element: <AdminBlogEditor />,
-      },
-      {
-        path: "blogs/:id",
         element: <AdminBlogEditor />,
       },
       {
