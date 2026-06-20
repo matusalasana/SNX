@@ -1,5 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
+
+// Layouts 
 import Layout from "../layouts/Layout";
 import AdminLayout from "../layouts/AdminLayout";
 
