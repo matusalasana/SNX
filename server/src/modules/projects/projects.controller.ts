@@ -28,12 +28,23 @@ const getProjectById = async (req: Request, res: Response) => {
 // CREATE
 const createProject = async (req: Request, res: Response) => {
   try {
-    const newProj = await ProjectsService.createNewProject(
-      req.body
-    );
+    console.log("Before:", req.body.data)
+    console.log("After:", JSON.parse(req.body.data))
+    
+    const data = JSON.parse(req.body.data);
+    const thumbnail = (req.files as any)?.thumbnail?.[0];
+    const images = (req.files as any)?.images || []; 
+    
+    const newProj = 
+      await ProjectsService.createNewProject({
+        data,
+        thumbnail: thumbnail?.buffer,
+        images: images.map((img: any) => img.buffer),
+      });
 
     res.status(201).json(newProj);
   } catch (err: any) {
+    console.log("Error:", err.cause || err.message)
     res.status(500).json({ error: err.message });
   }
 };

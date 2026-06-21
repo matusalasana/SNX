@@ -1,5 +1,6 @@
 import { db } from "../../db";
 import { projects } from "../../db/schema/projects";
+import { projectImages } from "../../db/schema/project_images";
 import { desc, eq } from "drizzle-orm";
 import {
   CreateProjectInput,
@@ -23,23 +24,32 @@ export const ProjectsRepository = {
     return result[0] ?? null;
   },
 
-  create: async (data: CreateProjectInput) => {
-    const result = await db
+  create: async ({
+  data,
+  images,
+}) => {
+  return await db.transaction(async (tx) => {
+    // 1. Insert project
+    const [project] = await tx
       .insert(projects)
-      .values({
-        title: data.title,
-        category: data.category,
-        tags: data.tags,
-        description: data.description,
-        thumbnailUrl: data.thumbnailUrl || null,
-        githubUrl: data.githubUrl || null,
-        liveUrl: data.liveUrl || null,
-        order: data.order ?? 0,
-      })
+      .values(data)
       .returning();
 
-    return result[0];
-  },
+    // 2. Prepare images properly (ARRAY)
+    const imagesToInsert = images.map((img) => ({
+      projectId: project.id,
+      imageUrl: img,
+    }));
+
+    // 3. Insert images
+    if (imagesToInsert.length > 0) {
+      await tx.insert(projectImages).values(imagesToInsert);
+    }
+
+    // 4. Return project
+    return project;
+  });
+},
 
   update: async (id: string, data: UpdateProjectInput) => {
     const result = await db

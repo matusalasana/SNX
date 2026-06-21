@@ -2,7 +2,9 @@ import { ProjectsRepository } from "./projects.repository";
 import {
   CreateProjectInput,
   UpdateProjectInput,
+  createProjectSchema
 } from "./projects.validation";
+import { uploadToCloudinary } from "../../utils/cloudinary"
 
 // GET ALL
 const getAllProjects = async () => {
@@ -19,8 +21,52 @@ const getProjectById = async (id: string) => {
 };
 
 // CREATE
-const createNewProject = async (data: CreateProjectInput) => {
-  return ProjectsRepository.create(data);
+const createNewProject = async ({
+  data,
+  images,
+  thumbnail
+}) => {
+  if(!data) throw new Error("Body is empty");
+  
+  if(!images.length) throw new Error("At least 1 image is required");
+  
+  const validated = createProjectSchema.parse(data)
+  const {
+    title,
+    category,
+    description,
+    tags,
+    githubUrl,
+    liveUrl,
+    order,
+    featured,
+  } = validated;
+  
+  const imagesResult = await Promise.all(
+    images.map((buffer) =>
+      uploadToCloudinary(buffer, "projects/images")
+    )
+  );
+  
+  const thumbnailResult = await uploadToCloudinary(
+    thumbnail,
+    `projects/thumbnails`
+  )
+  
+  return await ProjectsRepository.create({
+    data: {
+      title,
+      category,
+      description,
+      tags,
+      githubUrl,
+      liveUrl,
+      featured,
+      order,
+      thumbnailUrl: thumbnailResult.secure_url,
+    },
+    images: imagesResult.map((img) => img.secure_url),
+  });
 };
 
 // UPDATE

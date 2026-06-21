@@ -1,15 +1,17 @@
-
-import { DATABASE_URL } from "../configs/env";
 import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { Pool } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import { DATABASE_URL } from "../configs/env";
 
 if (!DATABASE_URL) {
   throw new Error("DATABASE_URL is not defined");
 }
 
-const sql = neon(DATABASE_URL!);
+const pool = new Pool({
+  connectionString: DATABASE_URL!,
+});
 
-export const db = drizzle(sql);
+export const db = drizzle(pool);
 
 
 export const connectDB = async () => {
