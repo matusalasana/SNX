@@ -16,12 +16,32 @@ export const ProjectsRepository = {
   },
 
   findById: async (id: string) => {
-    const result = await db
+    const [result] = await db
       .select()
       .from(projects)
       .where(eq(projects.id, id));
-
-    return result[0] ?? null;
+    
+    const images = await db
+      .select()
+      .from(projectImages)
+      .where(eq(projectImages.projectId, id));
+    
+    let imagesUrls;
+    if(images.length>0){
+      imagesUrls = images.map((m) => m.imageUrl)
+    }
+    
+    return {
+      title: result.title,
+      category: result.category,
+      description: result.description,
+      tags: result.tags,
+      githubUrl: result.githubUrl,
+      liveUrl: result.liveUrl,
+      order: result.order,
+      featured: result.featured,
+      images:imagesUrls,
+    }
   },
 
   create: async ({
