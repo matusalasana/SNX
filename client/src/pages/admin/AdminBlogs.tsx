@@ -71,7 +71,7 @@ export default function AdminBlogs() {
 
       {/* MODAL */}
       {modal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 p-4">
           <div className="w-full max-w-xl bg-zinc-900 p-6 rounded-2xl border border-zinc-800">
 
             <h2 className="text-amber-400 text-xl mb-4">
@@ -83,6 +83,7 @@ export default function AdminBlogs() {
               blog={currentBlog}
               onSubmit={submitBlog}
               loading={creating || updating}
+
             />
 
             <button

@@ -1,15 +1,36 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Cash Volt - Personal Finance Management App" />
-    <meta name="theme-color" content="#3b82f6" />
-    <link rel="icon" type="image/svg+xml" href="/Logo.svg" />
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Sana Matusala Portfolio - Full Stack Developer & Personal Projects Showcase"
+    />
+    <meta name="author" content="Sana Matusala" />
+
+    <!-- Mobile / PWA -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f59e0b" />
+
+    <!-- Dark mode support hint -->
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/Logo.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <title>SNX</title>
+
+    <!-- Title -->
+    <title>Sana Matusala | Portfolio</title>
+
+    <!-- Optional: preload fonts (if you use them) -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" /> -->
+
   </head>
-  <body>
+
+  <!-- Tailwind dark mode via class strategy -->
+  <body class="bg-white text-neutral-900 dark:bg-gray-800 dark:text-zinc-100 transition-colors duration-300">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

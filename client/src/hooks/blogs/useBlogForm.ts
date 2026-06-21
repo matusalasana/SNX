@@ -17,9 +17,14 @@ export function useBlogForm() {
 
   const submitBlog = (formData: FormData) => {
     if (modal && typeof modal === "object") {
-      updateBlog({ id: modal.id, data: formData });
+      updateBlog(
+        { id: modal.id, data: formData },
+        { onSuccess: () => closeModal() }
+      );
     } else {
-      createBlog(formData);
+      createBlog(formData,
+        { onSuccess: () => closeModal() }
+      );
     }
   };
 
