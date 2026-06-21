@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Project } from "../../types/projects"
-
+import { Project } from "../../types/projects";
+import { createProjectSchema } from "../../schema/projects"; 
+import { zodResolver } from "@hookform/resolvers/zod";
 interface ProjectFormProps {
   project?: Project;
   mode: "create" | "edit";
@@ -16,7 +17,11 @@ export default function ProjectForm({
   onSubmit,
 }: ProjectFormProps) {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
   const [tagInput, setTagInput] = useState("");
 
   const {
@@ -26,6 +31,7 @@ export default function ProjectForm({
     watch,
     reset,
   } = useForm<Project>({
+    resolver: zodResolver(createProjectSchema),
     defaultValues: {
       title: "",
       category: "",
@@ -37,29 +43,33 @@ export default function ProjectForm({
     },
   });
 
-  useEffect(() => {
-    if (project) {
-      reset({
-        title: project.title,
-        category: project.category,
-        description: project.description || "",
-        tags: project.tags || [],
-        githubUrl: project.githubUrl || "",
-        liveUrl: project.liveUrl || "",
-        featured: project.featured,
-      });
+  const tags = watch("tags") || [];
 
-      if (project.thumbnailUrl) {
-        setPreview(project.thumbnailUrl);
-      }
+  useEffect(() => {
+    if (!project) return;
+
+    reset({
+      title: project.title,
+      category: project.category,
+      description: project.description || "",
+      tags: project.tags || [],
+      githubUrl: project.githubUrl || "",
+      liveUrl: project.liveUrl || "",
+      featured: project.featured,
+    });
+
+    if (project.thumbnailUrl) {
+      setThumbnailPreview(project.thumbnailUrl);
+    }
+
+    if (project.images?.length) {
+      setImagePreviews(project.images);
     }
   }, [project, reset]);
 
-  const tags = watch("tags") || [];
-
+  // ---------------- TAGS ----------------
   const addTag = () => {
     const value = tagInput.trim();
-
     if (!value || tags.includes(value)) return;
 
     setValue("tags", [...tags, value]);
@@ -73,17 +83,30 @@ export default function ProjectForm({
     );
   };
 
-  const handleImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  // ---------------- THUMBNAIL ----------------
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (!file) return;
 
     setThumbnail(file);
-    setPreview(URL.createObjectURL(file));
+    setThumbnailPreview(URL.createObjectURL(file));
   };
 
+  // ---------------- IMAGES ----------------
+  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    setImages((prev) => [...prev, ...files]);
+
+    const urls = files.map((file) =>
+      URL.createObjectURL(file)
+    );
+
+    setImagePreviews((prev) => [...prev, ...urls]);
+  };
+
+  // ---------------- SUBMIT ----------------
   const submit = (data: Project) => {
     const formData = new FormData();
 
@@ -95,11 +118,16 @@ export default function ProjectForm({
       githubUrl: data.githubUrl || null,
       liveUrl: data.liveUrl || null,
       featured: data.featured,
+      order: 2,
     };
 
     if (thumbnail) {
       formData.append("thumbnail", thumbnail);
     }
+
+    images.forEach((img) => {
+      formData.append("images", img);
+    });
 
     formData.append("data", JSON.stringify(payload));
 
@@ -110,60 +138,34 @@ export default function ProjectForm({
     "block text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1";
 
   const input =
-    "w-full rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500";
+    "w-full rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-amber-500";
 
   return (
     <div className="w-full">
-      <form
-        onSubmit={handleSubmit(submit)}
-        className="space-y-6"
-      >
-        {/* Title */}
+      <form onSubmit={handleSubmit(submit)} className="space-y-6">
+
+        {/* TITLE */}
         <div>
           <label className={label}>Title</label>
-
-          <input
-            {...register("title")}
-            placeholder="Project title"
-            className={input}
-          />
+          <input {...register("title")} className={input} />
         </div>
 
-        {/* Description */}
+        {/* DESCRIPTION */}
         <div>
           <label className={label}>Description</label>
-
-          <textarea
-            {...register("description")}
-            rows={5}
-            placeholder="Project description..."
-            className={input}
-          />
+          <textarea {...register("description")} rows={5} className={input} />
         </div>
 
-        {/* Thumbnail */}
+        {/* THUMBNAIL */}
         <div>
           <label className={label}>Thumbnail</label>
 
           <label
             htmlFor="thumbnail"
-            className="
-              flex aspect-video cursor-pointer
-              items-center justify-center
-              overflow-hidden rounded-lg
-              border border-dashed
-              border-neutral-300 dark:border-neutral-700
-              bg-neutral-50 dark:bg-neutral-800
-              hover:border-amber-500
-              transition
-            "
+            className="flex aspect-video cursor-pointer items-center justify-center rounded-lg border border-dashed hover:border-amber-500"
           >
-            {preview ? (
-              <img
-                src={preview}
-                alt="Preview"
-                className="h-full w-full object-cover"
-              />
+            {thumbnailPreview ? (
+              <img src={thumbnailPreview} className="h-full w-full object-cover" />
             ) : (
               <span className="text-sm text-neutral-500">
                 Upload thumbnail
@@ -176,55 +178,65 @@ export default function ProjectForm({
             type="file"
             hidden
             accept="image/*"
-            onChange={handleImageChange}
+            onChange={handleThumbnailChange}
           />
         </div>
 
-        {/* Category */}
+        {/* IMAGES */}
         <div>
-          <label className={label}>Category</label>
+          <label className={label}>Images</label>
+
+          <label
+            htmlFor="images"
+            className="flex aspect-video cursor-pointer items-center justify-center rounded-lg border border-dashed hover:border-amber-500"
+          >
+            <span className="text-sm text-neutral-500">
+              Upload images
+            </span>
+          </label>
 
           <input
-            {...register("category")}
-            placeholder="Web App"
-            className={input}
+            id="images"
+            type="file"
+            hidden
+            multiple
+            accept="image/*"
+            onChange={handleImagesChange}
           />
+
+          {imagePreviews.length > 0 && (
+            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3">
+              {imagePreviews.map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  className="h-32 w-full object-cover rounded-lg border"
+                />
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Links */}
-        <div className="grid gap-4 md:grid-cols-2">
-          <div>
-            <label className={label}>GitHub URL</label>
-
-            <input
-              {...register("githubUrl")}
-              placeholder="https://github.com/..."
-              className={input}
-            />
-          </div>
-
-          <div>
-            <label className={label}>Live URL</label>
-
-            <input
-              {...register("liveUrl")}
-              placeholder="https://..."
-              className={input}
-            />
-          </div>
+        {/* CATEGORY */}
+        <div>
+          <label className={label}>Category</label>
+          <input {...register("category")} className={input} />
         </div>
 
-        {/* Tags */}
+        {/* LINKS */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <input {...register("githubUrl")} placeholder="GitHub URL" className={input} />
+          <input {...register("liveUrl")} placeholder="Live URL" className={input} />
+        </div>
+
+        {/* TAGS */}
         <div>
           <label className={label}>Tags</label>
 
           <div className="flex gap-2">
             <input
               value={tagInput}
-              onChange={(e) =>
-                setTagInput(e.target.value)
-              }
-              placeholder="React"
+              onChange={(e) => setTagInput(e.target.value)}
               className={input}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -234,67 +246,35 @@ export default function ProjectForm({
               }}
             />
 
-            <button
-              type="button"
-              onClick={addTag}
-              className="
-                shrink-0 rounded-md
-                bg-amber-500 px-4
-                text-sm font-medium
-                text-white
-                hover:bg-amber-600
-              "
-            >
+            <button type="button" onClick={addTag} className="bg-amber-500 text-white px-4 rounded">
               Add
             </button>
           </div>
 
-          {tags.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => removeTag(tag)}
-                  className="
-                    rounded-md
-                    border border-amber-500/20
-                    bg-amber-500/10
-                    px-2 py-1
-                    text-xs
-                    text-amber-600 dark:text-amber-400
-                  "
-                >
-                  {tag} ×
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="flex gap-2 mt-2 flex-wrap">
+            {tags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => removeTag(tag)}
+                className="text-xs px-2 py-1 bg-amber-100 text-amber-700 rounded"
+              >
+                {tag} ×
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Featured */}
-        <label className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            {...register("featured")}
-            className="accent-amber-500"
-          />
-
-          <span className="text-sm text-neutral-700 dark:text-neutral-300">
-            Featured Project
-          </span>
+        {/* FEATURED */}
+        <label className="flex gap-2 items-center">
+          <input type="checkbox" {...register("featured")} />
+          Featured Project
         </label>
 
-        {/* Submit */}
+        {/* SUBMIT */}
         <button
           disabled={loading}
-          className="
-            w-full rounded-lg
-            bg-amber-500 py-3
-            text-sm font-medium text-white
-            hover:bg-amber-600
-            disabled:opacity-50
-          "
+          className="w-full bg-amber-500 text-white py-3 rounded"
         >
           {loading
             ? "Saving..."
