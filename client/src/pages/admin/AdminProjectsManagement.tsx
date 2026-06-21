@@ -1,41 +1,38 @@
 import { useState } from "react";
-import { useBlogs } from "../../hooks/blogs/useBlogs";
-import { useDeleteBlog } from "../../hooks/blogs/useDeleteBlog";
+import { Plus } from "lucide-react";
+import { useProjects } from "../../hooks/projects/useProjects";
 import { Skeleton } from "../../utils/skeleton";
 import { FileText, Trash2, Edit3 } from "lucide-react";
-import BlogCard from "../../components/common/BlogCard";
+import ProjectCard from "../../components/admin/ProjectCard";
+import ProjectForm from "../../components/admin/ProjectForm";
+import { Project } from "../../types/projects"
+import { useProjectForm } from "../../hooks/projects/useProjectForm"
 
-type Blog = {
-  id: string;
-  title: string;
-  summary: string;
-  readTime: string;
-  category: string;
-  tags: string[];
-  createdAt: string;
-  featured: boolean;
-  status: "published" | "draft";
-};
+export default function AdminProjects() {
+  const { data: projects = [], isLoading } = useProjects();
 
-export default function AdminBlogs() {
-  const { data: blogs = [], isLoading } = useBlogs();
-  const { mutate: deleteBlog } = useDeleteBlog();
+  const [selected, setSelected] = useState<Project | null>(null);
+  
+  const {
+    modal,
+    openCreate,
+    openEdit,
+    closeModal,
 
-  const [selected, setSelected] = useState<Blog | null>(null);
+    submitProject,
+    deleteProject,
 
-  const sortedBlogs = [...blogs].sort(
-    (a, b) =>
-      Number(b.featured) - Number(a.featured) ||
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+    currentProject,
+    isEditing,
 
-  const featured = sortedBlogs.filter((b) => b.featured);
-  const drafts = sortedBlogs.filter((b) => b.status === "draft");
-  const published = sortedBlogs.filter((b) => b.status === "published");
+    creating,
+    updating,
+  } = useProjectForm();
 
   if (isLoading) {
     return (
       <section className="max-w-6xl mx-auto py-24 px-6">
+      
         <div className="mb-10 space-y-3">
           <Skeleton className="h-6 w-32" />
           <Skeleton className="h-10 w-72" />
@@ -61,118 +58,56 @@ export default function AdminBlogs() {
     <section className="max-w-6xl mx-auto py-24 px-6 text-white">
 
       {/* HEADER */}
-      <div className="mb-12">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-px bg-gradient-to-r from-amber-400 to-transparent" />
-          <span className="text-xs uppercase tracking-[0.25em] text-amber-400">
-            Admin
-          </span>
-        </div>
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="text-3xl font-bold text-amber-400">
+          Projects
+        </h1>
 
-        <div className="flex items-center gap-3 mb-2">
-          <FileText className="w-6 h-6 text-amber-400" />
-          <h1 className="text-3xl font-bold">Blog Management</h1>
-        </div>
-
-        <p className="text-zinc-400">
-          Create, edit, publish, or delete blog posts.
-        </p>
+        <button
+          onClick={openCreate}
+          className="flex items-center gap-2 bg-amber-500 text-black px-4 py-2 rounded-xl"
+        >
+          <Plus className="w-4 h-4" />
+          New Project 
+        </button>
       </div>
-
-      {/* FEATURED */}
-      {featured.length > 0 && (
-        <div className="mb-14">
-          <h2 className="text-sm uppercase tracking-widest text-amber-400 mb-6">
-            Featured Posts
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featured.map((blog) => (
-              <div key={blog.id} className="relative group">
-
-                <BlogCard blog={blog} />
-
-                {/* ACTIONS */}
-                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition">
-                  <button
-                    className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-amber-500/40"
-                    title="Edit"
-                  >
-                    <Edit3 className="w-4 h-4 text-amber-400" />
-                  </button>
-
-                  <button
-                    onClick={() => deleteBlog(blog.id)}
-                    className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-red-500/40"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4 text-red-400" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* PUBLISHED */}
-      <div className="mb-14">
-        <h2 className="text-sm uppercase tracking-widest text-zinc-500 mb-6">
-          Published
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {published.map((blog) => (
-            <div key={blog.id} className="relative group">
-
-              <BlogCard blog={blog} />
-
-              <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition">
-                <button className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-amber-500/40">
-                  <Edit3 className="w-4 h-4 text-amber-400" />
-                </button>
-
-                <button
-                  onClick={() => deleteBlog(blog.id)}
-                  className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-red-500/40"
-                >
-                  <Trash2 className="w-4 h-4 text-red-400" />
-                </button>
-              </div>
-
-            </div>
-          ))}
-        </div>
+      
+      {/* GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((project) => (
+          <ProjectCard
+            key={project.id}
+            project={project}
+            onEdit={openEdit}
+            onDelete={deleteProject}
+          />
+        ))}
       </div>
+        
+      {/* MODAL */}
+      {modal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 p-4">
+          <div className="w-full max-w-xl bg-zinc-900 p-6 rounded-2xl border border-zinc-800">
 
-      {/* DRAFTS */}
-      {drafts.length > 0 && (
-        <div>
-          <h2 className="text-sm uppercase tracking-widest text-zinc-600 mb-6">
-            Drafts
-          </h2>
+            <h2 className="text-amber-400 text-xl mb-4">
+              {modal === "create" ? "Create Project" : "Edit Project"}
+            </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {drafts.map((blog) => (
-              <div key={blog.id} className="relative group opacity-70">
+            <ProjectForm
+              mode={modal === "create" ? "create" : "edit"}
+              blog={currentProject}
+              onSubmit={submitProject}
+              loading={creating || updating}
 
-                <BlogCard blog={blog} />
+            />
 
-                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition">
-                  <button className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-amber-500/40">
-                    <Edit3 className="w-4 h-4 text-amber-400" />
-                  </button>
+            <button
+              onClick={closeModal}
+              className="mt-4 text-zinc-400 text-sm"
+            >
+              Cancel
+            </button>
 
-                  <button
-                    onClick={() => deleteBlog(blog.id)}
-                    className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-red-500/40"
-                  >
-                    <Trash2 className="w-4 h-4 text-red-400" />
-                  </button>
-                </div>
-
-              </div>
-            ))}
           </div>
         </div>
       )}

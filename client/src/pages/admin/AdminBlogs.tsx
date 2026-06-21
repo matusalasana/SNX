@@ -41,31 +41,11 @@ export default function AdminBlogs() {
       {/* GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {blogs.map((blog) => (
-          <div key={blog.id} className="relative group">
-
-            <BlogCard
-              blog={blog}
-              onDelete={() => deleteBlog(blog.id)}
-              onEdit={() => openEdit(blog)}
-            />
-
-            <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100">
-              <button
-                onClick={() => openEdit(blog)}
-                className="p-2 bg-zinc-900 border border-zinc-800 rounded-lg"
-              >
-                <Edit3 className="w-4 h-4 text-amber-400" />
-              </button>
-
-              <button
-                onClick={() => deleteBlog(blog.id)}
-                className="p-2 bg-zinc-900 border border-zinc-800 rounded-lg"
-              >
-                <Trash2 className="w-4 h-4 text-red-400" />
-              </button>
-            </div>
-
-          </div>
+          <BlogCard
+            blog={blog}
+            onDelete={() => deleteBlog(blog.id)}
+            onEdit={() => openEdit(blog)}
+          />
         ))}
       </div>
 
