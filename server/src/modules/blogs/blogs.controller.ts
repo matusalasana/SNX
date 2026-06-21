@@ -71,16 +71,19 @@ const updateBlog = async (
   res: Response
 ) => {
   try {
+    const id = req.params.id as string;
     const blog =
-      await BlogsService.updateBlog(
-        req.params.id as string,
-        req.body
-      );
+      await BlogsService.updateBlog({
+        id,
+        thumbnail_buffer: req.file?.buffer,
+        body: JSON.parse(req.body.data)
+      });
 
     res.status(200).json(blog);
   } catch (err: any) {
+    console.log(err.cause || err.message,)
     res.status(500).json({
-      error: err.message,
+      error: err.cause || err.message,
     });
   }
 };

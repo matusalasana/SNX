@@ -38,7 +38,7 @@ export const BlogsRepository = {
     return result[0] ?? null;
   },
 
-  create: async (data) => {
+  create: async (data: CreateBlogInput) => {
     const result = await db
       .insert(blogs)
       .values(data)
@@ -47,10 +47,10 @@ export const BlogsRepository = {
     return result[0];
   },
 
-  update: async (
-    id: string,
-    data: UpdateBlogInput
-  ) => {
+  update: async ({
+    id,
+    data
+  }) => {
     const result = await db
       .update(blogs)
       .set({

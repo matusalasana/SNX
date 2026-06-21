@@ -39,7 +39,7 @@ router.post(
 router.patch(
   "/:id",
   requireAuth,
-  validate(updateBlogSchema),
+  upload.single("thumbnail"),
   BlogsController.updateBlog
 );
 

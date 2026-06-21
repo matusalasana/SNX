@@ -1,6 +1,6 @@
 import { BlogsRepository } from "./blogs.repository";
 import { uploadToCloudinary } from "../../utils/cloudinary"
-import { createBlogSchema } from "./blogs.validation"
+import { createBlogSchema, updateBlogSchema } from "./blogs.validation"
 
 import {
   CreateBlogInput,
@@ -67,22 +67,87 @@ const createNewBlog = async ({
   });
 };
 
-const updateBlog = async (
-  id: string,
-  data: UpdateBlogInput
-) => {
-  const existing =
-    await BlogsRepository.findById(id);
+const updateBlog = async ({
+  id,
+  body,
+  thumbnail_buffer
+}) => {
+  const validated = updateBlogSchema.parse(body);
+  
+  if(!validated){
+    throw new Error("Body data not found");
+  }
+  
+  const {
+    title,
+    content,
+    summary,
+    readTime,
+    author="Sana Matusala",
+    category,
+    tags,
+    status,
+    featured
+  } = validated;
+  
+  const exists = await BlogsRepository.findById(id);
 
-  if (!existing)
-    throw new Error(
-      "Blog post not found"
-    );
+  if (!exists) throw new Error("Blog post not found");
 
-  return BlogsRepository.update(
+  let uploadResult;
+  if(thumbnail_buffer){
+    uploadResult = await uploadToCloudinary(
+      thumbnail_buffer,
+      `blogs/thumbnails`
+    )
+  }
+  
+  const dataToUpdate = {};
+  
+  if(uploadResult?.secure_url !== undefined){
+    dataToUpdate.thumbnailUrl=uploadResult.secure_url
+  }
+  
+  if(title !== undefined){
+    dataToUpdate.title=title
+  }
+  
+  if(content !== undefined){
+    dataToUpdate.content=content
+  }
+  
+  if(summary !== undefined){
+    dataToUpdate.summary=summary
+  }
+  
+  if(readTime !== undefined){
+    dataToUpdate.readTime=readTime
+  }
+  
+  if(author !== undefined){
+    dataToUpdate.author=author
+  }
+  
+  if(category !== undefined){
+    dataToUpdate.category=category
+  }
+  
+  if(status !== undefined){
+    dataToUpdate.status=status
+  }
+  
+  if(featured !== undefined){
+    dataToUpdate.featured=featured
+  }
+  
+  if(tags.length > 0){
+    dataToUpdate.tags=tags
+  }
+  
+  return BlogsRepository.update({
     id,
-    data
-  );
+    data: dataToUpdate
+  });
 };
 
 const deleteBlog = async (

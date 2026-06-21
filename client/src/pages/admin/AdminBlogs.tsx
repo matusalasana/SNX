@@ -1,38 +1,24 @@
-import { useState } from "react";
 import { Plus, Edit3, Trash2 } from "lucide-react";
-
 import { useBlogs } from "../../hooks/blogs/useBlogs";
-import { useCreateBlog } from "../../hooks/blogs/useCreateBlog";
-import { useUpdateBlog } from "../../hooks/blogs/useUpdateBlog";
-import { useDeleteBlog } from "../../hooks/blogs/useDeleteBlog";
-
 import BlogCard from "../../components/admin/BlogCard";
 import BlogForm from "../../components/admin/BlogForm";
-
-type Blog = {
-  id: string;
-} & any;
+import { useBlogForm } from "../../hooks/blogs/useBlogForm";
 
 export default function AdminBlogs() {
   const { data: blogs = [] } = useBlogs();
 
-  const { mutate: createBlog, isPending: creating } = useCreateBlog();
-  const { mutate: updateBlog, isPending: updating } = useUpdateBlog();
-  const { mutate: deleteBlog } = useDeleteBlog();
-
-  const [open, setOpen] = useState(false);
-  const [edit, setEdit] = useState<Blog | null>(null);
-
-  const handleSubmit = (data: any) => {
-    if (edit) {
-      updateBlog({ id: edit.id, data });
-    } else {
-      createBlog(data);
-    }
-
-    setOpen(false);
-    setEdit(null);
-  };
+  const {
+    modal,
+    openCreate,
+    openEdit,
+    closeModal,
+    submitBlog,
+    deleteBlog,
+    currentBlog,
+    isEditing,
+    creating,
+    updating,
+  } = useBlogForm();
 
   return (
     <section className="max-w-6xl mx-auto py-24 px-6 text-white">
@@ -44,10 +30,7 @@ export default function AdminBlogs() {
         </h1>
 
         <button
-          onClick={() => {
-            setEdit(null);
-            setOpen(true);
-          }}
+          onClick={openCreate}
           className="flex items-center gap-2 bg-amber-500 text-black px-4 py-2 rounded-xl"
         >
           <Plus className="w-4 h-4" />
@@ -57,20 +40,18 @@ export default function AdminBlogs() {
 
       {/* GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {blogs.map((blog: Blog) => (
+        {blogs.map((blog) => (
           <div key={blog.id} className="relative group">
 
-            <BlogCard 
+            <BlogCard
               blog={blog}
               onDelete={() => deleteBlog(blog.id)}
+              onEdit={() => openEdit(blog)}
             />
 
             <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100">
               <button
-                onClick={() => {
-                  setEdit(blog);
-                  setOpen(true);
-                }}
+                onClick={() => openEdit(blog)}
                 className="p-2 bg-zinc-900 border border-zinc-800 rounded-lg"
               >
                 <Edit3 className="w-4 h-4 text-amber-400" />
@@ -89,22 +70,23 @@ export default function AdminBlogs() {
       </div>
 
       {/* MODAL */}
-      {open && (
+      {modal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4">
           <div className="w-full max-w-xl bg-zinc-900 p-6 rounded-2xl border border-zinc-800">
 
             <h2 className="text-amber-400 text-xl mb-4">
-              {edit ? "Edit Blog" : "Create Blog"}
+              {modal === "create" ? "Create Blog" : "Edit Blog"}
             </h2>
 
             <BlogForm
-              initialData={edit || undefined}
-              onSubmit={handleSubmit}
+              mode={modal === "create" ? "create" : "edit"}
+              blog={currentBlog}
+              onSubmit={submitBlog}
               loading={creating || updating}
             />
 
             <button
-              onClick={() => setOpen(false)}
+              onClick={closeModal}
               className="mt-4 text-zinc-400 text-sm"
             >
               Cancel

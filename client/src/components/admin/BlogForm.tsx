@@ -1,36 +1,67 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createBlogSchema, type BlogFormData } from "../../schema/blogs";
-import { useCreateBlog } from "../../hooks/blogs/useCreateBlog";
 
-const BlogForm = () => {
+interface BlogFormProps {
+  blog?: Blog;
+  mode: "edit" | "create";
+  loading?: boolean;
+  onSubmit: (formData: FormData) => void;
+}
+
+const BlogForm = ({
+  blog,
+  mode,
+  loading = false,
+  onSubmit,
+}: BlogFormProps) => {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [tagInput, setTagInput] = useState("");
-  const { mutate: createBlog, isPending } = useCreateBlog();
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<BlogFormData>({
     resolver: zodResolver(createBlogSchema),
     defaultValues: {
       title: "",
-      content: "",
       summary: "",
-      thumbnailUrl: "",
-      status: "draft",
-      readTime: "",
+      content: "",
       author: "",
-      tags: [],
       category: "",
+      status: "draft",
+      tags: [],
       featured: false,
+      readTime: "",
     },
   });
+
+  useEffect(() => {
+    if (mode === "edit" && blog) {
+      reset({
+        title: blog.title,
+        summary: blog.summary,
+        thumbnail: blog.thumbnail,
+        content: blog.content,
+        author: blog.author,
+        category: blog.category,
+        status: blog.status,
+        tags: blog.tags || [],
+        featured: blog.featured,
+        readTime: blog.readTime,
+      });
+
+      if (blog.thumbnail) {
+        setPreview(blog.thumbnail);
+      }
+    }
+  }, [mode, blog, reset]);
 
   const tags = watch("tags") || [];
 
@@ -54,7 +85,7 @@ const BlogForm = () => {
     setValue("tags", tags.filter((t) => t !== tag));
   };
 
-  const onSubmit = (data: BlogFormData) => {
+  const handleFormSubmit = (data: BlogFormData) => {
     try {
       const formData = new FormData();
       const payload = {
@@ -77,7 +108,7 @@ const BlogForm = () => {
       // everything else goes as ONE JSON blob
       formData.append("data", JSON.stringify(payload));
     
-      createBlog(formData);
+      onSubmit(formData);
     
     } catch (error) {
       console.error(error);
@@ -91,13 +122,15 @@ const BlogForm = () => {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8 box-border font-sans">
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="flex flex-col gap-8 lg:flex-row lg:items-start"
       >
         {/* Left Column: Primary Content */}
         <div className="w-full flex-1 space-y-6 min-w-0">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-neutral-900">Create Post</h2>
+            <h2 className="text-2xl font-bold tracking-tight text-neutral-900">
+              {mode === "edit" ? "Edit Post" : "Create Post"}
+            </h2>
             <p className="text-sm text-neutral-500 mt-1">Draft and details for your next publication.</p>
           </div>
 
@@ -243,10 +276,14 @@ const BlogForm = () => {
 
           {/* Submit */}
           <button
-            disabled={isPending}
+            disabled={loading}
             className="w-full rounded-md bg-amber-500 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-600 active:bg-amber-700 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed touch-manipulation shadow-sm"
           >
-            {isPending ? "Publishing..." : "Publish Post"}
+            {loading
+              ? "Saving..."
+              : mode === "edit"
+              ? "Update Post"
+              : "Publish Post"}
           </button>
         </div>
       </form>
