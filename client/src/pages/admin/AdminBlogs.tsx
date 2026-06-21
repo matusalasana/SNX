@@ -6,7 +6,7 @@ import { useCreateBlog } from "../../hooks/blogs/useCreateBlog";
 import { useUpdateBlog } from "../../hooks/blogs/useUpdateBlog";
 import { useDeleteBlog } from "../../hooks/blogs/useDeleteBlog";
 
-import BlogCard from "../../components/common/BlogCard";
+import BlogCard from "../../components/admin/BlogCard";
 import BlogForm from "../../components/admin/BlogForm";
 
 type Blog = {
@@ -60,7 +60,10 @@ export default function AdminBlogs() {
         {blogs.map((blog: Blog) => (
           <div key={blog.id} className="relative group">
 
-            <BlogCard blog={blog} />
+            <BlogCard 
+              blog={blog}
+              onDelete={() => deleteBlog(blog.id)}
+            />
 
             <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100">
               <button

@@ -52,11 +52,12 @@ const createBlog = async (
   try {
     const blog =
       await BlogsService.createNewBlog({
-        thumbnail_buffer: req.file.buffer,
+        thumbnail_buffer: req.file?.buffer,
         body: JSON.parse(req.body.data)
       });
 
     res.status(201).json(blog);
+    console.log(blog)
   } catch (err: any) {
     console.log(err.cause || err.message,)
     res.status(500).json({

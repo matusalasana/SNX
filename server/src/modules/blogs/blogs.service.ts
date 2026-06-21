@@ -41,8 +41,10 @@ const createNewBlog = async ({
     readTime,
     author="Sana Matusala",
     category,
+    tags,
+    status,
     featured
-  } = body;
+  } = validated;
   
   if(!thumbnail_buffer) throw new Error("Blog thumbnail is required");
   
@@ -55,10 +57,12 @@ const createNewBlog = async ({
     title,
     content,
     summary,
+    status,
     readTime,
     author,
     category,
     featured,
+    tags,
     thumbnailUrl: uploadResult.secure_url
   });
 };
