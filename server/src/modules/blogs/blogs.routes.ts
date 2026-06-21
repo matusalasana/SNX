@@ -6,6 +6,9 @@ from "./blogs.controller";
 import { requireAuth }
 from "../../middleware/auth.middleware";
 
+import { upload }
+from "../../middleware/upload.middleware";
+
 import { validate }
 from "../../middleware/validation.middleware";
 
@@ -29,7 +32,7 @@ router.get(
 router.post(
   "/",
   requireAuth,
-  validate(createBlogSchema),
+  upload.single("thumbnail"),
   BlogsController.createBlog
 );
 

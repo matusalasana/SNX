@@ -38,26 +38,10 @@ export const BlogsRepository = {
     return result[0] ?? null;
   },
 
-  create: async (
-    data: CreateBlogInput
-  ) => {
+  create: async (data) => {
     const result = await db
       .insert(blogs)
-      .values({
-        title: data.title,
-        content: data.content,
-        summary: data.summary,
-        thumbnailUrl:
-          data.thumbnailUrl || null,
-        status: data.status,
-        readTime: data.readTime,
-        author: data.author,
-        tags: data.tags,
-        category:
-          data.category || null,
-        featured:
-          data.featured ?? false,
-      })
+      .values(data)
       .returning();
 
     return result[0];

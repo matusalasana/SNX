@@ -1,4 +1,6 @@
 import { BlogsRepository } from "./blogs.repository";
+import { uploadToCloudinary } from "../../utils/cloudinary"
+import { createBlogSchema } from "./blogs.validation"
 
 import {
   CreateBlogInput,
@@ -27,10 +29,38 @@ const getBlogById = async (
   return blog;
 };
 
-const createNewBlog = async (
-  data: CreateBlogInput
-) => {
-  return BlogsRepository.create(data);
+const createNewBlog = async ({
+  thumbnail_buffer,
+  body
+}) => {
+  const validated = createBlogSchema.parse(body);
+  const {
+    title,
+    content,
+    summary,
+    readTime,
+    author="Sana Matusala",
+    category,
+    featured
+  } = body;
+  
+  if(!thumbnail_buffer) throw new Error("Blog thumbnail is required");
+  
+  const uploadResult = await uploadToCloudinary(
+    thumbnail_buffer,
+    `blogs/thumbnails`
+  )
+  
+  return await BlogsRepository.create({
+    title,
+    content,
+    summary,
+    readTime,
+    author,
+    category,
+    featured,
+    thumbnailUrl: uploadResult.secure_url
+  });
 };
 
 const updateBlog = async (

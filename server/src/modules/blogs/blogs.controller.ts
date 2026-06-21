@@ -51,14 +51,16 @@ const createBlog = async (
 ) => {
   try {
     const blog =
-      await BlogsService.createNewBlog(
-        req.body
-      );
+      await BlogsService.createNewBlog({
+        thumbnail_buffer: req.file.buffer,
+        body: JSON.parse(req.body.data)
+      });
 
     res.status(201).json(blog);
   } catch (err: any) {
+    console.log(err.cause || err.message,)
     res.status(500).json({
-      error: err.message,
+      error: err.cause || err.message,
     });
   }
 };
