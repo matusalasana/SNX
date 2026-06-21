@@ -17,7 +17,7 @@ router.post(
   requireAuth,
   upload.fields([
     { name: "thumbnail", maxCount: 1 },
-    { name: "images", maxCount: 5 },
+    { name: "images", maxCount: 10 },
   ]),
   ProjectsController.createProject
 );
