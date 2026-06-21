@@ -95,7 +95,7 @@ export default function AdminProjects() {
 
             <ProjectForm
               mode={modal === "create" ? "create" : "edit"}
-              blog={currentProject}
+              project={currentProject}
               onSubmit={submitProject}
               loading={creating || updating}
 

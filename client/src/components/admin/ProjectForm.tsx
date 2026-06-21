@@ -48,15 +48,7 @@ export default function ProjectForm({
   useEffect(() => {
     if (!project) return;
 
-    reset({
-      title: project.title,
-      category: project.category,
-      description: project.description || "",
-      tags: project.tags || [],
-      githubUrl: project.githubUrl || "",
-      liveUrl: project.liveUrl || "",
-      featured: project.featured,
-    });
+    reset(project);
 
     if (project.thumbnailUrl) {
       setThumbnailPreview(project.thumbnailUrl);
@@ -118,7 +110,6 @@ export default function ProjectForm({
       githubUrl: data.githubUrl || null,
       liveUrl: data.liveUrl || null,
       featured: data.featured,
-      order: 2,
     };
 
     if (thumbnail) {
