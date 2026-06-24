@@ -3,16 +3,6 @@
 /* Map Tailwind v4 'dark:' prefixes to the root '.dark' class */
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-}
-
-.dark {
-  --background: #111827; /* gray-900 style */
-  --foreground: #f9fafb;
-}
-
 html {
   scroll-behavior: smooth;
 }

@@ -14,19 +14,18 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/80">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-
         {/* Logo */}
         <NavLink
           to="/"
-          className="text-lg font-semibold tracking-tight text-gray-900 dark:text-gray-100"
+          className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100"
         >
           Sana <span className="text-amber-500">M.</span>
         </NavLink>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -35,20 +34,16 @@ export default function Navbar() {
                 `relative text-sm font-medium transition-colors duration-300 ${
                   isActive
                     ? "text-amber-500"
-                    : "text-gray-600 dark:text-gray-300 hover:text-amber-500"
+                    : "text-zinc-600 hover:text-amber-500 dark:text-zinc-300"
                 }`
               }
             >
               {({ isActive }) => (
                 <span className="relative">
                   {item.label}
-
-                  {/* underline */}
                   <span
-                    className={`absolute -bottom-1 left-0 h-[2px] w-full transition-transform duration-300 origin-left ${
-                      isActive
-                        ? "scale-x-100 bg-amber-500"
-                        : "scale-x-0 bg-amber-500"
+                    className={`absolute -bottom-1 left-0 h-[2px] w-full origin-left transition-transform duration-300 ${
+                      isActive ? "scale-x-100 bg-amber-500" : "scale-x-0 bg-amber-500"
                     }`}
                   />
                 </span>
@@ -58,18 +53,11 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop Actions */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden items-center gap-3 md:flex">
           <ThemeToggle />
-
           <NavLink
             to="/contact"
-            className="
-              rounded-xl px-4 py-2 text-sm font-medium
-              bg-gray-900 text-white
-              dark:bg-gray-100 dark:text-gray-900
-              hover:bg-amber-500 hover:text-black
-              transition-all
-            "
+            className="rounded-xl bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-amber-500 hover:text-black dark:bg-zinc-100 dark:text-zinc-900"
           >
             Let’s Talk
           </NavLink>
@@ -78,7 +66,7 @@ export default function Navbar() {
         {/* Mobile Toggle */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden rounded-lg border border-gray-200 dark:border-gray-800 p-2 text-gray-700 dark:text-gray-300"
+          className="rounded-lg border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-800 dark:text-zinc-300 md:hidden"
         >
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -86,9 +74,8 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-          <div className="flex flex-col px-6 py-5 space-y-4">
-
+        <div className="border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900 md:hidden">
+          <div className="flex flex-col space-y-4 px-6 py-5">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
@@ -98,7 +85,7 @@ export default function Navbar() {
                   `text-sm font-medium transition-colors ${
                     isActive
                       ? "text-amber-500"
-                      : "text-gray-600 dark:text-gray-300 hover:text-amber-500"
+                      : "text-zinc-600 hover:text-amber-500 dark:text-zinc-300"
                   }`
                 }
               >
@@ -106,27 +93,18 @@ export default function Navbar() {
               </NavLink>
             ))}
 
-            {/* CTA */}
             <NavLink
               to="/contact"
               onClick={() => setOpen(false)}
-              className="
-                mt-2 rounded-xl px-4 py-2 text-center text-sm font-medium
-                bg-gray-900 text-white
-                dark:bg-gray-100 dark:text-gray-900
-                hover:bg-amber-500 hover:text-black
-                transition-all
-              "
+              className="mt-2 rounded-xl bg-zinc-900 px-4 py-2 text-center text-sm font-medium text-white transition-all hover:bg-amber-500 hover:text-black dark:bg-zinc-100 dark:text-zinc-900"
             >
               Let’s Talk
             </NavLink>
 
-            {/* Theme */}
-            <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800">
-              <span className="text-sm text-gray-500">Theme</span>
+            <div className="flex items-center justify-between border-t border-zinc-200 pt-4 dark:border-zinc-800">
+              <span className="text-sm text-zinc-500">Theme</span>
               <ThemeToggle />
             </div>
-
           </div>
         </div>
       )}
