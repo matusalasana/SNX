@@ -24,13 +24,26 @@
     <!-- Title -->
     <title>Sana Matusala | Portfolio</title>
 
-    <!-- Optional: preload fonts (if you use them) -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" /> -->
+    <script>
+      (function () {
+        try {
+          const theme = localStorage.getItem("theme");
+    
+          if (
+            theme === "dark" ||
+            (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+          ) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
 
   </head>
 
-  <!-- Tailwind dark mode via class strategy -->
-  <body class="bg-white text-neutral-900 dark:bg-gray-800 dark:text-zinc-100 transition-colors duration-300">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

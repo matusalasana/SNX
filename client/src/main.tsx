@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import './index.css'
 import { router } from "./routes/AppRoutes";
 import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "./context/ThemeContext"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,11 +19,13 @@ const queryClient = new QueryClient({
 });
 
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <RouterProvider router={router} />
+        <Toaster />
+      </ThemeProvider>
     </QueryClientProvider>
-  </StrictMode>,
-)
+  </StrictMode>
+);
