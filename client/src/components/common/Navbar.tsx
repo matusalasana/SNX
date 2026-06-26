@@ -8,6 +8,7 @@ const navItems = [
   { label: "Projects", to: "/projects" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
+  { label: "About", to: "/about" },
 ];
 
 export default function Navbar() {
