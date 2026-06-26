@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useBlogs } from "../../hooks/blogs/useBlogs";
 import BlogCard from "../../components/common/BlogCard";
 import { Skeleton } from "../../utils/skeleton";
@@ -6,101 +7,64 @@ import { BookOpen } from "lucide-react";
 export default function BlogsPage() {
   const { data: blogs = [], isLoading } = useBlogs();
 
-  const publishedBlogs = blogs
-    .filter((b) => b.status === "published")
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() -
-        new Date(a.createdAt).getTime()
-    );
+  const { featured, regular } = useMemo(() => {
+    const published = blogs
+      .filter((b) => b.status === "published")
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  const featured = publishedBlogs.filter((b) => b.featured);
-  const regular = publishedBlogs.filter((b) => !b.featured);
+    return {
+      featured: published.filter((b) => b.featured),
+      regular: published.filter((b) => !b.featured),
+    };
+  }, [blogs]);
 
-  if (isLoading) {
-    return (
-      <section className="max-w-6xl mx-auto py-24 px-6">
-        {/* Header skeleton */}
-        <div className="mb-14 space-y-3">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-10 w-72" />
-          <Skeleton className="h-4 w-96 max-w-full" />
-        </div>
-
-        {/* Grid skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-zinc-800/60 overflow-hidden"
-            >
-              <Skeleton className="aspect-[16/9] w-full" />
-              <div className="p-6 space-y-3">
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-5/6" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    );
-  }
+  if (isLoading) return <BlogsSkeleton />;
 
   return (
-    <section className="max-w-6xl mx-auto py-24 px-6">
-      {/* Header */}
-      <div className="mb-14">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-px bg-gradient-to-r from-amber-400 to-transparent" />
-
-          <span className="text-xs uppercase tracking-[0.25em] text-amber-400">
-            Writing
-          </span>
+    <section className="mx-auto max-w-6xl px-6 py-24 text-zinc-200 dark:bg-zinc-900">
+      <header className="mb-14">
+        <div className="mb-3 flex items-center gap-3">
+          <div className="h-px w-10 bg-gradient-to-r from-amber-500 to-transparent" />
+          <span className="text-xs font-medium uppercase tracking-[0.25em] text-amber-500">Writing</span>
         </div>
-
-        <div className="flex items-center gap-3 mb-4">
-          <BookOpen className="w-6 h-6 text-amber-400" />
-
-          <h1 className="text-3xl font-bold text-white">
-            All Articles
-          </h1>
+        <div className="mb-4 flex items-center gap-3">
+          <BookOpen className="h-6 w-6 text-amber-500" />
+          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">All Articles</h1>
         </div>
-
-        <p className="text-zinc-400 max-w-2xl">
-          Thoughts, engineering notes, tutorials, and lessons learned
-          while building full-stack applications.
+        <p className="max-w-2xl text-zinc-600 dark:text-zinc-400">
+          Thoughts, engineering notes, tutorials, and lessons learned while building full-stack applications.
         </p>
-      </div>
+      </header>
 
-      {/* Featured Section */}
-      {featured.length > 0 && (
-        <div className="mb-16">
-          <h2 className="text-sm uppercase tracking-widest text-amber-400 mb-6">
-            Featured Posts
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {featured.map((blog) => (
-              <BlogCard key={blog.id} blog={blog} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Regular Posts */}
-      <div>
-        <h2 className="text-sm uppercase tracking-widest text-zinc-500 mb-6">
-          Latest Posts
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {regular.map((blog) => (
-            <BlogCard key={blog.id} blog={blog} />
-          ))}
-        </div>
-      </div>
+      {featured.length > 0 && <BlogSection title="Featured Posts" items={featured} />}
+      {regular.length > 0 && <BlogSection title="Latest Posts" items={regular} isFeatured={false} />}
     </section>
   );
 }
+
+const BlogSection = ({ title, items, isFeatured = true }: { title: string; items: any[]; isFeatured?: boolean }) => (
+  <div className="mb-16">
+    <h2 className={`mb-6 text-sm font-medium uppercase tracking-widest ${isFeatured ? "text-amber-500" : "text-zinc-500 dark:text-zinc-400"}`}>
+      {title}
+    </h2>
+    <div className={`grid grid-cols-1 gap-6 ${isFeatured ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}>
+      {items.map((blog) => (
+        <BlogCard key={blog.id} blog={blog} />
+      ))}
+    </div>
+  </div>
+);
+
+const BlogsSkeleton = () => (
+  <section className="mx-auto max-w-6xl px-6 py-24">
+    <div className="mb-14 space-y-3">
+      <Skeleton className="h-4 w-24" />
+      <Skeleton className="h-10 w-72" />
+    </div>
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <Skeleton key={i} className="h-64 w-full rounded-2xl" />
+      ))}
+    </div>
+  </section>
+);
