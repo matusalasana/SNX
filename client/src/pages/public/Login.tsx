@@ -17,8 +17,9 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, isPending } = useLogin();
-  const { data: user, isLoading } = useAuth();
+  const { data: user } = useAuth();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -28,7 +29,7 @@ export default function Login() {
   });
 
   const onSubmit = (data: LoginFormData) => login(data);
-  
+
   useEffect(() => {
     if (user) {
       navigate("/admin", { replace: true });
@@ -36,18 +37,18 @@ export default function Login() {
   }, [user, navigate]);
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 bg-black">
+    <main className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 dark:bg-zinc-950">
       <div className="w-full max-w-md">
         {/* CARD */}
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-xl p-6 sm:p-8 shadow-xl">
+        <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition-colors dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
           
           {/* HEADER */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white">
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
               Welcome Back, Sana
             </h1>
 
-            <p className="mt-2 text-sm text-zinc-400">
+            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
               Sign in to your account
             </p>
           </div>
@@ -57,12 +58,12 @@ export default function Login() {
             
             {/* EMAIL */}
             <div>
-              <label className="mb-2 block text-sm text-zinc-300">
+              <label className="mb-2 block text-sm text-zinc-700 dark:text-zinc-300">
                 Email
               </label>
 
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
 
                 <input
                   {...register("email")}
@@ -70,21 +71,24 @@ export default function Login() {
                   placeholder="you@example.com"
                   className="
                     w-full rounded-xl
-                    border border-zinc-800
-                    bg-zinc-950/60
+                    border border-zinc-200
+                    bg-white
                     px-4 py-3 pl-10
-                    text-white
-                    placeholder:text-zinc-600
+                    text-zinc-900
+                    placeholder:text-zinc-400
                     outline-none
-                    focus:border-amber-500/50
-                    focus:ring-2 focus:ring-amber-500/10
                     transition
+                    focus:border-amber-400
+                    focus:ring-2 focus:ring-amber-400/20
+                    dark:border-zinc-800
+                    dark:bg-zinc-950
+                    dark:text-white
                   "
                 />
               </div>
 
               {errors.email && (
-                <p className="mt-1 text-sm text-red-400">
+                <p className="mt-1 text-sm text-red-500">
                   {errors.email.message}
                 </p>
               )}
@@ -92,12 +96,12 @@ export default function Login() {
 
             {/* PASSWORD */}
             <div>
-              <label className="mb-2 block text-sm text-zinc-300">
+              <label className="mb-2 block text-sm text-zinc-700 dark:text-zinc-300">
                 Password
               </label>
 
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
 
                 <input
                   {...register("password")}
@@ -105,33 +109,36 @@ export default function Login() {
                   placeholder="Enter password"
                   className="
                     w-full rounded-xl
-                    border border-zinc-800
-                    bg-zinc-950/60
+                    border border-zinc-200
+                    bg-white
                     px-4 py-3 pl-10 pr-10
-                    text-white
-                    placeholder:text-zinc-600
+                    text-zinc-900
+                    placeholder:text-zinc-400
                     outline-none
-                    focus:border-amber-500/50
-                    focus:ring-2 focus:ring-amber-500/10
                     transition
+                    focus:border-amber-400
+                    focus:ring-2 focus:ring-amber-400/20
+                    dark:border-zinc-800
+                    dark:bg-zinc-950
+                    dark:text-white
                   "
                 />
 
                 <button
                   type="button"
                   onClick={() => setShowPassword((p) => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-amber-400 transition"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 transition hover:text-amber-500"
                 >
                   {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
+                    <EyeOff className="h-4 w-4" />
                   ) : (
-                    <Eye className="w-4 h-4" />
+                    <Eye className="h-4 w-4" />
                   )}
                 </button>
               </div>
 
               {errors.password && (
-                <p className="mt-1 text-sm text-red-400">
+                <p className="mt-1 text-sm text-red-500">
                   {errors.password.message}
                 </p>
               )}
@@ -145,10 +152,9 @@ export default function Login() {
                 w-full rounded-xl
                 bg-amber-500
                 py-3
-                font-medium
-                text-black
+                font-medium text-black
+                transition-colors
                 hover:bg-amber-400
-                transition
                 disabled:opacity-50
               "
             >
