@@ -19,7 +19,7 @@ export default function Projects() {
   if (isLoading) return <ProjectsSkeleton />;
 
   return (
-    <section className="mx-auto max-w-6xl border-t border-zinc-200 py-24 px-6 dark:border-zinc-800 bg-white dark:bg-zinc-950">
+    <section className="mx-auto max-w-6xl border-t border-zinc-200 py-24 px-6 dark:border-zinc-800 bg-white dark:bg-zinc-900">
       <header className="mb-14">
         <div className="mb-3 flex items-center gap-3">
           <div className="h-px w-10 bg-gradient-to-r from-amber-500 to-transparent" />
