@@ -1,154 +1,97 @@
-import { useParams, Link } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useBlogs } from "../../hooks/blogs/useBlogs";
-import {
-  Clock,
-  Calendar,
-  ArrowLeft,
-  Star,
-} from "lucide-react";
+import { Clock, Calendar, ArrowLeft, Star } from "lucide-react";
 import { Skeleton } from "../../utils/skeleton";
 
 export default function BlogDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { data: blogs = [], isLoading } = useBlogs();
 
-  const blog = blogs.find((b) => b.id === id);
+  // Scroll to top on load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
-  if (isLoading) {
-    return (
-      <div className="max-w-3xl mx-auto py-24 px-6 space-y-6">
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-10 w-full" />
-        <Skeleton className="h-6 w-3/4" />
-        <Skeleton className="aspect-[16/9] w-full rounded-2xl" />
-        <Skeleton className="h-40 w-full" />
-      </div>
-    );
-  }
+  const blog = useMemo(() => blogs.find((b) => b.id === id), [blogs, id]);
+
+  if (isLoading) return <BlogDetailsSkeleton />;
 
   if (!blog) {
     return (
-      <div className="max-w-3xl mx-auto py-24 px-6 text-center">
-        <p className="text-zinc-400">Blog post not found.</p>
-
-        <Link
-          to="/blog"
-          className="inline-flex items-center gap-2 mt-4 text-amber-400 hover:text-amber-300"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to blog
-        </Link>
+      <div className="mx-auto max-w-3xl px-6 py-24 text-center">
+        <p className="text-zinc-600 dark:text-zinc-400">Blog post not found.</p>
+        <button onClick={() => navigate(-1)} className="mt-4 inline-flex items-center gap-2 text-amber-500 hover:text-amber-600">
+          <ArrowLeft className="h-4 w-4" /> Go back
+        </button>
       </div>
     );
   }
 
   return (
-    <article className="max-w-3xl mx-auto py-24 px-6">
-      {/* Back */}
-      <Link
-        to="/blog"
-        className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-amber-400 transition mb-10"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to articles
+    <article className="mx-auto max-w-3xl px-6 py-24 dark:bg-zinc-900 dark:text-zinc-200">
+      {/* Back Link */}
+      <Link to="/blog" className="mb-10 inline-flex items-center gap-2 text-sm text-zinc-500 transition hover:text-amber-500 dark:text-zinc-400">
+        <ArrowLeft className="h-4 w-4" /> Back to articles
       </Link>
 
       {/* Header */}
-      <header className="space-y-4 mb-10">
-        {/* Meta */}
-        <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500">
-          {blog.category && (
-            <span className="text-amber-400 uppercase tracking-wider">
-              {blog.category}
-            </span>
-          )}
-
+      <header className="mb-10 space-y-4">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+          {blog.category && <span className="uppercase tracking-wider text-amber-500">{blog.category}</span>}
           {blog.featured && (
-            <span className="flex items-center gap-1 text-amber-400">
-              <Star className="w-3 h-3 fill-amber-400" />
-              Featured
+            <span className="flex items-center gap-1 text-amber-500">
+              <Star className="h-3 w-3 fill-amber-500" /> Featured
             </span>
           )}
-
-          <span className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            {blog.readTime}
-          </span>
-
-          <span className="flex items-center gap-1">
-            <Calendar className="w-3 h-3" />
-            {new Date(blog.createdAt).toLocaleDateString()}
-          </span>
-
-          <span>•</span>
-
+          <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {blog.readTime}</span>
+          <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {new Date(blog.createdAt).toLocaleDateString()}</span>
           <span>By {blog.author}</span>
         </div>
 
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+        <h1 className="leading-tight text-3xl font-bold text-zinc-900 dark:text-white md:text-5xl">
           {blog.title}
         </h1>
-
-        {/* Summary */}
-        <p className="text-zinc-400 text-lg leading-relaxed">
-          {blog.summary}
-        </p>
+        <p className="text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">{blog.summary}</p>
       </header>
 
       {/* Thumbnail */}
       {blog.thumbnailUrl && (
-        <div className="mb-10 rounded-2xl overflow-hidden border border-zinc-800/60">
-          <img
-            src={blog.thumbnailUrl}
-            alt={blog.title}
-            className="w-full object-cover"
-          />
-        </div>
+        <img src={blog.thumbnailUrl} alt={blog.title} className="mb-10 w-full rounded-2xl border border-zinc-200 dark:border-zinc-800" />
       )}
 
-      {/* Content */}
-      <div className="prose prose-invert prose-zinc max-w-none">
-        <div className="text-zinc-300 leading-relaxed whitespace-pre-line">
-          {blog.content}
-        </div>
+      {/* Content - Replace the div with a Markdown renderer for better experience */}
+      <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-amber-500">
+        {blog.content}
       </div>
 
       {/* Tags */}
       <div className="mt-10 flex flex-wrap gap-2">
         {blog.tags.map((tag) => (
-          <span
-            key={tag}
-            className="
-              text-xs px-3 py-1
-              rounded-lg
-              border border-zinc-800
-              bg-zinc-900/40
-              text-zinc-400
-            "
-          >
+          <span key={tag} className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
             {tag}
           </span>
         ))}
       </div>
 
       {/* Footer CTA */}
-      <div className="mt-16 p-6 rounded-2xl border border-zinc-800 bg-zinc-900/20">
-        <h3 className="text-white font-semibold mb-2">
-          Enjoyed this article?
-        </h3>
-
-        <p className="text-zinc-400 text-sm mb-4">
-          Let’s connect and build something interesting together.
-        </p>
-
-        <Link
-          to="/contact"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 text-black text-sm font-medium hover:bg-amber-400 transition"
-        >
+      <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Enjoyed this article?</h3>
+        <p className="mb-4 text-sm text-zinc-600 dark:text-zinc-400">Let’s connect and build something interesting together.</p>
+        <Link to="/contact" className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-500 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-amber-500">
           Contact Me
         </Link>
       </div>
     </article>
   );
 }
+
+const BlogDetailsSkeleton = () => (
+  <div className="mx-auto max-w-3xl space-y-6 px-6 py-24">
+    <Skeleton className="h-6 w-32" />
+    <Skeleton className="h-12 w-full" />
+    <Skeleton className="h-64 w-full rounded-2xl" />
+    <Skeleton className="h-40 w-full" />
+  </div>
+);
