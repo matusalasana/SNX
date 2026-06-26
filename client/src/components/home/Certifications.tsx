@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Award, ExternalLink } from "lucide-react";
+import SectionTitle from "../common/SectionTitle"
 
 const certifications = [
   {
@@ -24,16 +25,13 @@ const certifications = [
 
 export default function Certifications() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16">
+    <section className="mx-auto max-w-5xl border-t border-zinc-200 py-24 dark:border-zinc-800">
       {/* Header */}
-      <div className="mb-10 text-center">
-        <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 md:text-4xl">
-          Certifications
-        </h2>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-          Professional courses and verified achievements
-        </p>
-      </div>
+      <SectionTitle
+        eyebrow="achievements"
+        title="Certifications"
+        description="Professional courses and verified achievements"
+      />
 
       {/* Grid */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -44,18 +42,31 @@ export default function Certifications() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
             viewport={{ once: true }}
-            className="group rounded-xl border border-zinc-200 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 dark:border-zinc-800 dark:bg-zinc-900"
+            className="
+              group
+              rounded-2xl
+              border border-zinc-200
+              bg-white
+              p-6
+              transition-all duration-300
+              hover:-translate-y-1
+              hover:border-amber-400
+              dark:border-zinc-800
+              dark:bg-zinc-900
+              dark:hover:border-amber-500
+            "
           >
             {/* Issuer */}
             <div className="mb-3 flex items-center gap-2 text-amber-500">
               <Award size={18} />
-              <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+
+              <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
                 {cert.issuer}
               </span>
             </div>
 
             {/* Title */}
-            <h3 className="mb-1 text-lg font-semibold text-zinc-900 transition-colors group-hover:text-amber-500 dark:text-zinc-100">
+            <h3 className="mb-1 text-lg font-semibold text-zinc-900 transition-colors group-hover:text-amber-500 dark:text-white">
               {cert.title}
             </h3>
 
@@ -70,9 +81,17 @@ export default function Certifications() {
                 href={cert.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-zinc-600 hover:text-amber-500 dark:text-zinc-400"
+                className="
+                  inline-flex items-center gap-2
+                  text-sm
+                  text-zinc-600
+                  transition-colors
+                  hover:text-amber-500
+                  dark:text-zinc-400
+                  dark:hover:text-amber-400
+                "
               >
-                <span className="border-b border-transparent hover:border-amber-500">
+                <span className="border-b border-transparent hover:border-amber-400">
                   View Certificate
                 </span>
                 <ExternalLink size={14} />
