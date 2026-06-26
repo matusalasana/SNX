@@ -15,23 +15,23 @@ export default function Skills() {
 
   if (isLoading) {
     return (
-      <section className="max-w-5xl mx-auto py-24 border-t border-zinc-900">
+      <section className="max-w-5xl mx-auto py-24 border-t border-zinc-200 dark:border-zinc-800">
         <div className="mb-14">
           <Skeleton className="h-4 w-24 mb-4" />
           <Skeleton className="h-10 w-64 mb-4" />
           <Skeleton className="h-4 w-full max-w-xl" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 5 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-zinc-800/60 p-6"
+              className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6"
             >
-              <div className="flex items-center gap-3 mb-5">
-                <Skeleton className="w-10 h-10 rounded-xl" />
+              <div className="mb-5 flex items-center gap-3">
+                <Skeleton className="h-10 w-10 rounded-xl" />
 
-                <div className="space-y-2 flex-1">
+                <div className="flex-1 space-y-2">
                   <Skeleton className="h-4 w-24" />
                   <Skeleton className="h-3 w-20" />
                 </div>
@@ -52,28 +52,28 @@ export default function Skills() {
   }
 
   return (
-    <section className="max-w-5xl mx-auto py-24 border-t border-zinc-900">
+    <section className="max-w-5xl mx-auto py-24 border-t border-zinc-200 dark:border-zinc-800">
       {/* Heading */}
       <div className="mb-14">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-px bg-gradient-to-r from-amber-400 to-transparent" />
-          <span className="text-xs uppercase tracking-[0.25em] text-amber-400">
+        <div className="mb-3 flex items-center gap-3">
+          <div className="h-px w-10 bg-gradient-to-r from-amber-500 to-transparent" />
+          <span className="text-xs font-medium uppercase tracking-[0.25em] text-amber-500">
             Expertise
           </span>
         </div>
 
-        <h2 className="text-3xl font-bold text-white tracking-tight">
+        <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
           Technical Stack
         </h2>
 
-        <p className="mt-3 text-zinc-400 max-w-2xl">
-          Technologies I use to build modern web applications,
-          scalable APIs, and production-ready systems.
+        <p className="mt-3 max-w-2xl text-zinc-600 dark:text-zinc-400">
+          Technologies I use to build modern web applications, scalable APIs,
+          and production-ready systems.
         </p>
       </div>
 
       {/* Categories */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {CATEGORIES.map(({ id, label, icon: Icon }) => {
           const categorySkills = skills.filter(
             (skill) => skill.category.toLowerCase() === id
@@ -85,63 +85,65 @@ export default function Skills() {
             <div
               key={id}
               className="
-                group relative overflow-hidden
                 rounded-2xl
-                border border-zinc-800/60
-                bg-zinc-900/20
-                backdrop-blur-xl
+                border border-zinc-200
+                dark:border-zinc-800
+                bg-white
+                dark:bg-zinc-900
                 p-6
-                transition-all duration-300
+                duration-300
                 hover:-translate-y-1
-                hover:border-amber-500/30
-                hover:shadow-[0_0_40px_rgba(251,191,36,0.08)]
+                hover:border-amber-400
+                dark:hover:border-amber-500
               "
             >
-              {/* Glow */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-amber-500/10 blur-3xl" />
-              </div>
-
               {/* Header */}
-              <div className="relative flex items-center gap-3 mb-5">
+              <div className="mb-5 flex items-center gap-3">
                 <div
                   className="
-                    flex items-center justify-center
-                    w-10 h-10 rounded-xl
-                    bg-amber-500/10
-                    border border-amber-500/20
+                    flex h-10 w-10 items-center justify-center rounded-xl
+                    border border-amber-200
+                    bg-amber-100
+                    dark:border-amber-500/20
+                    dark:bg-amber-500/10
                   "
                 >
-                  <Icon className="w-5 h-5 text-amber-400" />
+                  <Icon className="h-5 w-5 text-amber-500 dark:text-amber-400" />
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-white">
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">
                     {label}
                   </h3>
 
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     {categorySkills.length} technologies
                   </p>
                 </div>
               </div>
 
               {/* Skills */}
-              <div className="relative flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2">
                 {categorySkills.map((skill) => (
                   <span
                     key={skill.id}
                     className="
-                      px-3 py-1.5
                       rounded-lg
-                      text-xs font-medium
-                      border border-zinc-800
-                      bg-zinc-900/70
-                      text-zinc-300
-                      transition-all duration-200
-                      hover:border-amber-500/30
-                      hover:text-amber-300
-                      hover:bg-amber-500/5
+                      border border-zinc-200
+                      bg-zinc-100
+                      px-3 py-1.5
+                      text-xs
+                      font-medium
+                      text-zinc-700
+                      hover:border-amber-400
+                      hover:bg-amber-50
+                      hover:text-amber-600
+                      dark:border-zinc-700
+                      dark:bg-zinc-800
+                      dark:text-zinc-300
+                      dark:hover:border-amber-500
+                      dark:hover:bg-amber-500/10
+                      dark:hover:text-amber-300
                     "
                   >
                     {skill.name}
