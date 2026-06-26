@@ -1,58 +1,55 @@
 import { Link } from "react-router-dom";
 import { Clock, Star } from "lucide-react";
-import { Blog } from "../../types/blogs"
+import { Blog } from "../../types/blogs";
 
 interface BlogProps {
   blog: Blog;
 }
 
-export default function BlogCard({blog}: BlogProps) {
+export default function BlogCard({ blog }: BlogProps) {
   return (
     <article
       className="
-        group relative overflow-hidden
+        group
+        overflow-hidden
         rounded-2xl
-        border border-zinc-800/60
-        bg-zinc-900/20
-        backdrop-blur-xl
+        border border-zinc-200
+        bg-white
         transition-all duration-300
         hover:-translate-y-1
-        hover:border-amber-500/30
-        hover:shadow-[0_0_40px_rgba(251,191,36,0.08)]
+        hover:border-amber-400
+        dark:border-zinc-800
+        dark:bg-zinc-900
+        dark:hover:border-amber-500
       "
     >
-      {/* Glow */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition">
-        <div className="absolute -top-16 -right-16 w-40 h-40 bg-amber-500/10 blur-3xl" />
-      </div>
-
       <Link to={`/blogs/${blog.id}`} className="block">
         {/* Thumbnail */}
-        <div className="relative aspect-[16/9] overflow-hidden bg-zinc-950">
+        <div className="relative aspect-[16/9] overflow-hidden bg-zinc-100 dark:bg-zinc-950">
           {blog.thumbnailUrl ? (
             <img
               src={blog.thumbnailUrl}
               alt={blog.title}
               className="
-                w-full h-full object-cover
-                opacity-80
-                group-hover:opacity-100
-                group-hover:scale-105
+                h-full w-full object-cover
+                opacity-90
                 transition-all duration-500
+                group-hover:scale-105
+                group-hover:opacity-100
               "
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-zinc-700 text-sm">
+            <div className="flex h-full w-full items-center justify-center text-sm text-zinc-500 dark:text-zinc-500">
               No Preview
             </div>
           )}
 
           {/* Featured badge */}
           {blog.featured && (
-            <div className="absolute top-4 left-4">
-              <span className="flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400">
-                <Star className="w-3 h-3 fill-current" />
-                New
+            <div className="absolute left-4 top-4">
+              <span className="flex items-center gap-1 rounded-full border border-amber-200 bg-amber-100 px-2.5 py-1 text-xs text-amber-600 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400">
+                <Star className="h-3 w-3 fill-current" />
+                Featured
               </span>
             </div>
           )}
@@ -61,9 +58,9 @@ export default function BlogCard({blog}: BlogProps) {
         {/* Content */}
         <div className="p-6">
           {/* Meta */}
-          <div className="flex items-center gap-3 text-xs text-zinc-500 mb-3">
+          <div className="mb-3 flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
             {blog.category && (
-              <span className="text-amber-400 uppercase tracking-wider">
+              <span className="font-medium uppercase tracking-wider text-amber-500 dark:text-amber-400">
                 {blog.category}
               </span>
             )}
@@ -71,7 +68,7 @@ export default function BlogCard({blog}: BlogProps) {
             <span>•</span>
 
             <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3" />
+              <Clock className="h-3 w-3" />
               {blog.readTime}
             </span>
 
@@ -83,27 +80,30 @@ export default function BlogCard({blog}: BlogProps) {
           </div>
 
           {/* Title */}
-          <h3 className="text-lg font-semibold text-white group-hover:text-amber-300 transition line-clamp-2">
+          <h3 className="line-clamp-2 text-lg font-semibold text-zinc-900 transition-colors group-hover:text-amber-500 dark:text-white dark:group-hover:text-amber-400">
             {blog.title}
           </h3>
 
           {/* Summary */}
-          <p className="mt-3 text-sm text-zinc-400 line-clamp-3">
+          <p className="mt-3 line-clamp-3 text-sm text-zinc-600 dark:text-zinc-400">
             {blog.summary}
           </p>
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-2 mt-4">
+          <div className="mt-4 flex flex-wrap gap-2">
             {blog.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
                 className="
-                  text-[10px]
-                  px-2 py-1
                   rounded-lg
-                  border border-zinc-800
-                  bg-zinc-900/40
-                  text-zinc-400
+                  border border-zinc-200
+                  bg-zinc-100
+                  px-2 py-1
+                  text-[10px]
+                  text-zinc-600
+                  dark:border-zinc-700
+                  dark:bg-zinc-800
+                  dark:text-zinc-300
                 "
               >
                 {tag}
