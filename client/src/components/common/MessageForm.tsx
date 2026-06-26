@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, User, MessageSquare, Send } from "lucide-react";
+import { Mail, User, MessageSquare, Send, Loader2 } from "lucide-react";
 import { useSendMessage } from "../../hooks/messages/useSendMessage";
 
 const messageSchema = z.object({
@@ -26,171 +26,76 @@ export default function MessageForm() {
   });
 
   const onSubmit = (data: MessageFormData) => {
-    createMessage(data, {
-      onSuccess: () => {
-        reset();
-      },
-    });
+    createMessage(data, { onSuccess: () => reset() });
   };
 
   return (
-    <section className="max-w-2xl mx-auto py-16 px-6 text-white">
-      
-      {/* HEADER */}
-      <div className="mb-10 text-center">
-        <h2 className="text-3xl font-bold">
-          Get in <span className="text-amber-400">Touch</span>
-        </h2>
-        <p className="text-zinc-400 mt-2 text-sm">
-          Send me a message and I’ll get back to you as soon as possible.
-        </p>
-      </div>
-
-      {/* FORM CARD */}
+    <div className="w-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5 p-6 rounded-2xl border border-zinc-800 bg-zinc-900/20 backdrop-blur-xl"
+        className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50"
       >
-        {/* NAME */}
-        <div>
-          <label className="text-sm text-zinc-300 mb-2 block">
-            Name
-          </label>
+        <FormInput 
+            label="Name" 
+            icon={<User size={16} />} 
+            {...register("name")} 
+            error={errors.name?.message} 
+            placeholder="Jane Doe" 
+        />
+        
+        <FormInput 
+            label="Email" 
+            icon={<Mail size={16} />} 
+            {...register("email")} 
+            error={errors.email?.message} 
+            placeholder="jane@example.com" 
+        />
 
+        <FormInput 
+            label="Subject" 
+            {...register("subject")} 
+            error={errors.subject?.message} 
+            placeholder="Project inquiry" 
+        />
+
+        <div className="space-y-1">
+          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Message</label>
           <div className="relative">
-            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-
-            <input
-              {...register("name")}
-              placeholder="Your name"
-              className="
-                w-full pl-10 px-4 py-3 rounded-xl
-                bg-zinc-950/60 border border-zinc-800
-                text-white placeholder:text-zinc-600
-                outline-none
-                focus:border-amber-500/50
-                focus:ring-2 focus:ring-amber-500/10
-                transition
-              "
-            />
-          </div>
-
-          {errors.name && (
-            <p className="text-red-400 text-sm mt-1">
-              {errors.name.message}
-            </p>
-          )}
-        </div>
-
-        {/* EMAIL */}
-        <div>
-          <label className="text-sm text-zinc-300 mb-2 block">
-            Email
-          </label>
-
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-
-            <input
-              {...register("email")}
-              placeholder="you@example.com"
-              className="
-                w-full pl-10 px-4 py-3 rounded-xl
-                bg-zinc-950/60 border border-zinc-800
-                text-white placeholder:text-zinc-600
-                outline-none
-                focus:border-amber-500/50
-                focus:ring-2 focus:ring-amber-500/10
-                transition
-              "
-            />
-          </div>
-
-          {errors.email && (
-            <p className="text-red-400 text-sm mt-1">
-              {errors.email.message}
-            </p>
-          )}
-        </div>
-
-        {/* SUBJECT */}
-        <div>
-          <label className="text-sm text-zinc-300 mb-2 block">
-            Subject
-          </label>
-
-          <input
-            {...register("subject")}
-            placeholder="What's this about?"
-            className="
-              w-full px-4 py-3 rounded-xl
-              bg-zinc-950/60 border border-zinc-800
-              text-white placeholder:text-zinc-600
-              outline-none
-              focus:border-amber-500/50
-              focus:ring-2 focus:ring-amber-500/10
-              transition
-            "
-          />
-
-          {errors.subject && (
-            <p className="text-red-400 text-sm mt-1">
-              {errors.subject.message}
-            </p>
-          )}
-        </div>
-
-        {/* MESSAGE */}
-        <div>
-          <label className="text-sm text-zinc-300 mb-2 block">
-            Message
-          </label>
-
-          <div className="relative">
-            <MessageSquare className="absolute left-3 top-3 w-4 h-4 text-zinc-500" />
-
+            <MessageSquare className="absolute left-3 top-3 text-zinc-400" size={16} />
             <textarea
               {...register("message")}
-              rows={5}
-              placeholder="Write your message..."
-              className="
-                w-full pl-10 px-4 py-3 rounded-xl
-                bg-zinc-950/60 border border-zinc-800
-                text-white placeholder:text-zinc-600
-                outline-none
-                focus:border-amber-500/50
-                focus:ring-2 focus:ring-amber-500/10
-                transition
-                resize-none
-              "
+              rows={4}
+              className="w-full rounded-xl border border-zinc-200 bg-white px-10 py-3 text-sm outline-none transition focus:border-amber-500 dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-amber-500"
+              placeholder="How can I help you?"
             />
           </div>
-
-          {errors.message && (
-            <p className="text-red-400 text-sm mt-1">
-              {errors.message.message}
-            </p>
-          )}
+          {errors.message && <p className="text-xs text-red-500">{errors.message.message}</p>}
         </div>
 
-        {/* BUTTON */}
         <button
           type="submit"
           disabled={isPending}
-          className="
-            w-full flex items-center justify-center gap-2
-            bg-amber-500 text-black
-            py-3 rounded-xl
-            font-medium
-            hover:bg-amber-400
-            transition
-            disabled:opacity-50
-          "
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-amber-500 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-amber-500"
         >
-          <Send className="w-4 h-4" />
+          {isPending ? <Loader2 className="animate-spin" size={16} /> : <Send size={16} />}
           {isPending ? "Sending..." : "Send Message"}
         </button>
       </form>
-    </section>
+    </div>
   );
 }
+
+// Reusable input component for cleaner code
+const FormInput = ({ label, icon, error, ...props }: any) => (
+  <div className="space-y-1">
+    <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{label}</label>
+    <div className="relative">
+      {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">{icon}</div>}
+      <input
+        {...props}
+        className={`w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-amber-500 dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-amber-500 ${icon ? "pl-10" : ""}`}
+      />
+    </div>
+    {error && <p className="text-xs text-red-500">{error}</p>}
+  </div>
+);
