@@ -1,6 +1,7 @@
 import { useSkills } from "../../hooks/skills/useSkills";
 import { Code2, Server, Database, Cloud, Terminal } from "lucide-react";
 import { Skeleton } from "../../utils/skeleton";
+import SectionTitle from "../common/SectionTitle";
 
 const CATEGORIES = [
   { id: "frontend", label: "Frontend", icon: Code2 },
@@ -54,23 +55,11 @@ export default function Skills() {
   return (
     <section className="max-w-5xl mx-auto py-24 border-t border-zinc-200 dark:border-zinc-800">
       {/* Heading */}
-      <div className="mb-14">
-        <div className="mb-3 flex items-center gap-3">
-          <div className="h-px w-10 bg-gradient-to-r from-amber-500 to-transparent" />
-          <span className="text-xs font-medium uppercase tracking-[0.25em] text-amber-500">
-            Expertise
-          </span>
-        </div>
-
-        <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
-          Technical Stack
-        </h2>
-
-        <p className="mt-3 max-w-2xl text-zinc-600 dark:text-zinc-400">
-          Technologies I use to build modern web applications, scalable APIs,
-          and production-ready systems.
-        </p>
-      </div>
+      <SectionTitle
+        eyebrow="Expertise"
+        title="Technical Stack"
+        description="Technologies I use to build modern web applications, scalable APIs, and production-ready systems."
+      />
 
       {/* Categories */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
