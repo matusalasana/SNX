@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import LogoutButton from "../common/LogoutButton"
+import LogoutButton from "../common/LogoutButton";
+import ThemeToggle from "../common/ThemeToggle";
 import {
   LayoutDashboard,
   FolderKanban,
@@ -85,6 +86,8 @@ export default function AdminNavbar() {
                 );
               })}
             </nav>
+            
+            <ThemeToggle />
 
             {/* LOGOUT */}
             <LogoutButton />
@@ -124,7 +127,9 @@ export default function AdminNavbar() {
             );
           })}
         </nav>
-
+        
+        <ThemeToggle />
+        
         {/* FOOTER */}
         <LogoutButton />
       </aside>
