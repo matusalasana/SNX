@@ -3,13 +3,7 @@ import { z } from "zod";
 export const createSkillSchema = z.object({
   name: z.string().min(2),
 
-  category: z.enum([
-    "frontend",
-    "backend",
-    "devops",
-    "languages",
-    "others",
-  ]),
+  category: z.string().max(50),
 
   proficiency: z.number().min(0).max(100),
 

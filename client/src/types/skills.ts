@@ -3,5 +3,5 @@ export interface Skill {
   name: string;
   category: string;
   proficiency: number;
-  iconName: string | null;
+  iconName?: string | null;
 }
