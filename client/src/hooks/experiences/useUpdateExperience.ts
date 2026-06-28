@@ -27,7 +27,7 @@ export const useUpdateExperience = () => {
       queryClient.invalidateQueries({
         queryKey: ["experiences"],
       });
-      
+    },
     onError: (error) => {
       toast.error(getErrorMessage(error));
     },

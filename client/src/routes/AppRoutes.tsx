@@ -28,6 +28,7 @@ import AdminBlogEditor from "../pages/admin/AdminBlogEditor";
 import AdminBlogs from "../pages/admin/AdminBlogs";
 import AdminProjectsManagement from "../pages/admin/AdminProjectsManagement";
 import AdminSkills from "../pages/admin/AdminSkills";
+import AdminExperiences from "../pages/admin/AdminExperiences";
 
 const VITE_ADMIN_LOGIN_URL = import.meta.env.VITE_ADMIN_LOGIN_URL;
 
@@ -117,6 +118,10 @@ export const router = createBrowserRouter([
           {
             path: "skills",
             element: <AdminSkills />,
+          },
+          {
+            path: "experiences",
+            element: <AdminExperiences />,
           },
         ],
       },
