@@ -6,13 +6,7 @@ import { z } from "zod";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useLogin } from "../../hooks/auth/useLogin";
 import { useAuth } from "../../hooks/auth/useAuth";
-
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { loginSchema, type LoginFormData } from "../../schema/auth";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);

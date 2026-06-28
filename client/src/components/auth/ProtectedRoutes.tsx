@@ -32,7 +32,7 @@ const ProtectedRoutes = () => {
             <div className="flex items-center gap-2 text-amber-400">
               <Terminal className="w-5 h-5" />
               <span className="font-bold tracking-wide">
-                SNX Admin
+                Sana M.
               </span>
             </div>
 

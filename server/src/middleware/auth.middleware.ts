@@ -2,29 +2,35 @@ import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from '../utils/auth';
 
 export const requireAuth = (
-  req: Request, 
-  res: Response, 
-  next: NextFunction) => {
-  
-  // Extract token from cookies or authorization headers
-  let token = req.cookies?.token;
-  
-  if (!token && req.headers.authorization) {
-    token = req.headers.authorization.split(' ')[1];
-  }
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
 
-  if (!token) {
-    res.status(401).json({ error: 'Access denied. Authenticated token is missing.' });
-    return;
-  }
+  try {
+    let token = req.cookies?.token;
 
-  const decoded = verifyToken(token);
-  
-  if (!decoded) {
-    res.status(401).json({ error: 'Session expired or authentication token is invalid.' });
-    return;
-  }
+    if (!token && req.headers.authorization) {
+      token = req.headers.authorization.split(" ")[1];
+    }
 
-  req.user = decoded as string
-  next();
+    if (!token) {
+      console.log("No token");
+      return res.status(401).json({ error: "Missing token" });
+    }
+
+    const decoded = verifyToken(token);
+
+    if (!decoded) {
+      console.log("Decoded is null");
+      return res.status(401).json({ error: "Invalid token" });
+    }
+
+    req.user = decoded as any;
+
+    next();
+  } catch (err) {
+    console.error("requireAuth error:", err);
+    return res.status(401).json({ error: "Token verification failed" });
+  }
 };

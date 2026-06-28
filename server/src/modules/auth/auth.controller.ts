@@ -9,11 +9,11 @@ const login = async (req: Request, res: Response) => {
   try {
     const { user, token } = await AuthService.loginUser(req.body);
     
+    const isProduction = NODE_ENV === "production";
     res.cookie('token', token, {
       httpOnly: true,
-      secure: NODE_ENV === 'production',
-      sameSite: 'none',
-      partitioned: true, // future-proofs 3rd party cookie restrictions 
+      secure: isProduction,
+      sameSite: isProduction ? 'strict' : 'lax',
       maxAge: COOKIE_MAX_AGE
     });
 
@@ -42,7 +42,10 @@ const getMe = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     console.log("GetMe error:", err.cause || err.message);
-    res.status(404).json({ error: err.cause || err.message });
+    res.status(404).json({ 
+      authenticated: false,
+      error: err.cause || err.message
+    });
   }
 };
 
