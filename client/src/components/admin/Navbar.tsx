@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import LogoutButton from "../common/LogoutButton"
 import {
   LayoutDashboard,
   FolderKanban,
@@ -7,7 +8,6 @@ import {
   MessageSquare,
   Wrench,
   Briefcase,
-  LogOut,
   Menu,
   X,
 } from "lucide-react";
@@ -18,12 +18,12 @@ const navItems = [
   { label: "Blogs", to: "/admin/blogs", icon: FileText },
   { label: "Messages", to: "/admin/messages", icon: MessageSquare },
   { label: "Skills", to: "/admin/skills", icon: Wrench },
-  { label: "Experience", to: "/admin/experience", icon: Briefcase },
+  { label: "Experiences", to: "/admin/experiences", icon: Briefcase },
 ];
 
 export default function AdminNavbar() {
   const [open, setOpen] = useState(false);
-
+  
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `
     flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all
@@ -87,10 +87,7 @@ export default function AdminNavbar() {
             </nav>
 
             {/* LOGOUT */}
-            <button className="mt-8 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition">
-              <LogOut className="w-4 h-4" />
-              Logout
-            </button>
+            <LogoutButton />
           </aside>
         </div>
       )}
@@ -129,12 +126,7 @@ export default function AdminNavbar() {
         </nav>
 
         {/* FOOTER */}
-        <div className="p-4 border-t border-zinc-800">
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition">
-            <LogOut className="w-4 h-4" />
-            Logout
-          </button>
-        </div>
+        <LogoutButton />
       </aside>
     </>
   );
