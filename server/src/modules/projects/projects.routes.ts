@@ -15,10 +15,7 @@ router.get('/:id', ProjectsController.getProjectById);
 router.post(
   '/', 
   requireAuth,
-  upload.fields([
-    { name: "thumbnail", maxCount: 1 },
-    { name: "images", maxCount: 10 },
-  ]),
+  upload.single("thumbnail"),
   ProjectsController.createProject
 );
 router.patch('/:id', validate(updateProjectSchema), requireAuth, ProjectsController.updateProject);

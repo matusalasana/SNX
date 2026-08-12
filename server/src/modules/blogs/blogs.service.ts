@@ -7,12 +7,8 @@ import {
   UpdateBlogInput,
 } from "./blogs.validation";
 
-const getAllBlogs = async (
-  includeDrafts = false
-) => {
-  return BlogsRepository.findAll(
-    includeDrafts
-  );
+const getAllBlogs = async () => {
+  return await  BlogsRepository.getBlogs();
 };
 
 const getBlogById = async (

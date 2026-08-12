@@ -18,8 +18,6 @@ export const blogs = pgTable("blogs", {
 
   content: text("content").notNull(),
 
-  summary: text("summary").notNull(),
-
   thumbnailUrl: text("thumbnail_url"),
 
   status: varchar("status", {
@@ -30,10 +28,6 @@ export const blogs = pgTable("blogs", {
     .default("draft"),
 
   readTime: varchar("read_time", {
-    length: 255,
-  }).notNull(),
-
-  author: varchar("author", {
     length: 255,
   }).notNull(),
 

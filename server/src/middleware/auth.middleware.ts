@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from '../utils/auth';
 
-export const requireAuth = (
+export const requireAuth = async(
   req: Request,
   res: Response,
   next: NextFunction
@@ -19,7 +19,7 @@ export const requireAuth = (
       return res.status(401).json({ error: "Missing token" });
     }
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
 
     if (!decoded) {
       console.log("Decoded is null");

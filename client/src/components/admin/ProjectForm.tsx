@@ -19,7 +19,6 @@ export default function ProjectForm({
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
-  const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const [tagInput, setTagInput] = useState("");
@@ -34,7 +33,7 @@ export default function ProjectForm({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
       title: "",
-      category: "",
+      category_id: "",
       description: "",
       tags: [],
       githubUrl: "",
@@ -54,9 +53,6 @@ export default function ProjectForm({
       setThumbnailPreview(project.thumbnailUrl);
     }
 
-    if (project.images?.length) {
-      setImagePreviews(project.images);
-    }
   }, [project, reset]);
 
   // ---------------- TAGS ----------------
@@ -84,43 +80,20 @@ export default function ProjectForm({
     setThumbnailPreview(URL.createObjectURL(file));
   };
 
-  // ---------------- IMAGES ----------------
-  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
-
-    setImages((prev) => [...prev, ...files]);
-
-    const urls = files.map((file) =>
-      URL.createObjectURL(file)
-    );
-
-    setImagePreviews((prev) => [...prev, ...urls]);
-  };
-
   // ---------------- SUBMIT ----------------
   const submit = (data: Project) => {
     const formData = new FormData();
 
-    const payload = {
-      title: data.title,
-      category: data.category,
-      description: data.description,
-      tags: data.tags,
-      githubUrl: data.githubUrl || null,
-      liveUrl: data.liveUrl || null,
-      featured: data.featured,
-    };
-
     if (thumbnail) {
       formData.append("thumbnail", thumbnail);
     }
-
-    images.forEach((img) => {
-      formData.append("images", img);
-    });
-
-    formData.append("data", JSON.stringify(payload));
+    formData.append("title", data.title);
+    formData.append("category_id", data.category_id);
+    formData.append("description", data.description);
+    formData.append("tags", JSON.stringify(tags));
+    formData.append("githubUrl", data.githubUrl);
+    formData.append("liveUrl", data.liveUrl);
+    formData.append("featured", data.featured);
 
     onSubmit(formData);
   };
@@ -173,45 +146,10 @@ export default function ProjectForm({
           />
         </div>
 
-        {/* IMAGES */}
-        <div>
-          <label className={label}>Images</label>
-
-          <label
-            htmlFor="images"
-            className="flex aspect-video cursor-pointer items-center justify-center rounded-lg border border-dashed hover:border-amber-500"
-          >
-            <span className="text-sm text-neutral-500">
-              Upload images
-            </span>
-          </label>
-
-          <input
-            id="images"
-            type="file"
-            hidden
-            multiple
-            accept="image/*"
-            onChange={handleImagesChange}
-          />
-
-          {imagePreviews.length > 0 && (
-            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3">
-              {imagePreviews.map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  className="h-32 w-full object-cover rounded-lg border"
-                />
-              ))}
-            </div>
-          )}
-        </div>
-
         {/* CATEGORY */}
         <div>
           <label className={label}>Category</label>
-          <input {...register("category")} className={input} />
+          <input {...register("category_id")} className={input} />
         </div>
 
         {/* LINKS */}
@@ -229,12 +167,6 @@ export default function ProjectForm({
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               className={input}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  addTag();
-                }
-              }}
             />
 
             <button type="button" onClick={addTag} className="bg-amber-500 text-white px-4 rounded">

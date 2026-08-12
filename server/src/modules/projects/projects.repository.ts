@@ -8,7 +8,7 @@ import {
 } from "./projects.validation";
 
 export const ProjectsRepository = {
-  findAll: async () => {
+  getProjects: async () => {
     return db
       .select()
       .from(projects)
@@ -44,31 +44,11 @@ export const ProjectsRepository = {
     }
   },
 
-  create: async ({
-  data,
-  images,
-}) => {
-  return await db.transaction(async (tx) => {
-    // 1. Insert project
-    const [project] = await tx
+  create: async (data) => {
+  return await db
       .insert(projects)
       .values(data)
       .returning();
-
-    // 2. Prepare images properly (ARRAY)
-    const imagesToInsert = images.map((img) => ({
-      projectId: project.id,
-      imageUrl: img,
-    }));
-
-    // 3. Insert images
-    if (imagesToInsert.length > 0) {
-      await tx.insert(projectImages).values(imagesToInsert);
-    }
-
-    // 4. Return project
-    return project;
-  });
 },
 
   update: async (id: string, data: UpdateProjectInput) => {

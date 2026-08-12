@@ -58,7 +58,7 @@ const register = async (data: RegisterInput) => {
     email,
     hashed
   )
-  const payload = { userId: user.id, email: user.email  }
+  const payload = { userId: user.id, email: user.email }
   const token = await generateToken(payload)
   
   return {
@@ -67,8 +67,7 @@ const register = async (data: RegisterInput) => {
       email: user.email,
       avatar_url: user.avatarUrl,
       bio: user.bio
-    },
-    token
+    }
   };
 }
 

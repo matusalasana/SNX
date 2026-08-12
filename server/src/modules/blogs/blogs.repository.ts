@@ -12,16 +12,8 @@ import {
 } from "./blogs.validation";
 
 export const BlogsRepository = {
-  findAll: async (
-    includeDrafts = false
-  ) => {
-    if (includeDrafts) {
-      return db
-        .select()
-        .from(blogs)
-        .orderBy(desc(blogs.createdAt));
-    }
-
+  
+  getBlogs: async () => {
     return db
       .select()
       .from(blogs)

@@ -26,7 +26,7 @@ import AdminDashboard from "../pages/admin/Dashboard";
 import AdminMessages from "../pages/admin/AdminMessages";
 import AdminBlogEditor from "../pages/admin/AdminBlogEditor";
 import AdminBlogs from "../pages/admin/AdminBlogs";
-import AdminProjectsManagement from "../pages/admin/AdminProjectsManagement";
+import AdminProjects from "../pages/admin/AdminProjects";
 import AdminSkills from "../pages/admin/AdminSkills";
 import AdminExperiences from "../pages/admin/AdminExperiences";
 
@@ -113,7 +113,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "projects",
-            element: <AdminProjectsManagement />,
+            element: <AdminProjects />,
           },
           {
             path: "skills",

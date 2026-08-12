@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 import { ProjectsService } from "./projects.service";
+import {
+  createProjectSchema
+} from "./projects.validation";
 
 // GET ALL
 const getProjects = async (_: Request, res: Response) => {
   try {
-    const projects = await ProjectsService.getAllProjects();
+    const projects = await ProjectsService.getProjects();
     res.status(200).json(projects);
   } catch (err: any) {
     console.log("Get projects error:", err.message);
@@ -28,18 +31,22 @@ const getProjectById = async (req: Request, res: Response) => {
 // CREATE
 const createProject = async (req: Request, res: Response) => {
   try {
-    console.log("Before:", req.body.data)
-    console.log("After:", JSON.parse(req.body.data))
+  
+    const thumbnail = req.file as any;
     
-    const data = JSON.parse(req.body.data);
-    const thumbnail = (req.files as any)?.thumbnail?.[0];
-    const images = (req.files as any)?.images || []; 
+    const tags = JSON.parse(req.body.tags);
+    
+    const data = {
+      ...req.body,
+      tags
+    }
+    
+    const validatedData = createProjectSchema.parse(data);
     
     const newProj = 
       await ProjectsService.createNewProject({
-        data,
+        validatedData,
         thumbnail: thumbnail?.buffer,
-        images: images.map((img: any) => img.buffer),
       });
 
     res.status(201).json(newProj);

@@ -2,7 +2,8 @@ import { z } from "zod";
 
 export const createProjectSchema = z.object({
   title: z.string().min(3),
-  category: z.string().min(2),
+  
+  category_id: z.uuid().min(1),
 
   tags: z.array(z.string()).default([]),
 

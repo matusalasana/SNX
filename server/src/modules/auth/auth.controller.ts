@@ -20,7 +20,7 @@ const login = async (req: Request, res: Response) => {
     res.status(200).json({
       message: 'Successfully logged in to portfolio session',
       user,
-      token // For testing purpose
+      token
     });
   } catch (err: any) {
     console.log("Login error:", err.cause || err.message);

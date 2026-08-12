@@ -11,16 +11,13 @@ const getBlogs = async (
   res: Response
 ) => {
   try {
-    const includeDrafts =
-      req.query.admin === "true";
 
-    const blogs =
-      await BlogsService.getAllBlogs(
-        includeDrafts
-      );
+    const blogs = 
+      await BlogsService.getBlogs();
 
     res.status(200).json(blogs);
   } catch (err: any) {
+    console.log(`${req.method}: ${req.path} error: ${err.cause || err.message}`);
     res.status(500).json({
       error: err.message,
     });

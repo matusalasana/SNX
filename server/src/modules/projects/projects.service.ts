@@ -7,8 +7,8 @@ import {
 import { uploadToCloudinary } from "../../utils/cloudinary"
 
 // GET ALL
-const getAllProjects = async () => {
-  return ProjectsRepository.findAll();
+const getProjects = async () => {
+  return ProjectsRepository.getProjects();
 };
 
 // GET ONE
@@ -22,31 +22,22 @@ const getProjectById = async (id: string) => {
 
 // CREATE
 const createNewProject = async ({
-  data,
-  images,
+  validatedData,
   thumbnail
 }) => {
-  if(!data) throw new Error("Body is empty");
   
-  if(!images.length) throw new Error("At least 1 image is required");
+  if(!validatedData) throw new Error("Body is empty");
   
-  const validated = createProjectSchema.parse(data)
   const {
     title,
-    category,
+    category_id,
     description,
     tags,
     githubUrl,
     liveUrl,
     order,
     featured,
-  } = validated;
-  
-  const imagesResult = await Promise.all(
-    images.map((buffer) =>
-      uploadToCloudinary(buffer, "projects/images")
-    )
-  );
+  } = validatedData;
   
   const thumbnailResult = await uploadToCloudinary(
     thumbnail,
@@ -54,18 +45,15 @@ const createNewProject = async ({
   )
   
   return await ProjectsRepository.create({
-    data: {
-      title,
-      category,
-      description,
-      tags,
-      githubUrl,
-      liveUrl,
-      featured,
-      order,
-      thumbnailUrl: thumbnailResult.secure_url,
-    },
-    images: imagesResult.map((img) => img.secure_url),
+    title,
+    categoryId: category_id,
+    description,
+    tags,
+    githubUrl,
+    liveUrl,
+    featured,
+    order,
+    thumbnailUrl: thumbnailResult.secure_url,
   });
 };
 
@@ -77,8 +65,35 @@ const updateProject = async (
   const exists = await ProjectsRepository.findById(id);
 
   if (!exists) throw new Error("Project not found");
+  
+  const dataToUpdate = {};
+  
+  if(data.title){
+    dataToUpdate.title=data.title
+  }
+  if(data.category_id){
+    dataToUpdate.category_id=data.category_id
+  }
+  if(data.description){
+    dataToUpdate.description=data.description
+  }
+  if(data.tags){
+    dataToUpdate.tags=data.tags
+  }
+  if(data.githubUrl){
+    dataToUpdate.githubUrl=data.githubUrl
+  }
+  if(data.liveUrl){
+    dataToUpdate.liveUrl=data.liveUrl
+  }
+  if(data.order){
+    dataToUpdate.order=data.order
+  }
+  if(data.featured){
+    dataToUpdate.featured=data.featured
+  }
 
-  return ProjectsRepository.update(id, data);
+  return ProjectsRepository.update(id, dataToUpdate);
 };
 
 // DELETE
@@ -91,7 +106,7 @@ const deleteProject = async (id: string) => {
 };
 
 export const ProjectsService = {
-  getAllProjects,
+  getProjects,
   getProjectById,
   createNewProject,
   updateProject,

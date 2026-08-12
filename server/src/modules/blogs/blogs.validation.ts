@@ -5,8 +5,6 @@ export const createBlogSchema = z.object({
 
   content: z.string().min(10),
 
-  summary: z.string().min(5),
-
   thumbnailUrl: z
     .string()
     .url()
@@ -18,8 +16,6 @@ export const createBlogSchema = z.object({
     .default("draft"),
 
   readTime: z.string().min(1),
-
-  author: z.string().min(1),
 
   tags: z.array(z.string()).default([]),
 

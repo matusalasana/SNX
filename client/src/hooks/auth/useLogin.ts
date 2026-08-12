@@ -14,7 +14,7 @@ export const useLogin = () => {
   return useMutation ({
     mutationFn: loginUser, 
     onSuccess: () => {
-      toast.success("You have logged in successfully")
+      toast.success("Logged in successfully")
       queryClient.invalidateQueries({
         queryKey: ["auth"]
       })

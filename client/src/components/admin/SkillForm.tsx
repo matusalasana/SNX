@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { marked } from "marked";
 import { useCreateSkill } from "../../hooks/skills/useCreateSkill";
 import { useUpdateSkill } from "../../hooks/skills/useUpdateSkill";
 
@@ -11,6 +12,7 @@ type Props = {
 export default function SkillForm({ mode, skill, onClose }: Props) {
   const { mutate: createSkill } = useCreateSkill();
   const { mutate: updateSkill } = useUpdateSkill();
+  const [ isPreview, setIsPreview ] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
