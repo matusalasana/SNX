@@ -7,6 +7,8 @@ import {
   boolean,
 } from "drizzle-orm/pg-core";
 
+import { categories } from "./categories";
+
 export const blogs = pgTable("blogs", {
   id: uuid("id").defaultRandom().primaryKey(),
 
@@ -40,9 +42,9 @@ export const blogs = pgTable("blogs", {
     .notNull()
     .default([]),
 
-  category: varchar("category", {
-    length: 255,
-  }),
+  categoryId: uuid("category_id")
+    .references(() => categories.id, { onDelete: 'set null' })
+    .notNull(),
 
   featured: boolean("featured")
     .notNull()

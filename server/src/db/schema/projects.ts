@@ -8,12 +8,16 @@ import {
   pgTable,
 } from "drizzle-orm/pg-core";
 
+import { categories } from "./categories";
+
 export const projects = pgTable("projects", {
   id: uuid("id").defaultRandom().primaryKey(),
 
   title: varchar("title", { length: 255 }).notNull(),
   
-  category: varchar("category", { length: 255 }).notNull(),
+  categoryId: uuid("category_id")
+    .references(() => categories.id, { onDelete: 'set null' })
+    .notNull(),
   
   tags: varchar("tags", { length: 50 })
     .array()

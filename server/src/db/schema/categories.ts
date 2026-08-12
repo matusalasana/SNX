@@ -2,29 +2,19 @@ import {
   pgTable,
   uuid,
   varchar,
-  integer,
   timestamp,
-  check,
 } from "drizzle-orm/pg-core";
 
-import { categories } from "./categories";
+import { sql } from "drizzle-orm";
 
-export const skills = pgTable(
-  "skills",
+export const categories = pgTable(
+  "categories",
   {
     id: uuid("id").defaultRandom().primaryKey(),
 
     name: varchar("name", {
       length: 100,
     }).notNull(),
-
-    categoryId: uuid("category_id")
-    .references(() => categories.id, { onDelete: 'set null' })
-    .notNull(),
-
-    proficiency: varchar("name", {
-      length: 100,
-    }),
 
     createdAt: timestamp("created_at")
       .defaultNow()

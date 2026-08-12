@@ -20,6 +20,9 @@ export const projectImages = pgTable(
       }),
 
     imageUrl: text("image_url").notNull(),
+    
+    publicId: text("public_id")
+      .notNull(),
 
     order: integer("order")
       .notNull()
