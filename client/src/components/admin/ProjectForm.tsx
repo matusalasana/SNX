@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Project } from "../../types/projects";
 import { createProjectSchema } from "../../schema/projects"; 
+import { useCategories } from "../../hooks/categories/useCategories"; 
 import { zodResolver } from "@hookform/resolvers/zod";
 interface ProjectFormProps {
   project?: Project;
@@ -16,6 +17,8 @@ export default function ProjectForm({
   loading = false,
   onSubmit,
 }: ProjectFormProps) {
+  const { data: categories, isLoading } = useCategories();
+  
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
@@ -90,10 +93,10 @@ export default function ProjectForm({
     formData.append("title", data.title);
     formData.append("category_id", data.category_id);
     formData.append("description", data.description);
-    formData.append("tags", JSON.stringify(tags));
+    formData.append("tags", JSON.stringify(data.tags));
     formData.append("githubUrl", data.githubUrl);
     formData.append("liveUrl", data.liveUrl);
-    formData.append("featured", data.featured);
+    formData.append("featured", String(data.featured));
 
     onSubmit(formData);
   };
@@ -149,7 +152,22 @@ export default function ProjectForm({
         {/* CATEGORY */}
         <div>
           <label className={label}>Category</label>
-          <input {...register("category_id")} className={input} />
+        
+          <select
+            className={input}
+            disabled={isLoading}
+            {...register("category_id")}
+          >
+            <option value="">
+              {isLoading ? "Loading categories..." : "Select category"}
+            </option>
+        
+            {categories?.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* LINKS */}
