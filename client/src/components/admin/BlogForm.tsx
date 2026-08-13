@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createBlogSchema, type BlogFormData } from "../../schema/blogs";
 import { marked } from "marked";
+import { useCategories } from "../../hooks/categories/useCategories";
 
 interface BlogFormProps {
 blog?: Blog;
@@ -18,6 +19,7 @@ mode,
 loading = false,
 onSubmit,
 }: BlogFormProps) => {
+  const { data: categories, isLoading } = useCategories();
 const [thumbnail, setThumbnail] = useState<File | null>(null);
 const [preview, setPreview] = useState<string | null>(null);
 const [tagInput, setTagInput] = useState("");
@@ -33,10 +35,8 @@ formState: { errors },
 resolver: zodResolver(createBlogSchema),
 defaultValues: {
 title: "",
-summary: "",
 content: "",
-author: "",
-category: "",
+category_id: "",
 status: "draft",
 tags: [],
 featured: false,
@@ -48,11 +48,9 @@ useEffect(() => {
 if (mode === "edit" && blog) {
 reset({
 title: blog.title,
-summary: blog.summary,
 thumbnail: blog.thumbnail,
 content: blog.content,
-author: blog.author,
-category: blog.category,
+category_id: blog.category_id,
 status: blog.status,
 tags: blog.tags || [],
 featured: blog.featured,
@@ -96,11 +94,9 @@ const formData = new FormData();
 const payload = {
 title: data.title,
 content: data.content,
-summary: data.summary,
 status: data.status,
 readTime: data.readTime,
-author: data.author,
-category: data.category,
+category_id: data.category_id,
 tags: data.tags,
 featured: data.featured,
 };
@@ -152,17 +148,6 @@ className="flex flex-col gap-8 lg:flex-row lg:items-start"
       </div>  
 
       <div>  
-        <label className={labelStyles}>Summary</label>  
-        <textarea   
-          {...register("summary")}   
-          rows={2}   
-          placeholder="Brief summary..."   
-          className={inputStyles}  
-        />  
-        {errors.summary && <p className="mt-1 text-xs text-red-500">{errors.summary.message}</p>}  
-      </div>  
-
-      <div>  
         <label className={labelStyles}>Content</label>  
         <textarea   
           {...register("content")}   
@@ -199,24 +184,37 @@ className="flex flex-col gap-8 lg:flex-row lg:items-start"
         <input id="thumbnail" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />  
       </div>  
 
-      {/* Author & Read Time */}  
+      {/* Read Time */}  
       <div className="grid grid-cols-2 gap-3">  
-        <div>  
-          <label className={labelStyles}>Author</label>  
-          <input {...register("author")} className={inputStyles} />  
-        </div>  
         <div>  
           <label className={labelStyles}>Read Time</label>  
           <input placeholder="5 min" {...register("readTime")} className={inputStyles} />  
         </div>  
       </div>  
 
-      {/* Category & Status */}  
-      <div className="grid grid-cols-2 gap-3">  
-        <div>  
-          <label className={labelStyles}>Category</label>  
-          <input {...register("category")} className={inputStyles} />  
-        </div>  
+      {/* Category */}  
+      <div className="grid lg:grid-cols-2 gap-3">
+      
+        <div>
+          <label className={labelStyles}>Category</label>
+        
+          <select
+            className={inputStyles}
+            disabled={isLoading}
+            {...register("category_id")}
+          >
+            <option value="">
+              {isLoading ? "Loading categories..." : "Select category"}
+            </option>
+        
+            {categories?.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        
         <div>  
           <label className={labelStyles}>Status</label>  
           <div className="relative">  

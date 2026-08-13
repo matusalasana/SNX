@@ -4,6 +4,7 @@ import BlogCard from "../../components/common/BlogCard";
 import { Skeleton } from "../../utils/skeleton";
 import { BookOpen } from "lucide-react";
 
+
 export default function BlogsPage() {
   const { data: blogs = [], isLoading } = useBlogs();
 

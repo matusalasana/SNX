@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useBlogs } from "../../hooks/blogs/useBlogs";
 import { Clock, Calendar, ArrowLeft, Star } from "lucide-react";
 import { Skeleton } from "../../utils/skeleton";
+import BlogContent from "../../components/admin/BlogContent";
 
 export default function BlogDetails() {
   const { id } = useParams();
@@ -61,9 +62,9 @@ export default function BlogDetails() {
         <img src={blog.thumbnailUrl} alt={blog.title} className="mb-10 w-full rounded-2xl border border-zinc-200 dark:border-zinc-800" />
       )}
 
-      {/* Content - Replace the div with a Markdown renderer for better experience */}
+      {/* Content */}
       <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-amber-500">
-        {blog.content}
+        <BlogContent content={blog.content} />
       </div>
 
       {/* Tags */}

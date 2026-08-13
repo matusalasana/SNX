@@ -3,6 +3,7 @@ import { useBlogs } from "../../hooks/blogs/useBlogs";
 import BlogCard from "../../components/admin/BlogCard";
 import BlogForm from "../../components/admin/BlogForm";
 import { useBlogForm } from "../../hooks/blogs/useBlogForm";
+import BlogContent from "../../components/admin/BlogContent";
 
 export default function AdminBlogs() {
   const { data: blogs = [] } = useBlogs();
@@ -22,6 +23,8 @@ export default function AdminBlogs() {
 
   return (
     <section className="max-w-6xl mx-auto py-24 px-6 text-white">
+    
+      <BlogContent />
 
       {/* HEADER */}
       <div className="flex items-center justify-between mb-10">

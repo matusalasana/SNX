@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* Map Tailwind v4 'dark:' prefixes to the root '.dark' class */
 @custom-variant dark (&:where(.dark, .dark *));
