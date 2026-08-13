@@ -46,6 +46,8 @@ export default function ProjectForm({
   });
 
   const tags = watch("tags") || [];
+  
+  const finalTags = [...tags, tagInput];
 
   useEffect(() => {
     if (!project) return;
@@ -86,18 +88,23 @@ export default function ProjectForm({
   // ---------------- SUBMIT ----------------
   const submit = (data: Project) => {
     const formData = new FormData();
+    
+    const payload = {
+      title: data.title,
+      category_id: data.category_id,
+      description: data.description,
+      tags: finalTags,
+      githubUrl: data.githubUrl,
+      liveUrl: data.liveUrl,
+      featured: data.featured,
+    }
 
     if (thumbnail) {
       formData.append("thumbnail", thumbnail);
     }
-    formData.append("title", data.title);
-    formData.append("category_id", data.category_id);
-    formData.append("description", data.description);
-    formData.append("tags", JSON.stringify(data.tags));
-    formData.append("githubUrl", data.githubUrl);
-    formData.append("liveUrl", data.liveUrl);
-    formData.append("featured", String(data.featured));
-
+    
+    formData.append("data", JSON.stringify(payload));
+    
     onSubmit(formData);
   };
 

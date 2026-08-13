@@ -4,6 +4,8 @@ export const createProjectSchema = z.object({
   title: z.string().min(3),
   
   category_id: z.uuid().min(1),
+  
+  featured: z.boolean().default(false),
 
   tags: z.array(z.string()).default([]),
 

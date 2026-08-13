@@ -33,13 +33,8 @@ const createProject = async (req: Request, res: Response) => {
   try {
   
     const thumbnail = req.file as any;
-    
-    const tags = JSON.parse(req.body.tags);
-    
-    const data = {
-      ...req.body,
-      tags
-    }
+    const data = JSON.parse(req.body.data);
+    console.log("Tis is body:", req.body)
     
     const validatedData = createProjectSchema.parse(data);
     
