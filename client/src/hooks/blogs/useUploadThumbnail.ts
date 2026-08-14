@@ -2,28 +2,31 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import { toast } from "react-hot-toast";
 import { getErrorMessage } from "../../utils/getErrorMessage";
-import { type UpdateBlogInput } from "../../schema/blogs"
 
-type UpdateBlogInputType = {
+type UploadThumbnail = {
   id: string;
-  data: UpdateBlogInput;
-};
+  formData: FormData;
+}
+const uploadThumbnail = async ({
+  formData,
+  id
+}: UploadThumbnail) => {
 
-const updateBlog = async ({ id, data }: UpdateBlogInputType) => {
-  const res = await api.patch(`/blogs/${id}`, data);
-
+  const res = await api.patch(`/blogs/${id}/thumbnail`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    }});
+    
   return res.data;
 };
 
-export const useUpdateBlog = () => {
+export const useUploadThumbnail = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateBlog,
+    mutationFn: uploadThumbnail,
 
     onSuccess: () => {
-      toast.success("Blog updated successfully");
-
       queryClient.invalidateQueries({
         queryKey: ["blogs"],
       });
@@ -34,5 +37,3 @@ export const useUpdateBlog = () => {
     },
   });
 };
-
-
