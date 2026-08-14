@@ -65,6 +65,26 @@ const updateProject = async (req: Request, res: Response) => {
   }
 };
 
+// UPDATE THUMBNAIL 
+const updateThumbnail = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string;
+    
+    const thumbnail = req.file as any;
+    
+    const result = 
+      await ProjectsService.updateThumbnail({
+      id,
+      thumbnail_buffer: thumbnail?.buffer
+    });
+
+    res.status(200).json(result);
+  } catch (err: any) {
+    console.log(err.cause || err.message)
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // DELETE
 const deleteProject = async (req: Request, res: Response) => {
   try {
@@ -81,5 +101,6 @@ export const ProjectsController = {
   getProjectById,
   createProject,
   updateProject,
+  updateThumbnail,
   deleteProject,
 };

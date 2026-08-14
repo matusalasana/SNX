@@ -32,3 +32,5 @@ export type CreateBlogInput =
 
 export type UpdateBlogInput =
   z.infer<typeof updateBlogSchema>;
+  
+export type BlogFormData = CreateBlogInput | UpdateBlogInput;

@@ -1,66 +1,90 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Project } from "../../types/projects";
-import { createProjectSchema } from "../../schema/projects"; 
-import { useCategories } from "../../hooks/categories/useCategories"; 
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { 
+  useCreateProject,
+  useUpdateProject,
+  useUploadThumbnail 
+} from "../../hooks/projects";
+import { useCategories } from "../../hooks/categories/useCategories"; 
+import { 
+  createProjectSchema, 
+  updateProjectSchema, 
+  type CreateProjectInput,
+  type UpdateProjectInput,
+  type ProjectFormData,
+} from "../../schema/projects";
+
+
 interface ProjectFormProps {
-  project?: Project;
+  project?: ProjectFormData & { id?: string; thumbnail_url?: string };
   mode: "create" | "edit";
-  loading?: boolean;
-  onSubmit: (formData: FormData) => void;
+  onSuccess?: () => void;
 }
+
+const DEFAULT_VALUES: Partial<ProjectFormData> = {
+  title: "",
+  category_id: "",
+  description: "",
+  tags: [],
+  githubUrl: "",
+  liveUrl: "",
+  featured: false,
+};
+
 
 export default function ProjectForm({
   project,
   mode,
-  loading = false,
-  onSubmit,
+  onSuccess
 }: ProjectFormProps) {
-  const { data: categories, isLoading } = useCategories();
   
+  // Hooks & Mutations
+  const { data: categories, isLoading: loadingCategories } = useCategories();
+  const { mutateAsync: createProject, isPending: creating } = useCreateProject();
+  const { mutateAsync: updateProject, isPending: updating } = useUpdateProject();
+  const { mutateAsync: uploadThumbnail, isPending: uploading } = useUploadThumbnail();
+  
+  // Local states
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
-
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-
   const [tagInput, setTagInput] = useState("");
-
+  
+  // Select schema dynamically
+  const schemaToApply = mode === "create" 
+    ? createProjectSchema 
+    : updateProjectSchema;
+  
+  // Pending states
+  const isPending = creating || updating || uploading;
+    
   const {
     register,
     handleSubmit,
     setValue,
     watch,
     reset,
-  } = useForm<Project>({
-    resolver: zodResolver(createProjectSchema),
-    defaultValues: {
-      title: "",
-      category_id: "",
-      description: "",
-      tags: [],
-      githubUrl: "",
-      liveUrl: "",
-      featured: false,
-    },
+  } = useForm<ProjectFormData>({
+    resolver: zodResolver(schemaToApply),
+    defaultValues: DEFAULT_VALUES,
+    values: mode === "edit" && project 
+      ? (project as ProjectFormData) 
+      : undefined,
   });
 
   const tags = watch("tags") || [];
   
-  const finalTags = [...tags, tagInput];
-
-  useEffect(() => {
-    if (!project) return;
-
-    reset(project);
-
-    if (project.thumbnailUrl) {
-      setThumbnailPreview(project.thumbnailUrl);
-    }
-
-  }, [project, reset]);
-
-  // ---------------- TAGS ----------------
+  // File Preview Handler
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setThumbnail(file);
+    setThumbnailPreview(URL.createObjectURL(file));
+  };
+  
+  // Tags Handler
   const addTag = () => {
     const value = tagInput.trim();
     if (!value || tags.includes(value)) return;
@@ -70,42 +94,68 @@ export default function ProjectForm({
   };
 
   const removeTag = (tag: string) => {
+    const newTags = tags.filter((t) => t !== tag);
     setValue(
-      "tags",
-      tags.filter((t) => t !== tag)
+      "tags", 
+      newTags, 
+      { shouldValidate: true }
     );
   };
 
-  // ---------------- THUMBNAIL ----------------
-  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setThumbnail(file);
-    setThumbnailPreview(URL.createObjectURL(file));
-  };
-
-  // ---------------- SUBMIT ----------------
-  const submit = (data: Project) => {
-    const formData = new FormData();
+  // Submit handler
+  const submit = async(data: ProjectFormData) => {
+    try{
+      let projectId = project?.id;
+      
+      if (mode === "create") {
+        const payload = {
+          title: data.title,
+          category_id: data.category_id,
+          description: data.description,
+          tags,
+          githubUrl: data.githubUrl,
+          liveUrl: data.liveUrl,
+          featured: data.featured,
+        }
+        
+        const formData = new FormData();
     
-    const payload = {
-      title: data.title,
-      category_id: data.category_id,
-      description: data.description,
-      tags: finalTags,
-      githubUrl: data.githubUrl,
-      liveUrl: data.liveUrl,
-      featured: data.featured,
+        if (thumbnail) {
+          formData.append("thumbnail", thumbnail);
+        }
+        
+        formData.append("data", JSON.stringify(payload));
+        
+        // createProject handles post data + thumbnail simultaneously
+        const createdProject = await createProject(formData);
+        projectId = createdProject?.id;
+      } else if (mode === "edit" && projectId) {
+        await updateProject({
+          id: projectId, 
+          data: data as UpdateProjectInput 
+        }, {
+          onSuccess: () => {
+            onSuccess?.()
+          }
+        });
+      
+      
+        // Upload thumbnail ONLY if a new file was chosen in edit mode
+        if (thumbnail) {
+          const formData = new FormData();
+          formData.append("thumbnail", thumbnail);
+          
+          await uploadThumbnail({ 
+            id: projectId, 
+            formData 
+          });
+        }
+      }
+      reset();
+      onSuccess?.();
+    }catch (error) {
+      console.error("Form submission failed:", error);
     }
-
-    if (thumbnail) {
-      formData.append("thumbnail", thumbnail);
-    }
-    
-    formData.append("data", JSON.stringify(payload));
-    
-    onSubmit(formData);
   };
 
   const label =
@@ -162,11 +212,11 @@ export default function ProjectForm({
         
           <select
             className={input}
-            disabled={isLoading}
+            disabled={loadingCategories}
             {...register("category_id")}
           >
             <option value="">
-              {isLoading ? "Loading categories..." : "Select category"}
+              {loadingCategories ? "Loading categories..." : "Select category"}
             </option>
         
             {categories?.map((cat) => (
@@ -221,10 +271,10 @@ export default function ProjectForm({
 
         {/* SUBMIT */}
         <button
-          disabled={loading}
+          disabled={isPending}
           className="w-full bg-amber-500 text-white py-3 rounded"
         >
-          {loading
+          {isPending
             ? "Saving..."
             : mode === "edit"
             ? "Update Project"

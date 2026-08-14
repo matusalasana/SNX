@@ -18,7 +18,20 @@ router.post(
   upload.single("thumbnail"),
   ProjectsController.createProject
 );
-router.patch('/:id', validate(updateProjectSchema), requireAuth, ProjectsController.updateProject);
-router.delete('/:id', requireAuth, ProjectsController.deleteProject);
+
+router.patch('/:id', requireAuth, ProjectsController.updateProject);
+
+router.post(
+  '/:id/thumbnail', 
+  requireAuth,
+  upload.single("thumbnail"),
+  ProjectsController.updateThumbnail);
+
+router.delete(
+  '/:id', 
+  requireAuth,
+  upload.single("thumbnail"),
+  ProjectsController.deleteProject
+);
 
 export default router;

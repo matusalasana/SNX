@@ -96,6 +96,26 @@ const updateProject = async (
   return ProjectsRepository.update(id, dataToUpdate);
 };
 
+// UPDATE THUMBNAIL
+const updateThumbnail = async ({
+  id,
+  thumbnail_buffer
+}) => {
+  const exists = await ProjectsRepository.findById(id);
+
+  if (!exists) throw new Error("Project not found");
+
+  const thumbnailResult = await uploadToCloudinary(
+    thumbnail_buffer,
+    `projects/thumbnails`
+  )
+
+  return ProjectsRepository.updateThumbnail({
+    id,
+    thumbnailUrl: thumbnailResult.secure_url
+  });
+};
+
 // DELETE
 const deleteProject = async (id: string) => {
   const exists = await ProjectsRepository.findById(id);
@@ -110,5 +130,6 @@ export const ProjectsService = {
   getProjectById,
   createNewProject,
   updateProject,
+  updateThumbnail,
   deleteProject,
 };

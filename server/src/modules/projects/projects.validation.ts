@@ -4,18 +4,20 @@ export const createProjectSchema = z.object({
   title: z.string().min(3),
   
   category_id: z.uuid().min(1),
-  
-  featured: z.boolean().default(false),
 
   tags: z.array(z.string()).default([]),
-
-  description: z.string().min(5),
-
+  
   thumbnailUrl: z
     .string()
     .url()
     .optional()
     .or(z.literal("")),
+    
+  featured: z.boolean().default(false),
+  
+  description: z.string().min(5),
+  
+  order: z.number().int().optional().default(0),
 
   githubUrl: z
     .string()
@@ -28,8 +30,6 @@ export const createProjectSchema = z.object({
     .url()
     .optional()
     .or(z.literal("")),
-
-  order: z.number().int().optional().default(0),
 });
 
 export const updateProjectSchema = createProjectSchema.partial();

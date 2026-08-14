@@ -12,7 +12,7 @@ const uploadThumbnail = async ({
   id
 }: UploadThumbnail) => {
 
-  const res = await api.post(`/blogs/${id}/thumbnail`, formData, {
+  const res = await api.post(`/projects/${id}/thumbnail`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     }});
@@ -28,7 +28,7 @@ export const useUploadThumbnail = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["blogs"],
+        queryKey: ["projects"],
       });
     },
 

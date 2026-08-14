@@ -63,6 +63,21 @@ export const ProjectsRepository = {
 
     return result[0] ?? null;
   },
+  
+  updateThumbnail: async ({
+    id, 
+    thumbnailUrl 
+  }) => {
+    const result = await db
+      .update(projects)
+      .set({
+        thumbnailUrl
+      })
+      .where(eq(projects.id, id))
+      .returning();
+
+    return result[0] ?? null;
+  },
 
   deleteOne: async (id: string) => {
     const result = await db

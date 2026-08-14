@@ -1,34 +1,37 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { useProjects } from "../../hooks/projects/useProjects";
+import { 
+  useProjects,
+  useDeleteProject
+} from "../../hooks/projects";
 import { Skeleton } from "../../utils/skeleton";
 import { FileText, Trash2, Edit3 } from "lucide-react";
 import ProjectCard from "../../components/admin/ProjectCard";
 import ProjectForm from "../../components/admin/ProjectForm";
 import { Project } from "../../types/projects"
-import { useProjectForm } from "../../hooks/projects/useProjectForm"
 
 export default function AdminProjects() {
   const { data: projects = [], isLoading } = useProjects();
+  const { mutate: deleteProject, isPending } = useDeleteProject();
 
+  const [formMode, setFormMode] = useState<"create" | "edit" | null>(null);
   const [selected, setSelected] = useState<Project | null>(null);
   
-  const {
-    modal,
-    openCreate,
-    openEdit,
-    closeModal,
-
-    submitProject,
-    deleteProject,
-
-    currentProject,
-    isEditing,
-
-    creating,
-    updating,
-  } = useProjectForm();
-
+  const openCreate = () => {
+    setSelected(null);
+    setFormMode("create");
+  };
+  
+  const openEdit = (project: Project) => {
+    setSelected(project);
+    setFormMode("edit");
+  };
+  
+  const closeModal = () => {
+    setSelected(null);
+    setFormMode(null);
+  };
+  
   if (isLoading) {
     return (
       <section className="max-w-6xl mx-auto py-24 px-6">
@@ -78,39 +81,32 @@ export default function AdminProjects() {
           <ProjectCard
             key={project.id}
             project={project}
-            onEdit={openEdit}
-            onDelete={deleteProject}
+            onEdit={() => openEdit(project)}
+            onDelete={() => deleteProject(project.id)}
           />
         ))}
       </div>
         
       {/* MODAL */}
-      {modal && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 p-4">
-          <div className="w-full max-w-xl bg-zinc-900 p-6 rounded-2xl border border-zinc-800">
-
-            <h2 className="text-amber-400 text-xl mb-4">
-              {modal === "create" ? "Create Project" : "Edit Project"}
-            </h2>
-
-            <ProjectForm
-              mode={modal === "create" ? "create" : "edit"}
-              project={currentProject}
-              onSubmit={submitProject}
-              loading={creating || updating}
-
-            />
-
-            <button
-              onClick={closeModal}
-              className="mt-4 text-zinc-400 text-sm"
-            >
-              Cancel
-            </button>
-
-          </div>
+      {formMode && (
+      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 p-4">
+        <div className="mx-auto w-full max-w-xl rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+          <ProjectForm
+            mode={formMode}
+            project={selected ?? undefined}
+            onSuccess={closeModal}
+          />
+    
+          <button
+            type="button"
+            onClick={closeModal}
+            className="mt-4 text-sm text-zinc-400"
+          >
+            Cancel
+          </button>
         </div>
-      )}
+      </div>
+    )}
 
     </section>
   );

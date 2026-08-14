@@ -42,7 +42,7 @@ router.patch(
   BlogsController.updateBlog
 );
 
-router.patch(
+router.post(
   "/:id/thumbnail",
   requireAuth,
   upload.single("thumbnail"),

@@ -12,18 +12,15 @@ import {
   createBlogSchema, 
   updateBlogSchema, 
   type CreateBlogInput,
-  type UpdateBlogInput
+  type UpdateBlogInput,
+  type BlogFormData
 } from "../../schema/blogs";
-
-// 1. Define Unified Form Type
-export type BlogFormData = CreateBlogInput | UpdateBlogInput;
 
 interface BlogFormProps {
   blog?: BlogFormData & { id?: string; thumbnail_url?: string };
   mode: "create" | "edit";
   onSuccess?: () => void;
 }
-
 
 const DEFAULT_VALUES: Partial<BlogFormData> = {
   title: "",
@@ -34,6 +31,7 @@ const DEFAULT_VALUES: Partial<BlogFormData> = {
   featured: false,
   readTime: "",
 };
+
 
 const BlogForm = ({ blog, mode, onSuccess }: BlogFormProps) => {
   
@@ -91,7 +89,12 @@ const BlogForm = ({ blog, mode, onSuccess }: BlogFormProps) => {
   };
 
   const removeTag = (tagToRemove: string) => {
-    setValue("tags", tags.filter((t) => t !== tagToRemove), { shouldValidate: true });
+    const newTags = tags.filter((t) => t !== tag);
+    setValue(
+      "tags", 
+      newTags, 
+      { shouldValidate: true }
+    );
   };
 
 const handleFormSubmit = async (data: BlogFormData) => {
@@ -120,7 +123,7 @@ const handleFormSubmit = async (data: BlogFormData) => {
       blogId = createdBlog?.id;
 
     } else if (mode === "edit" && blogId) {
-      await updateBlog({ 
+      await updateBlog({
         id: blogId, 
         data: data as UpdateBlogInput 
       }, {
