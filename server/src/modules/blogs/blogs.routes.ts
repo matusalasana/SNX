@@ -39,9 +39,16 @@ router.post(
 router.patch(
   "/:id",
   requireAuth,
-  upload.single("thumbnail"),
   BlogsController.updateBlog
 );
+
+router.patch(
+  "/:id/thumbnail",
+  requireAuth,
+  upload.single("thumbnail"),
+  BlogsController.updateThumbnail
+);
+
 
 router.delete(
   "/:id",

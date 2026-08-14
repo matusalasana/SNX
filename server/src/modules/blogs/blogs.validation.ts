@@ -3,23 +3,19 @@ import { z } from "zod";
 export const createBlogSchema = z.object({
   title: z.string().min(3),
 
-  content: z.string().min(10),
+  content: z.string().min(20),
 
-  thumbnailUrl: z
-    .string()
-    .url()
-    .optional()
-    .or(z.literal("")),
+  thumbnailUrl: z.string().optional(),
 
   status: z
     .enum(["draft", "published"])
     .default("draft"),
 
-  readTime: z.string().min(1),
+  readTime: z.string().min(1, "Read time is required"),
 
   tags: z.array(z.string()).default([]),
 
-  category: z.string().optional(),
+  category_id: z.uuid().min(1),
 
   featured: z.boolean().default(false),
 });

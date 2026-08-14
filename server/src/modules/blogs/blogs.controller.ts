@@ -5,19 +5,30 @@ import {
 
 import { BlogsService }
 from "./blogs.service";
+import { createBlogSchema, updateBlogSchema } from "./blogs.validation"
 
-const getBlogs = async (
-  req: Request,
-  res: Response
-) => {
+const getBlogs = async (req: Request, res: Response) => {
   try {
+    const filters = {
+      featured:
+        req.query.featured !== undefined
+          ? req.query.featured === "true"
+          : undefined,
 
-    const blogs = 
-      await BlogsService.getBlogs();
+      category:
+        req.query.category !== undefined
+          ? req.query.category
+          : undefined,
+    };
+
+    const blogs = await BlogsService.getBlogs(filters);
 
     res.status(200).json(blogs);
   } catch (err: any) {
-    console.log(`${req.method}: ${req.path} error: ${err.cause || err.message}`);
+    console.error(
+      `${req.method}: ${req.path} error: ${err.cause || err.message}`,
+    );
+
     res.status(500).json({
       error: err.message,
     });
@@ -29,10 +40,9 @@ const getBlogById = async (
   res: Response
 ) => {
   try {
-    const blog =
-      await BlogsService.getBlogById(
-        req.params.id as string
-      );
+    const id = req.params.id as string;
+    const blog = 
+      await BlogsService.getBlogById(id);
 
     res.status(200).json(blog);
   } catch (err: any) {
@@ -47,10 +57,15 @@ const createBlog = async (
   res: Response
 ) => {
   try {
-    const blog =
-      await BlogsService.createNewBlog({
-        thumbnail_buffer: req.file?.buffer,
-        body: JSON.parse(req.body.data)
+    const thumbnail = req.file as any;
+    
+    const data = JSON.parse(req.body.data);
+    
+    const validated = createBlogSchema.parse(data);
+    
+    const blog = await BlogsService.createBlog({
+        thumbnail_buffer: thumbnail?.buffer,
+        validated,
       });
 
     res.status(201).json(blog);
@@ -69,12 +84,34 @@ const updateBlog = async (
 ) => {
   try {
     const id = req.params.id as string;
-    const blog =
-      await BlogsService.updateBlog({
-        id,
-        thumbnail_buffer: req.file?.buffer,
-        body: JSON.parse(req.body.data)
-      });
+    console.log(req.body)
+    const validated = updateBlogSchema.parse(req.body);
+    
+    const blog = await BlogsService.updateBlog({
+      id,
+      validated
+    });
+
+    res.status(200).json(blog);
+  } catch (err: any) {
+    console.log(err.cause || err.message,)
+    res.status(500).json({
+      error: err.cause || err.message,
+    });
+  }
+};
+
+const updateThumbnail = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const id = req.params.id as string;
+    
+    const blog = await BlogsService.updateThumbnail({
+      id,
+      thumbnail_buffer: req.file?.buffer
+    });
 
     res.status(200).json(blog);
   } catch (err: any) {
@@ -110,5 +147,6 @@ export const BlogsController = {
   getBlogById,
   createBlog,
   updateBlog,
+  updateThumbnail,
   deleteBlog,
 };

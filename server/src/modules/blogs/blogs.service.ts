@@ -7,36 +7,34 @@ import {
   UpdateBlogInput,
 } from "./blogs.validation";
 
-const getAllBlogs = async () => {
-  return await  BlogsRepository.getBlogs();
+export type BlogFilters = {
+  featured?: boolean;
+  category?: string;
 };
 
-const getBlogById = async (
-  id: string
-) => {
-  const blog =
-    await BlogsRepository.findById(id);
+const getBlogs = async (filters: BlogFilters) => {
+  return await BlogsRepository.getBlogs(filters);
+};
 
-  if (!blog)
-    throw new Error(
-      "Blog post not found"
-    );
+const getBlogById = async (id: string) => {
+  if(!id) throw new Error("Id is not provided");
+  
+  const blog = await BlogsRepository.getBlogById(id);
+
+  if (!blog) throw new Error("Blog post not found");
 
   return blog;
 };
 
-const createNewBlog = async ({
+const createBlog = async ({
   thumbnail_buffer,
-  body
+  validated
 }) => {
-  const validated = createBlogSchema.parse(body);
   const {
     title,
     content,
-    summary,
     readTime,
-    author="Sana Matusala",
-    category,
+    category_id,
     tags,
     status,
     featured
@@ -49,14 +47,12 @@ const createNewBlog = async ({
     `blogs/thumbnails`
   )
   
-  return await BlogsRepository.create({
+  return await BlogsRepository.createBlog({
     title,
     content,
-    summary,
     status,
     readTime,
-    author,
-    category,
+    categoryId: category_id,
     featured,
     tags,
     thumbnailUrl: uploadResult.secure_url
@@ -65,11 +61,8 @@ const createNewBlog = async ({
 
 const updateBlog = async ({
   id,
-  body,
-  thumbnail_buffer
+  validated
 }) => {
-  const validated = updateBlogSchema.parse(body);
-  
   if(!validated){
     throw new Error("Body data not found");
   }
@@ -77,32 +70,18 @@ const updateBlog = async ({
   const {
     title,
     content,
-    summary,
     readTime,
-    author="Sana Matusala",
-    category,
+    category_id,
     tags,
     status,
     featured
   } = validated;
   
-  const exists = await BlogsRepository.findById(id);
+  const exists = await BlogsRepository.getBlogById(id);
 
   if (!exists) throw new Error("Blog post not found");
-
-  let uploadResult;
-  if(thumbnail_buffer){
-    uploadResult = await uploadToCloudinary(
-      thumbnail_buffer,
-      `blogs/thumbnails`
-    )
-  }
   
   const dataToUpdate = {};
-  
-  if(uploadResult?.secure_url !== undefined){
-    dataToUpdate.thumbnailUrl=uploadResult.secure_url
-  }
   
   if(title !== undefined){
     dataToUpdate.title=title
@@ -112,20 +91,12 @@ const updateBlog = async ({
     dataToUpdate.content=content
   }
   
-  if(summary !== undefined){
-    dataToUpdate.summary=summary
-  }
-  
   if(readTime !== undefined){
     dataToUpdate.readTime=readTime
   }
   
-  if(author !== undefined){
-    dataToUpdate.author=author
-  }
-  
-  if(category !== undefined){
-    dataToUpdate.category=category
+  if(category_id !== undefined){
+    dataToUpdate.categoryId=category_id
   }
   
   if(status !== undefined){
@@ -140,9 +111,34 @@ const updateBlog = async ({
     dataToUpdate.tags=tags
   }
   
+  if (tags && Array.isArray(tags)) {
+    dataToUpdate.tags = tags;
+  }
+  
   return BlogsRepository.update({
     id,
     data: dataToUpdate
+  });
+};
+
+const updateThumbnail = async ({
+  id,
+  thumbnail_buffer
+}) => {
+  const existing = await BlogsRepository.getBlogById(id);
+
+  if (!existing) throw new Error("Blog post not found");
+
+  if (!thumbnail_buffer) throw new Error("Thumbnail buffer is missing");
+
+  const uploadResult = await uploadToCloudinary(
+    thumbnail_buffer,
+    `blogs/thumbnails`
+  );
+
+  return BlogsRepository.updateThumbnail({
+    id,
+    thumbnailUrl: uploadResult.secure_url,
   });
 };
 
@@ -150,7 +146,7 @@ const deleteBlog = async (
   id: string
 ) => {
   const existing =
-    await BlogsRepository.findById(id);
+    await BlogsRepository.getBlogById(id);
 
   if (!existing)
     throw new Error(
@@ -161,9 +157,10 @@ const deleteBlog = async (
 };
 
 export const BlogsService = {
-  getAllBlogs,
+  getBlogs,
   getBlogById,
-  createNewBlog,
+  createBlog,
   updateBlog,
+  updateThumbnail,
   deleteBlog,
 };
