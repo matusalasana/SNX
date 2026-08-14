@@ -32,6 +32,7 @@ const createNewProject = async ({
     title,
     category_id,
     description,
+    content,
     tags,
     githubUrl,
     liveUrl,
@@ -48,6 +49,7 @@ const createNewProject = async ({
     title,
     categoryId: category_id,
     description,
+    content,
     tags,
     githubUrl,
     liveUrl,
@@ -73,6 +75,9 @@ const updateProject = async (
   }
   if(data.category_id){
     dataToUpdate.category_id=data.category_id
+  }
+  if(data.content){
+    dataToUpdate.content=data.content
   }
   if(data.description){
     dataToUpdate.description=data.description

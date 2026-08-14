@@ -27,6 +27,7 @@ const DEFAULT_VALUES: Partial<ProjectFormData> = {
   title: "",
   category_id: "",
   description: "",
+  content: "",
   tags: [],
   githubUrl: "",
   liveUrl: "",
@@ -112,6 +113,7 @@ export default function ProjectForm({
           title: data.title,
           category_id: data.category_id,
           description: data.description,
+          content: data.content,
           tags,
           githubUrl: data.githubUrl,
           liveUrl: data.liveUrl,
@@ -158,31 +160,36 @@ export default function ProjectForm({
     }
   };
 
-  const label =
-    "block text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1";
-
-  const input =
-    "w-full rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-amber-500";
-
   return (
     <div className="w-full">
       <form onSubmit={handleSubmit(submit)} className="space-y-6">
 
         {/* TITLE */}
         <div>
-          <label className={label}>Title</label>
-          <input {...register("title")} className={input} />
+          <label className="label">Title</label>
+          <input {...register("title")} className="input" />
         </div>
-
-        {/* DESCRIPTION */}
+        
+        {/* CONTENT */}
         <div>
-          <label className={label}>Description</label>
-          <textarea {...register("description")} rows={5} className={input} />
+            <label className="label">Content</label>
+            <textarea
+              {...register("content")}
+              rows={12}
+              placeholder="Write about the project ..."
+              className="input font-mono text-xs leading-relaxed"
+            />
+          </div>
+
+        {/* DESCRIPTION */} 
+        <div>
+          <label className="label">Description</label>
+          <textarea {...register("description")} rows={5} className="input" />
         </div>
 
         {/* THUMBNAIL */}
         <div>
-          <label className={label}>Thumbnail</label>
+          <label className="label">Thumbnail</label>
 
           <label
             htmlFor="thumbnail"
@@ -208,10 +215,10 @@ export default function ProjectForm({
 
         {/* CATEGORY */}
         <div>
-          <label className={label}>Category</label>
+          <label className="label">Category</label>
         
           <select
-            className={input}
+            className="input"
             disabled={loadingCategories}
             {...register("category_id")}
           >
@@ -229,19 +236,19 @@ export default function ProjectForm({
 
         {/* LINKS */}
         <div className="grid md:grid-cols-2 gap-4">
-          <input {...register("githubUrl")} placeholder="GitHub URL" className={input} />
-          <input {...register("liveUrl")} placeholder="Live URL" className={input} />
+          <input {...register("githubUrl")} placeholder="GitHub URL" className="input" />
+          <input {...register("liveUrl")} placeholder="Live URL" className="input" />
         </div>
 
         {/* TAGS */}
         <div>
-          <label className={label}>Tags</label>
+          <label className="label">Tags</label>
 
           <div className="flex gap-2">
             <input
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
-              className={input}
+              className="input"
             />
 
             <button type="button" onClick={addTag} className="bg-amber-500 text-white px-4 rounded">

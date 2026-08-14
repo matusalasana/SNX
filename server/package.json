@@ -9,6 +9,7 @@
     "start": "node dist/server.js",
     "clean": "rm -rf dist",
     "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
     "push": "drizzle-kit push",
     "schema:drop": "tsx src/db/schema/reset.ts",
     "check": "tsc --noEmit"

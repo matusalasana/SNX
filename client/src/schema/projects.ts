@@ -7,6 +7,8 @@ export const createProjectSchema = z.object({
 
   tags: z.array(z.string()).default([]),
   
+  content: z.string().min(20),
+  
   thumbnailUrl: z
     .string()
     .url()

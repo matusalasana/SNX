@@ -21,7 +21,7 @@ const getProjectById = async (req: Request, res: Response) => {
     const project = await ProjectsService.getProjectById(
       req.params.id as string
     );
-
+    console.log(project)
     res.status(200).json(project);
   } catch (err: any) {
     res.status(404).json({ error: err.message });

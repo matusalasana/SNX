@@ -18,6 +18,8 @@ export const projects = pgTable("projects", {
   categoryId: uuid("category_id")
     .references(() => categories.id, { onDelete: 'set null' })
     .notNull(),
+    
+  content: text("content"),
   
   tags: varchar("tags", { length: 50 })
     .array()

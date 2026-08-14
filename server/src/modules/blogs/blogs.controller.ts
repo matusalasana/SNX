@@ -43,7 +43,6 @@ const getBlogById = async (
     const id = req.params.id as string;
     const blog = 
       await BlogsService.getBlogById(id);
-
     res.status(200).json(blog);
   } catch (err: any) {
     res.status(404).json({

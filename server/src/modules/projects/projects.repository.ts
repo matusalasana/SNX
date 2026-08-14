@@ -1,6 +1,6 @@
 import { db } from "../../db";
 import { projects } from "../../db/schema/projects";
-import { projectImages } from "../../db/schema/project_images";
+import { categories } from "../../db/schema/categories";
 import { desc, eq } from "drizzle-orm";
 import {
   CreateProjectInput,
@@ -17,31 +17,22 @@ export const ProjectsRepository = {
 
   findById: async (id: string) => {
     const [result] = await db
-      .select()
+      .select({
+        project: projects,
+        category: categories.name,
+      })
       .from(projects)
+      .innerJoin(
+        categories, eq(categories.id, projects.categoryId)
+      )
       .where(eq(projects.id, id));
     
-    const images = await db
-      .select()
-      .from(projectImages)
-      .where(eq(projectImages.projectId, id));
-    
-    let imagesUrls;
-    if(images.length>0){
-      imagesUrls = images.map((m) => m.imageUrl)
+    const finalData = {
+      ...result.project,
+      category: result.category
     }
     
-    return {
-      title: result.title,
-      category: result.category,
-      description: result.description,
-      tags: result.tags,
-      githubUrl: result.githubUrl,
-      liveUrl: result.liveUrl,
-      order: result.order,
-      featured: result.featured,
-      images:imagesUrls,
-    }
+    return finalData ?? null
   },
 
   create: async (data) => {

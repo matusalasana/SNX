@@ -1,21 +1,13 @@
-import { useEffect, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useBlogs } from "../../hooks/blogs/useBlogs";
+import { useBlog } from "../../hooks/blogs/useBlog";
 import { Clock, Calendar, ArrowLeft, Star } from "lucide-react";
 import { Skeleton } from "../../utils/skeleton";
-import BlogContent from "../../components/admin/BlogContent";
+import MarkdownContent from "../../utils/MarkdownContent";
 
 export default function BlogDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: blogs = [], isLoading } = useBlogs();
-
-  // Scroll to top on load
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]);
-
-  const blog = useMemo(() => blogs.find((b) => b.id === id), [blogs, id]);
+  const { data: blog = [], isLoading } = useBlog(id!);
 
   if (isLoading) return <BlogDetailsSkeleton />;
 
@@ -32,44 +24,56 @@ export default function BlogDetails() {
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-24 dark:bg-zinc-900 dark:text-zinc-200">
-      {/* Back Link */}
-      <Link to="/blog" className="mb-10 inline-flex items-center gap-2 text-sm text-zinc-500 transition hover:text-amber-500 dark:text-zinc-400">
-        <ArrowLeft className="h-4 w-4" /> Back to articles
-      </Link>
+
+      <div className="flex flex-col gap-2 mb-10 text-zinc-500 text-sm dark:text-zinc-400">
+        <Link to="/blogs" className="inline-flex items-center text-sm text-zinc-500 transition hover:text-amber-500 dark:text-zinc-400">
+          <ArrowLeft className="h-4 w-4" /> Back to Articles
+        </Link>
+        <span>
+            {new Date(blog.createdAt).toLocaleDateString()}
+          </span>
+      </div>
 
       {/* Header */}
       <header className="mb-10 space-y-4">
+      
+        {/* META */}
         <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
-          {blog.category && <span className="uppercase tracking-wider text-amber-500">{blog.category}</span>}
+          <span className="flex items-center gap-1">
+              <Clock className="h-3 w-3" /> 
+              {blog.readTime}
+          </span>
+          {blog.category && (
+            <span className="font-medium uppercase tracking-wider text-blue-500">
+              {blog.category}
+            </span>
+          )}
           {blog.featured && (
             <span className="flex items-center gap-1 text-amber-500">
               <Star className="h-3 w-3 fill-amber-500" /> Featured
             </span>
           )}
-          <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {blog.readTime}</span>
-          <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {new Date(blog.createdAt).toLocaleDateString()}</span>
-          <span>By {blog.author}</span>
         </div>
 
-        <h1 className="leading-tight text-3xl font-bold text-zinc-900 dark:text-white md:text-5xl">
+        {/* TITLE */}
+        <h1 className="text-3xl font-bold leading-tight tracking-tight text-zinc-900 md:text-4xl dark:text-white">
           {blog.title}
         </h1>
-        <p className="text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">{blog.summary}</p>
       </header>
 
       {/* Thumbnail */}
       {blog.thumbnailUrl && (
-        <img src={blog.thumbnailUrl} alt={blog.title} className="mb-10 w-full rounded-2xl border border-zinc-200 dark:border-zinc-800" />
+        <img src={blog.thumbnailUrl} alt={blog.title} className="image" />
       )}
 
       {/* Content */}
       <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-amber-500">
-        <BlogContent content={blog.content} />
+        <MarkdownContent content={blog.content} />
       </div>
 
       {/* Tags */}
       <div className="mt-10 flex flex-wrap gap-2">
-        {blog.tags.map((tag) => (
+        {(blog.tags ?? []).map((tag: string) => (
           <span key={tag} className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
             {tag}
           </span>

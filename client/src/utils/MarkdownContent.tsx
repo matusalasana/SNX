@@ -1,11 +1,11 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-interface BlogContentProps {
+interface MarkdownContentProps {
   content: string;
 }
 
-export default function BlogContent({ content }: BlogContentProps) {
+export default function MarkdownContent({ content }: MarkdownContentProps) {
   return (
     <article className="prose
     prose-zinc
@@ -15,7 +15,7 @@ export default function BlogContent({ content }: BlogContentProps) {
     prose-a:text-amber-500
     prose-a:no-underline
     hover:prose-a:underline
-    prose-blockquote:border-amber-500">
+    prose-blockquote:border-amber-500 mb-5">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>
         {content}
       </ReactMarkdown>

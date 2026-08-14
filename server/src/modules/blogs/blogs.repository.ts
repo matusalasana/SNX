@@ -1,5 +1,6 @@
 import { db } from "../../db";
 import { blogs } from "../../db/schema/blogs";
+import { categories } from "../../db/schema/categories";
 
 import {
   desc,
@@ -34,12 +35,22 @@ const getBlogs = async (filters: BlogFilters) => {
 };
 
 const getBlogById = async (id: string) => {
-  const result = await db
-    .select()
+  const [result] = await db
+    .select({
+      blog: blogs,
+      category: categories.name
+    })
     .from(blogs)
+    .innerJoin(
+      categories, eq(blogs.categoryId, categories.id)
+    )
     .where(eq(blogs.id, id));
-
-  return result[0] ?? null;
+  
+  const finalData = {
+    ...result.blog,
+    category: result.category
+  }
+  return finalData ?? null;
 };
 
 const createBlog = async (data: CreateBlogInput) => {
