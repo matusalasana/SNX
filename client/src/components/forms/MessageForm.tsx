@@ -2,14 +2,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, User, MessageSquare, Send, Loader2 } from "lucide-react";
 
-import { useSendMessage } from "../../hooks/messages/";
+import { useSendMessage } from "../../hooks/messages";
+import { type MessageFormData, messageSchema } from "../../schema/messages";
 
-
-
-type MessageFormData = z.infer<typeof messageSchema>;
 
 export default function MessageForm() {
-  const { mutate: createMessage, isPending } = useSendMessage();
+  const { mutate: sendMessage, isPending } = useSendMessage();
 
   const {
     register,
@@ -21,7 +19,12 @@ export default function MessageForm() {
   });
 
   const onSubmit = (data: MessageFormData) => {
-    createMessage(data, { onSuccess: () => reset() });
+    sendMessage(data, { 
+      onSuccess: () => {
+      reset()
+      onSuccess?.()
+    }}
+    );
   };
 
   return (
@@ -30,47 +33,51 @@ export default function MessageForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50"
       >
-        <FormInput 
-            label="Name" 
-            icon={<User size={16} />} 
+        <div>
+          <label className="label">Name</label>
+          <input 
             {...register("name")} 
-            error={errors.name?.message} 
-            placeholder="Jane Doe" 
-        />
+            placeholder="John Doe" 
+            className="input" 
+          />
+          {errors.name && <p className="error-text">{errors.name.message}</p>}
+        </div>
         
-        <FormInput 
-            label="Email" 
-            icon={<Mail size={16} />} 
+        <div>
+          <label className="label">Email</label>
+          <input 
             {...register("email")} 
-            error={errors.email?.message} 
             placeholder="jane@example.com" 
-        />
-
-        <FormInput 
-            label="Subject" 
+            className="input" 
+          />
+          {errors.email && <p className="error-text">{errors.email.message}</p>}
+        </div>
+        
+        <div>
+          <label className="label">Subject</label>
+          <input 
             {...register("subject")} 
-            error={errors.subject?.message} 
             placeholder="Project inquiry" 
-        />
+            className="input" 
+          />
+          {errors.subject && <p className="error-text">{errors.subject.message}</p>}
+        </div>
 
-        <div className="space-y-1">
-          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Message</label>
-          <div className="relative">
-            <MessageSquare className="absolute left-3 top-3 text-zinc-400" size={16} />
-            <textarea
-              {...register("message")}
-              rows={4}
-              className="w-full rounded-xl border border-zinc-200 bg-white px-10 py-3 text-sm outline-none transition focus:border-amber-500 dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-amber-500"
-              placeholder="How can I help you?"
-            />
-          </div>
-          {errors.message && <p className="text-xs text-red-500">{errors.message.message}</p>}
+        <div>
+          <label className="label">Message</label>
+          <textarea
+            {...register("message")}
+            rows={12}
+            placeholder="How can I help you?"
+            className="textarea"
+          />
+          {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>}
         </div>
 
         <button
           type="submit"
           disabled={isPending}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-amber-500 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-amber-500"
+          className="btn btn-primary"
         >
           {isPending ? <Loader2 className="animate-spin" size={16} /> : <Send size={16} />}
           {isPending ? "Sending..." : "Send Message"}
@@ -79,18 +86,3 @@ export default function MessageForm() {
     </div>
   );
 }
-
-// Reusable input component for cleaner code
-const FormInput = ({ label, icon, error, ...props }: any) => (
-  <div className="space-y-1">
-    <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{label}</label>
-    <div className="relative">
-      {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">{icon}</div>}
-      <input
-        {...props}
-        className={`w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-amber-500 dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-amber-500 ${icon ? "pl-10" : ""}`}
-      />
-    </div>
-    {error && <p className="text-xs text-red-500">{error}</p>}
-  </div>
-);

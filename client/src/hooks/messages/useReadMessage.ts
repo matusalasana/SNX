@@ -27,7 +27,7 @@ export const useReadMessage = () => {
       queryClient.invalidateQueries({
         queryKey: ["messages"],
       });
-      
+    },
     onError: (error) => {
       toast.error(getErrorMessage(error));
     },

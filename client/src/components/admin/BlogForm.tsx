@@ -178,7 +178,7 @@ const handleFormSubmit = async (data: BlogFormData) => {
               {...register("content")}
               rows={12}
               placeholder="Write your story..."
-              className="input font-mono text-xs leading-relaxed"
+              className="textarea"
             />
             {errors.content && <p className="mt-1 text-xs text-red-500">{errors.content.message}</p>}
           </div>

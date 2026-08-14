@@ -1,5 +1,5 @@
 import { Mail, MapPin, Github, Linkedin } from "lucide-react";
-import MessageForm from "../../components/common/MessageForm";
+import MessageForm from "../../components/forms/MessageForm";
 
 export default function Contact() {
   return (
