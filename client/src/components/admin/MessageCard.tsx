@@ -1,82 +1,78 @@
-import { Mail, User, Clock } from "lucide-react";
-import { Message } from "../../types/messages"
+import { Eye, Trash2, User } from "lucide-react";
 
-type Props = {
-  message: Message;
-  isSelected?: boolean;
-  onClick?: () => void;
-};
+interface MessageCardProps {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  isDeleting: boolean;
+  onView: () => void;
+  onDelete: () => void;
+}
 
 export default function MessageCard({
+  name,
+  email,
+  subject,
   message,
-  isSelected,
-  onClick,
-}: Props) {
+  isDeleting,
+  onView,
+  onDelete,
+}: MessageCardProps) {
   return (
-    <div
-      onClick={onClick}
-      className={`
-        cursor-pointer rounded-xl border p-4 transition
-        ${
-          isSelected
-            ? "border-amber-500/40 bg-zinc-900/40"
-            : "border-zinc-800 bg-zinc-900/20 hover:border-zinc-700"
-        }
-      `}
-    >
-      {/* HEADER */}
-      <div className="flex items-start justify-between gap-3 mb-2">
-        <div className="flex-1">
-          
-          {/* NAME + STATUS */}
-          <div className="flex items-center justify-between">
-            <h3 className="font-medium text-white text-sm">
-              {message.name}
-            </h3>
-
-            {!message.isRead ? (
-              <span className="text-[10px] text-amber-400 uppercase tracking-wider">
-                New
-              </span>
-            ) : (
-              <span className="text-[10px] text-zinc-500 uppercase tracking-wider">
-                Read
-              </span>
-            )}
+    <article className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900">
+      {/* Header: User Info & Actions */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-amber-400">
+            <User size={20} />
           </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+              {name}
+            </h3>
+            <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
+              {email}
+            </p>
+          </div>
+        </div>
 
-          {/* SUBJECT */}
-          <p className="text-sm text-amber-400 font-medium truncate mt-1">
-            {message.subject}
-          </p>
+        {/* Action Buttons */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button
+            type="button"
+            onClick={onView}
+            aria-label="View message"
+            className="btn btn-outline p-2"
+          >
+            <Eye size={18} />
+          </button>
+
+          <button
+            type="button"
+            onClick={onDelete}
+            disabled={isDeleting}
+            aria-label="Delete message"
+            className="btn btn-danger p-2 disabled:opacity-50"
+          >
+            {isDeleting ? (
+              <span className="block h-4 w-4 animate-spin rounded-full border-2 border-zinc-300 border-t-red-500" />
+            ) : (
+              <Trash2 size={18} />
+            )}
+          </button>
         </div>
       </div>
 
-      {/* EMAIL */}
-      <div className="flex items-center gap-2 text-xs text-zinc-400 mb-2">
-        <Mail className="w-3 h-3" />
-        <span className="truncate">{message.email}</span>
+      {/* Body: Subject & Content Preview */}
+      <div className="space-y-1 pt-1 border-t border-zinc-100 dark:border-zinc-800/60">
+        <h4 className="line-clamp-1 text-sm font-medium text-zinc-800 dark:text-zinc-200">
+          {subject}
+        </h4>
+        <p className="line-clamp-2 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+          {message}
+        </p>
       </div>
-
-      {/* PREVIEW */}
-      <p className="text-xs text-zinc-500 line-clamp-2">
-        {message.message}
-      </p>
-
-      {/* FOOTER */}
-      <div className="flex items-center justify-between mt-3 text-[10px] text-zinc-600">
-        <div className="flex items-center gap-1">
-          <User className="w-3 h-3" />
-          <span>{message.name}</span>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <Clock className="w-3 h-3" />
-          <span>
-            {new Date(message.createdAt).toLocaleDateString()}
-          </span>
-        </div>
-      </div>
-    </div>
+    </article>
   );
 }
