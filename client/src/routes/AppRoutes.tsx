@@ -23,6 +23,7 @@ import Test from "../pages/public/Test";
 
 // Admin pages
 import AdminDashboard from "../pages/admin/Dashboard";
+import AdminCategories from "../pages/admin/AdminCategories";
 import AdminMessages from "../pages/admin/AdminMessages";
 import AdminBlogEditor from "../pages/admin/AdminBlogEditor";
 import AdminBlogs from "../pages/admin/AdminBlogs";
@@ -98,6 +99,10 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <AdminDashboard />,
+          },
+          {
+            path: "categories",
+            element: <AdminCategories />,
           },
           {
             path: "messages",

@@ -31,7 +31,6 @@ router.post(
 router.delete(
   "/:id",
   requireAuth,
-  validate(categoryIdSchema),
   CategoriesController.deleteCategory
 );
 

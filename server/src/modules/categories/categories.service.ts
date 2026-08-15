@@ -7,14 +7,14 @@ import {
 
 const getAllCategories =
   async () => {
-    return CategoriesRepository.findAll();
+    return await CategoriesRepository.findAll();
   };
 
 const createNewCategory =
   async (
     data: CreateCategoryInput
   ) => {
-    return CategoriesRepository.create(
+    return await CategoriesRepository.create(
       data
     );
   };
@@ -32,7 +32,7 @@ const deleteCategory =
       );
     }
 
-    return CategoriesRepository.deleteOne(
+    return await CategoriesRepository.deleteOne(
       id
     );
   };
