@@ -5,13 +5,8 @@ type SkeletonProps = {
 export const Skeleton = ({ className = "" }: SkeletonProps) => {
   return (
     <div
-      className={`
-        animate-pulse
-        rounded-md
-        bg-zinc-200
-        dark:bg-zinc-800
-        ${className}
-      `}
+      className={`skeleton ${className}`}
+      aria-hidden="true"
     />
   );
 };

@@ -9,6 +9,7 @@ import { createBlogSchema, updateBlogSchema } from "./blogs.validation"
 
 const getBlogs = async (req: Request, res: Response) => {
   try {
+    
     const filters = {
       featured:
         req.query.featured !== undefined
@@ -20,8 +21,10 @@ const getBlogs = async (req: Request, res: Response) => {
           ? req.query.category
           : undefined,
     };
+    console.log("filter:", filters)
 
     const blogs = await BlogsService.getBlogs(filters);
+    console.log("body:", blogs)
 
     res.status(200).json(blogs);
   } catch (err: any) {

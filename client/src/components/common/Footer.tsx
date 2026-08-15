@@ -1,36 +1,53 @@
 import { Github, Linkedin, Mail } from "lucide-react";
 
 export default function Footer() {
-  const iconClass =
-    "group rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-3 text-gray-500 dark:text-gray-400 transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:bg-amber-500/5 hover:text-amber-500";
+  const iconClass = `
+    group
+    rounded-xl
+    border border-border
+    bg-card
+    p-3
+    text-secondary
+    transition-all duration-300
+    hover:-translate-y-1
+    hover:border-primary/40
+    hover:bg-primary/5
+    hover:text-primary
+  `;
 
   return (
-    <footer className="relative border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-zinc-900">
+    <footer className="relative border-t border-border bg-background">
+      {/* Subtle brand glow */}
+      <div
+        className="
+          pointer-events-none
+          absolute inset-0
+          -z-10
+          bg-[radial-gradient(circle_at_bottom,var(--color-primary)/8%,transparent_60%)]
+        "
+      />
 
-      {/* amber glow (light + dark safe) */}
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom,rgba(245,158,11,0.08),transparent_60%)]" />
+      {/* Top accent */}
+      <div className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
-      {/* top line */}
-      <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" />
-
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-8 px-6 py-10 md:flex-row">
-
+      <div className="container-custom flex flex-col items-center justify-between gap-8 py-10 md:flex-row">
         {/* Left */}
         <div className="text-center md:text-left">
-          <h3 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-gray-100">
-            Sana <span className="text-amber-500">Matusala</span>
+          <h3 className="text-lg font-semibold tracking-tight text-content">
+            Sana <span className="text-primary">Matusala</span>
           </h3>
 
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-            Full-stack developer building modern, fast and scalable web experiences with React, TypeScript, Node.js and PostgreSQL.
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-secondary">
+            Full-stack developer building modern, fast and scalable web
+            experiences with React, TypeScript, Node.js and PostgreSQL.
           </p>
 
-          <p className="mt-3 text-xs text-gray-500 dark:text-gray-500">
+          <p className="mt-3 text-xs text-secondary">
             © {new Date().getFullYear()} All rights reserved.
           </p>
         </div>
 
-        {/* Right icons */}
+        {/* Social links */}
         <div className="flex items-center gap-4">
           <a
             href="https://github.com/matusalasana"
@@ -39,7 +56,7 @@ export default function Footer() {
             aria-label="GitHub"
             className={iconClass}
           >
-            <Github className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+            <Github className="size-5 transition-transform duration-300 group-hover:scale-110" />
           </a>
 
           <a
@@ -49,7 +66,7 @@ export default function Footer() {
             aria-label="LinkedIn"
             className={iconClass}
           >
-            <Linkedin className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+            <Linkedin className="size-5 transition-transform duration-300 group-hover:scale-110" />
           </a>
 
           <a
@@ -57,10 +74,9 @@ export default function Footer() {
             aria-label="Email"
             className={iconClass}
           >
-            <Mail className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+            <Mail className="size-5 transition-transform duration-300 group-hover:scale-110" />
           </a>
         </div>
-
       </div>
     </footer>
   );

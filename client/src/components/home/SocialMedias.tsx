@@ -1,4 +1,10 @@
-import { Github, Linkedin, Mail, Send, Phone, ArrowRight } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  Send,
+  Phone,
+} from "lucide-react";
 
 const SocialMedias = () => {
   return (
@@ -7,42 +13,50 @@ const SocialMedias = () => {
         href="https://github.com/matusalasana"
         target="_blank"
         rel="noreferrer"
-        className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
+        aria-label="GitHub"
+        className="rounded-lg border border-border p-3 text-content transition-colors hover:border-primary hover:text-primary"
       >
         <Github size={22} />
       </a>
-  
+
       <a
         href="https://www.linkedin.com/in/sana-matusala-b111a7366"
         target="_blank"
         rel="noreferrer"
-        className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
+        aria-label="LinkedIn"
+        className="rounded-lg border border-border p-3 text-content transition-colors hover:border-primary hover:text-primary"
       >
         <Linkedin size={22} />
       </a>
-  
+
       <a
         href="mailto:matusalasana@gmail.com"
-        className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
+        aria-label="Email"
+        className="rounded-lg border border-border p-3 text-content transition-colors hover:border-primary hover:text-primary"
       >
         <Mail size={22} />
       </a>
-      
+
       <a
         href="http://t.me/sana1514"
-        className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Telegram"
+        className="rounded-lg border border-border p-3 text-content transition-colors hover:border-primary hover:text-primary"
       >
         <Send size={22} />
       </a>
-      
+
       <a
         href="tel:+251945807386"
-        className="rounded-lg border border-slate-700 p-3 transition hover:border-cyan-400"
+        aria-label="Phone"
+        className="rounded-lg border border-border p-3 text-content transition-colors hover:border-primary hover:text-primary"
       >
         <Phone size={22} />
       </a>
     </div>
-  )
-}
+  );
+};
 
-export default SocialMedias
+
+export default SocialMedias;

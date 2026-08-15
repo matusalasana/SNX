@@ -8,16 +8,15 @@ type ProjectCardProps = {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <article className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-[0_0_40px_rgba(245,158,11,0.08)] dark:border-zinc-800 dark:bg-zinc-900">
-      
-      {/* Glow Effect */}
-      <div className="pointer-events-none absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100">
-        <div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-amber-500/10 blur-3xl" />
+    <article className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_0_40px_rgba(16,185,129,0.08)]">
+      {/* Glow */}
+      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
       </div>
 
       <Link to={`/projects/${project.id}`} className="block">
-        {/* Thumbnail Section */}
-        <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+        {/* Thumbnail */}
+        <div className="relative aspect-[16/10] overflow-hidden bg-muted">
           {project.thumbnailUrl ? (
             <img
               src={project.thumbnailUrl}
@@ -25,16 +24,16 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-zinc-400 dark:text-zinc-600">
+            <div className="flex h-full items-center justify-center text-secondary">
               No Preview
             </div>
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent dark:from-zinc-900" />
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
 
           {project.featured && (
-            <div className="absolute top-4 left-4">
-              <span className="flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs text-amber-500">
+            <div className="absolute left-4 top-4">
+              <span className="flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs text-primary">
                 <Star className="h-3 w-3 fill-current" />
                 Featured
               </span>
@@ -42,42 +41,47 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           )}
         </div>
 
-        {/* Content Section */}
+        {/* Content */}
         <div className="relative p-6">
+          {/* Category */}
           <div className="mb-3">
-            <span className="text-xs uppercase tracking-[0.2em] text-amber-500">
+            <span className="text-xs uppercase tracking-[0.2em] text-primary">
               {project.category}
             </span>
           </div>
 
-          <h3 className="mb-3 text-xl font-semibold text-zinc-900 transition-colors group-hover:text-amber-500 dark:text-zinc-100">
+          {/* Title */}
+          <h3 className="mb-3 text-xl font-semibold text-content transition-colors group-hover:text-primary">
             {project.title}
           </h3>
 
-          <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+          {/* Description */}
+          <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-secondary">
             {project.description ??
               "A full-stack project focused on performance, scalability, and user experience."}
           </p>
 
+          {/* Tags */}
           <div className="mb-5 flex flex-wrap gap-2">
             {project.tags.slice(0, 4).map((tag) => (
               <span
                 key={tag}
-                className="rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400"
+                className="rounded-lg border border-border bg-muted px-2.5 py-1 text-xs text-secondary transition-colors hover:border-primary/30 hover:text-primary"
               >
                 {tag}
               </span>
             ))}
           </div>
 
-          <div className="flex items-center gap-3 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+          {/* Links */}
+          <div className="flex items-center gap-3 border-t border-border pt-4">
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1.5 text-sm text-zinc-600 transition-colors hover:text-amber-500 dark:text-zinc-400"
+                className="flex items-center gap-1.5 text-sm text-secondary transition-colors hover:text-primary"
               >
                 <ExternalLink className="h-4 w-4" />
                 Live
@@ -90,7 +94,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 target="_blank"
                 rel="noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1.5 text-sm text-zinc-600 transition-colors hover:text-amber-500 dark:text-zinc-400"
+                className="flex items-center gap-1.5 text-sm text-secondary transition-colors hover:text-primary"
               >
                 <Github className="h-4 w-4" />
                 Code

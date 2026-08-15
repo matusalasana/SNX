@@ -35,81 +35,78 @@ const services = [
 
 const Services = () => {
   return (
-    <section id="services" className="page-container">
+    <section id="services" className="container-custom py-24">
+      {/* Header */}
       <div className="mb-14 max-w-3xl">
-        <span className="mb-4 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-cyan-300 backdrop-blur-xl">
+        <span className="badge mb-4 border border-border text-primary">
           Services & Skills
         </span>
 
-        <h2 className="text-4xl font-black tracking-tight md:text-6xl">
-          Building Digital
-          <span className="block bg-gradient-to-r from-cyan-400 via-sky-300 to-cyan-500 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-black tracking-tight text-content md:text-6xl">
+          Building Digital{" "}
+          <span className="block text-gradient">
             Experiences
           </span>
         </h2>
 
-        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-400">
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-secondary">
           From modern user interfaces to scalable backend systems, I build
           complete web applications designed for performance, usability, and
           growth.
         </p>
       </div>
 
+      {/* Services Grid */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {services.map((svc, i) => (
+        {services.map((service, index) => (
           <motion.div
-            key={svc.title}
+            key={service.title}
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.5, delay: i * 0.08 }}
+            transition={{
+              duration: 0.5,
+              delay: index * 0.08,
+            }}
             className="
-              group relative overflow-hidden
-              rounded-3xl
-              border border-white/10
-              bg-white/[0.03]
-              p-7
-              backdrop-blur-xl
-              transition-all duration-500
+              card
+              group
+              relative
+              overflow-hidden
+              transition-all
+              duration-300
               hover:-translate-y-2
-              hover:border-cyan-400/20
-              hover:bg-white/[0.05]
-              hover:shadow-[0_8px_32px_rgba(34,211,238,0.08)]
+              hover:border-primary
             "
           >
-            {/* Glow Effect */}
-            <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-              <div className="absolute -right-16 -top-16 h-32 w-32 rounded-full bg-cyan-400/10 blur-3xl" />
-              <div className="absolute -bottom-16 -left-16 h-32 w-32 rounded-full bg-sky-400/10 blur-3xl" />
-            </div>
-
-            {/* Glass Shine */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-transparent opacity-60" />
+            {/* Brand Glow */}
+            <div className="pointer-events-none absolute -right-16 -top-16 size-32 rounded-full bg-primary/10 blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
             <div className="relative z-10">
-              <h3 className="mb-3 text-lg font-semibold tracking-tight text-white">
-                {svc.title}
+              <h3 className="mb-3 text-lg font-semibold tracking-tight text-content">
+                {service.title}
               </h3>
 
-              <p className="mb-6 flex-1 text-sm leading-7 text-slate-400">
-                {svc.desc}
+              <p className="mb-6 text-sm leading-7 text-secondary">
+                {service.desc}
               </p>
 
+              {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {svc.tags.map((tag) => (
+                {service.tags.map((tag) => (
                   <span
                     key={tag}
                     className="
                       rounded-full
-                      border border-white/10
-                      bg-white/[0.03]
+                      border border-border
+                      bg-muted
                       px-3 py-1
                       text-xs
-                      text-slate-400
-                      backdrop-blur-md
-                      transition-all duration-300
-                      hover:border-cyan-400/20
-                      hover:text-cyan-300
+                      text-secondary
+                      transition-colors
+                      duration-200
+                      hover:border-primary/30
+                      hover:text-primary
                     "
                   >
                     {tag}

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useLogout } from "../../hooks/auth/useLogout";
 import { LogOut } from "lucide-react";
+import { useLogout } from "../../hooks/auth/useLogout";
 
 const LogoutButton = () => {
   const navigate = useNavigate();
@@ -14,21 +14,24 @@ const LogoutButton = () => {
 
   return (
     <button
+      type="button"
       onClick={handleLogout}
       disabled={isPending}
       className="
-        w-full flex items-center justify-center gap-2
-        border-t border-zinc-800
+        flex w-full items-center justify-center gap-2
+        border-t border-border
         px-4 py-3
-        text-sm text-zinc-300
-        hover:text-white hover:bg-zinc-900
-        transition
-        disabled:opacity-50 disabled:cursor-not-allowed
+        text-sm text-secondary
+        transition-colors
+        hover:bg-muted
+        hover:text-danger
+        disabled:pointer-events-none
+        disabled:opacity-50
       "
     >
       {isPending ? (
         <>
-          <span className="w-4 h-4 border-2 border-zinc-400 border-t-transparent rounded-full animate-spin" />
+          <span className="size-4 animate-spin rounded-full border-2 border-border border-t-primary" />
           <span>Logging out...</span>
         </>
       ) : (

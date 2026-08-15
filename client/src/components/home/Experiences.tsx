@@ -4,11 +4,14 @@ import { Skeleton } from "../../utils/skeleton";
 import SectionTitle from "../common/SectionTitle";
 
 export default function Experiences() {
-  const { data: experiences = [], isLoading } = useExperiences();
+  const {
+    data: experiences = [],
+    isLoading,
+  } = useExperiences();
 
   if (isLoading) {
     return (
-      <section className="mx-auto max-w-5xl border-t border-zinc-200 py-24 dark:border-zinc-800">
+      <section className="container-custom border-t border-border py-24">
         <SectionTitle
           eyebrow="Career"
           title="Experience"
@@ -16,10 +19,10 @@ export default function Experiences() {
         />
 
         <div className="space-y-8">
-          {Array.from({ length: 3 }).map((_, i) => (
+          {Array.from({ length: 3 }).map((_, index) => (
             <div
-              key={i}
-              className="rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800"
+              key={index}
+              className="card"
             >
               <Skeleton className="mb-3 h-5 w-40" />
               <Skeleton className="mb-4 h-4 w-32" />
@@ -33,7 +36,7 @@ export default function Experiences() {
   }
 
   return (
-    <section className="mx-auto max-w-5xl border-t border-zinc-200 py-24 dark:border-zinc-800">
+    <section className="container-custom border-t border-border py-24">
       {/* Heading */}
       <SectionTitle
         eyebrow="Career"
@@ -43,51 +46,41 @@ export default function Experiences() {
 
       {/* Timeline */}
       <div className="relative">
-        <div className="absolute bottom-0 left-5 top-0 w-px bg-zinc-200 dark:bg-zinc-800" />
+        <div className="absolute bottom-0 left-5 top-0 w-px bg-border" />
 
         <div className="space-y-8">
           {experiences.map((experience) => (
-            <div key={experience.id} className="relative pl-16">
-              {/* Dot */}
+            <div
+              key={experience.id}
+              className="relative pl-16"
+            >
+              {/* Timeline Icon */}
               <div className="absolute left-0 top-1">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-200 bg-amber-100 dark:border-amber-500/20 dark:bg-amber-500/10">
-                  <Briefcase className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+                <div className="flex size-10 items-center justify-center rounded-xl border border-primary/20 bg-primary/10">
+                  <Briefcase className="size-4 text-primary" />
                 </div>
               </div>
 
               {/* Card */}
-              <div
-                className="
-                  rounded-2xl
-                  border border-zinc-200
-                  bg-white
-                  p-6
-                  duration-300
-                  hover:-translate-y-1
-                  hover:border-amber-400
-                  dark:border-zinc-800
-                  dark:bg-zinc-900
-                  dark:hover:border-amber-500
-                "
-              >
+              <div className="card transition-all duration-300 hover:-translate-y-1 hover:border-primary">
                 {/* Title */}
-                <h3 className="text-xl font-semibold text-zinc-900 dark:text-white">
+                <h3 className="text-xl font-semibold text-content">
                   {experience.position}
                 </h3>
 
                 {/* Company */}
-                <p className="mt-1 font-medium text-amber-500 dark:text-amber-400">
+                <p className="mt-1 font-medium text-primary">
                   {experience.company}
                 </p>
 
                 {/* Date */}
-                <div className="mt-3 flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
-                  <Calendar className="h-4 w-4" />
+                <div className="mt-3 flex items-center gap-2 text-sm text-secondary">
+                  <Calendar className="size-4" />
                   <span>{experience.duration}</span>
                 </div>
 
                 {/* Description */}
-                <p className="mt-4 leading-relaxed text-zinc-600 dark:text-zinc-400">
+                <p className="mt-4 leading-relaxed text-secondary">
                   {experience.description}
                 </p>
               </div>

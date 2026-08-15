@@ -9,7 +9,7 @@ const work = [
 
 export default function CurrentlyWorking() {
   return (
-    <section className="mx-auto max-w-5xl border-t border-zinc-200 py-24 dark:border-zinc-800">
+    <section className="container-custom border-t border-border py-24">
       {/* Header */}
       <SectionTitle
         eyebrow="Now"
@@ -19,23 +19,12 @@ export default function CurrentlyWorking() {
 
       {/* Grid */}
       <div className="grid gap-4 md:grid-cols-2">
-        {work.map((item, i) => (
+        {work.map((item, index) => (
           <div
-            key={i}
-            className="
-              rounded-2xl
-              border border-zinc-200
-              bg-white
-              p-5
-              transition-all duration-300
-              hover:-translate-y-1
-              hover:border-amber-400
-              dark:border-zinc-800
-              dark:bg-zinc-900
-              dark:hover:border-amber-500
-            "
+            key={index}
+            className="card transition-all duration-300 hover:-translate-y-1 hover:border-primary"
           >
-            <p className="text-zinc-700 dark:text-zinc-300">
+            <p className="text-content">
               {item}
             </p>
           </div>

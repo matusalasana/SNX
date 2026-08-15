@@ -1,36 +1,54 @@
+import {
+  Code2,
+  Server,
+  Database,
+  Cloud,
+  Terminal,
+} from "lucide-react";
+
 import { useSkills } from "../../hooks/skills/useSkills";
-import { Code2, Server, Database, Cloud, Terminal } from "lucide-react";
+import { useCategories } from "../../hooks/categories/useCategories";
 import { Skeleton } from "../../utils/skeleton";
 import SectionTitle from "../common/SectionTitle";
 
-const CATEGORIES = [
-  { id: "frontend", label: "Frontend", icon: Code2 },
-  { id: "backend", label: "Backend", icon: Server },
-  { id: "database", label: "Database", icon: Database },
-  { id: "devops", label: "DevOps", icon: Cloud },
-  { id: "tools", label: "Tools", icon: Terminal },
+const categoryIcons = [
+  Code2,
+  Server,
+  Database,
+  Cloud,
+  Terminal,
 ];
 
 export default function Skills() {
-  const { data: skills = [], isLoading } = useSkills();
+  const {
+    data: skills = [],
+    isLoading: loadingSkills,
+  } = useSkills();
 
-  if (isLoading) {
+  const {
+    data: categories = [],
+    isLoading: loadingCats,
+  } = useCategories();
+
+  if (loadingSkills || loadingCats) {
     return (
-      <section className="max-w-5xl mx-auto py-24 border-t border-zinc-200 dark:border-zinc-800">
+      <section className="container-custom border-t border-border py-24">
+        {/* Heading Skeleton */}
         <div className="mb-14">
-          <Skeleton className="h-4 w-24 mb-4" />
-          <Skeleton className="h-10 w-64 mb-4" />
+          <Skeleton className="mb-4 h-4 w-24" />
+          <Skeleton className="mb-4 h-10 w-64" />
           <Skeleton className="h-4 w-full max-w-xl" />
         </div>
 
+        {/* Cards Skeleton */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 5 }).map((_, i) => (
+          {Array.from({ length: 5 }).map((_, index) => (
             <div
-              key={i}
-              className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6"
+              key={index}
+              className="card"
             >
               <div className="mb-5 flex items-center gap-3">
-                <Skeleton className="h-10 w-10 rounded-xl" />
+                <Skeleton className="size-10 rounded-xl" />
 
                 <div className="flex-1 space-y-2">
                   <Skeleton className="h-4 w-24" />
@@ -53,7 +71,7 @@ export default function Skills() {
   }
 
   return (
-    <section className="max-w-5xl mx-auto py-24 border-t border-zinc-200 dark:border-zinc-800">
+    <section className="container-custom border-t border-border py-24">
       {/* Heading */}
       <SectionTitle
         eyebrow="Expertise"
@@ -63,49 +81,35 @@ export default function Skills() {
 
       {/* Categories */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {CATEGORIES.map(({ id, label, icon: Icon }) => {
+        {categories.map((category, index) => {
           const categorySkills = skills.filter(
-            (skill) => skill.category.toLowerCase() === id
+            (skill) =>
+              skill.category.toLowerCase() ===
+              category.name.toLowerCase()
           );
 
           if (!categorySkills.length) return null;
 
+          const Icon =
+            categoryIcons[index % categoryIcons.length];
+
           return (
             <div
-              key={id}
-              className="
-                rounded-2xl
-                border border-zinc-200
-                dark:border-zinc-800
-                bg-white
-                dark:bg-zinc-900
-                p-6
-                duration-300
-                hover:-translate-y-1
-                hover:border-amber-400
-                dark:hover:border-amber-500
-              "
+              key={category.id}
+              className="card transition-all duration-300 hover:-translate-y-1 hover:border-primary"
             >
               {/* Header */}
               <div className="mb-5 flex items-center gap-3">
-                <div
-                  className="
-                    flex h-10 w-10 items-center justify-center rounded-xl
-                    border border-amber-200
-                    bg-amber-100
-                    dark:border-amber-500/20
-                    dark:bg-amber-500/10
-                  "
-                >
-                  <Icon className="h-5 w-5 text-amber-500 dark:text-amber-400" />
+                <div className="flex size-10 items-center justify-center rounded-xl border border-primary/20 bg-primary/10">
+                  <Icon className="size-5 text-primary" />
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-zinc-900 dark:text-white">
-                    {label}
+                  <h3 className="font-semibold text-content">
+                    {category.name}
                   </h3>
 
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-secondary">
                     {categorySkills.length} technologies
                   </p>
                 </div>
@@ -118,21 +122,14 @@ export default function Skills() {
                     key={skill.id}
                     className="
                       rounded-lg
-                      border border-zinc-200
-                      bg-zinc-100
+                      border border-border
+                      bg-muted
                       px-3 py-1.5
-                      text-xs
-                      font-medium
-                      text-zinc-700
-                      hover:border-amber-400
-                      hover:bg-amber-50
-                      hover:text-amber-600
-                      dark:border-zinc-700
-                      dark:bg-zinc-800
-                      dark:text-zinc-300
-                      dark:hover:border-amber-500
-                      dark:hover:bg-amber-500/10
-                      dark:hover:text-amber-300
+                      text-xs font-medium
+                      text-secondary
+                      transition-colors
+                      hover:border-primary/30
+                      hover:text-primary
                     "
                   >
                     {skill.name}

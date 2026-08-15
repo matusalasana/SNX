@@ -10,22 +10,18 @@ export default function BlogCard({ blog }: BlogProps) {
   return (
     <article
       className="
+        card
         group
         overflow-hidden
-        rounded-2xl
-        border border-zinc-200
-        bg-white
+        p-0
         transition-all duration-300
         hover:-translate-y-1
-        hover:border-amber-400
-        dark:border-zinc-800
-        dark:bg-zinc-900
-        dark:hover:border-amber-500
+        hover:border-primary
       "
     >
       <Link to={`/blogs/${blog.id}`} className="block">
         {/* Thumbnail */}
-        <div className="relative aspect-[16/9] overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+        <div className="relative aspect-[16/9] overflow-hidden bg-muted">
           {blog.thumbnailUrl ? (
             <img
               src={blog.thumbnailUrl}
@@ -39,16 +35,16 @@ export default function BlogCard({ blog }: BlogProps) {
               "
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-sm text-zinc-500 dark:text-zinc-500">
+            <div className="flex h-full w-full items-center justify-center text-sm text-secondary">
               No Preview
             </div>
           )}
 
-          {/* Featured badge */}
+          {/* Featured */}
           {blog.featured && (
             <div className="absolute left-4 top-4">
-              <span className="flex items-center gap-1 rounded-full border border-amber-200 bg-amber-100 px-2.5 py-1 text-xs text-amber-600 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400">
-                <Star className="h-3 w-3 fill-current" />
+              <span className="badge border border-primary/20 bg-primary/10 text-primary">
+                <Star className="size-3 fill-current" />
                 Featured
               </span>
             </div>
@@ -58,9 +54,9 @@ export default function BlogCard({ blog }: BlogProps) {
         {/* Content */}
         <div className="p-6">
           {/* Meta */}
-          <div className="mb-3 flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mb-3 flex flex-wrap items-center gap-3 text-xs text-secondary">
             {blog.category && (
-              <span className="font-medium uppercase tracking-wider text-amber-500 dark:text-amber-400">
+              <span className="font-medium uppercase tracking-wider text-primary">
                 {blog.category}
               </span>
             )}
@@ -68,7 +64,7 @@ export default function BlogCard({ blog }: BlogProps) {
             <span>•</span>
 
             <span className="flex items-center gap-1">
-              <Clock className="h-3 w-3" />
+              <Clock className="size-3" />
               {blog.readTime}
             </span>
 
@@ -80,12 +76,20 @@ export default function BlogCard({ blog }: BlogProps) {
           </div>
 
           {/* Title */}
-          <h3 className="line-clamp-2 text-lg font-semibold text-zinc-900 transition-colors group-hover:text-amber-500 dark:text-white dark:group-hover:text-amber-400">
+          <h3
+            className="
+              line-clamp-2
+              text-lg font-semibold
+              text-content
+              transition-colors
+              group-hover:text-primary
+            "
+          >
             {blog.title}
           </h3>
 
           {/* Summary */}
-          <p className="mt-3 line-clamp-3 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-3 line-clamp-3 text-sm text-secondary">
             {blog.summary}
           </p>
 
@@ -96,14 +100,14 @@ export default function BlogCard({ blog }: BlogProps) {
                 key={tag}
                 className="
                   rounded-lg
-                  border border-zinc-200
-                  bg-zinc-100
+                  border border-border
+                  bg-muted
                   px-2 py-1
                   text-[10px]
-                  text-zinc-600
-                  dark:border-zinc-700
-                  dark:bg-zinc-800
-                  dark:text-zinc-300
+                  text-secondary
+                  transition-colors
+                  hover:border-primary/30
+                  hover:text-primary
                 "
               >
                 {tag}

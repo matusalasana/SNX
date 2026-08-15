@@ -24,7 +24,7 @@ import ContactCTA from "../../components/home/ContactCTA"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-900 px-6">
+    <div className="min-h-screen bg-background text-content p-5 lg:p-10">
       <Hero />
       <FeaturedProjects />
       <Skills />
