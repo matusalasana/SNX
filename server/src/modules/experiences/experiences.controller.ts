@@ -40,6 +40,25 @@ const createExperience = async (
   }
 };
 
+const updateExperience = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const experience =
+      await ExperiencesService.updateExperience({
+        id: req.params.id,
+        data: req.body
+      });
+
+    res.status(201).json(experience);
+  } catch (err: any) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
 const deleteExperience = async (
   req: Request,
   res: Response
@@ -63,5 +82,6 @@ const deleteExperience = async (
 export const ExperiencesController = {
   getExperiences,
   createExperience,
+  updateExperience,
   deleteExperience,
 };

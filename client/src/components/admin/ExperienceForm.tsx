@@ -54,9 +54,9 @@ export default function ExperienceForm({ mode, experience, onSuccess }: Props) {
           reset()
         }
       });
-    } else if(skill && mode === "edit"){
+    } else if(experience && mode === "edit"){
       updateExperience(
-        { id: skill.id, data },
+        { id: experience.id, data },
         { onSuccess: () => {
           onSuccess?.()
           reset()

@@ -11,6 +11,7 @@ from "../../middleware/validation.middleware";
 
 import {
   createExperienceSchema,
+  updateExperienceSchema
 } from "./experiences.validation";
 
 const router = Router();
@@ -25,6 +26,13 @@ router.post(
   requireAuth,
   validate(createExperienceSchema),
   ExperiencesController.createExperience
+);
+
+router.patch(
+  "/:id",
+  requireAuth,
+  validate(updateExperienceSchema),
+  ExperiencesController.updateExperience
 );
 
 router.delete(

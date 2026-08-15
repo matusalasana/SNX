@@ -39,6 +39,19 @@ const create = async (
   return result[0];
 };
 
+const updateExperience = async ({
+  id,
+  experience
+}) => {
+  const result = await db
+    .update(experiences)
+    .set(experience)
+    .where(eq(experiences.id, id))
+    .returning();
+
+  return result[0];
+};
+
 const deleteOne = async (
   id: string
 ) => {
@@ -54,5 +67,6 @@ export const ExperiencesRepository = {
   findAll,
   findById,
   create,
+  updateExperience,
   deleteOne,
 };
