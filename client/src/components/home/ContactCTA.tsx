@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function ContactCTA() {
   return (
-    <section className="relative mx-auto max-w-5xl overflow-hidden border-t border-zinc-200 py-28 text-center dark:border-zinc-800">
+    <section className="bg-primary relative mx-auto max-w-5xl overflow-hidden border-t border-zinc-200 py-28 text-center dark:border-zinc-800">
       {/* Background glow (subtle + theme aware) */}
       <div className="absolute inset-0 -z-10 flex justify-center">
         <div className="h-[350px] w-[350px] rounded-full bg-amber-500/10 blur-3xl dark:bg-amber-500/10" />

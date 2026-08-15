@@ -1,14 +1,45 @@
-:root {
-  --background: #ffffff;
-  --foreground: #111827;
+@import "tailwindcss";
 
-  --primary: #2563eb;
-  --secondary: #6b7280;
+@theme {
+  /* Main surfaces */
+  --color-background: #ffffff;
+  --color-card: #ffffff;
 
-  --radius: 12px;
+  /* Main content */
+  --color-content: #18181b;
+
+  /* Subtle UI */
+  --color-muted: #f4f4f5;
+  --color-border: #e4e4e7;
+
+  /* Brand / dominant color */
+  --color-primary: #10b981;
+
+  /* Secondary actions */
+  --color-secondary: #64748b;
+
+  /* Danger */
+  --color-danger: #ef4444;
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #fafafa;
+  /* Main surfaces */
+  --color-background: #020617;
+  --color-card: #0f172a;
+
+  /* Main content */
+  --color-content: #f8fafc;
+
+  /* Subtle UI */
+  --color-muted: #1e293b;
+  --color-border: #334155;
+
+  /* Brand / dominant color */
+  --color-primary: #34d399;
+
+  /* Secondary actions */
+  --color-secondary: #94a3b8;
+
+  /* Danger */
+  --color-danger: #f87171;
 }

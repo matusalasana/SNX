@@ -5,7 +5,7 @@ import ScrollToTop from "../components/common/ScrollToTop";
 
 export default function AdminLayout() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-background text-content">
       <Navbar />
 
       <main className="flex-1">
