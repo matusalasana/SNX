@@ -11,7 +11,7 @@
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
     "push": "drizzle-kit push",
-    "schema:drop": "tsx src/db/schema/reset.ts",
+    "schema:drop": "tsx src/db/reset.ts",
     "check": "tsc --noEmit"
   },
   "devDependencies": {

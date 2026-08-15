@@ -36,13 +36,7 @@ const create = async (
 ) => {
   const result = await db
     .insert(skills)
-    .values({
-      name: data.name,
-      category: data.category,
-      proficiency: data.proficiency,
-      iconName:
-        data.iconName ?? "Code",
-    })
+    .values(data)
     .returning();
 
   return result[0];

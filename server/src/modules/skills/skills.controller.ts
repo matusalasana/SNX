@@ -27,6 +27,7 @@ const createSkill = async (
   res: Response
 ) => {
   try {
+    console.log(req.body)
     const skill =
       await SkillsService.createNewSkill(
         req.body
@@ -34,6 +35,7 @@ const createSkill = async (
 
     res.status(201).json(skill);
   } catch (err: any) {
+    console.log(err.cause || err.message)
     res.status(500).json({
       error: err.message,
     });

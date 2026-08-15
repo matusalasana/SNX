@@ -3,11 +3,9 @@ import { z } from "zod";
 export const createSkillSchema = z.object({
   name: z.string().min(2),
 
-  category: z.string().max(50),
+  categoryId: z.uuid(),
 
-  proficiency: z.number().min(0).max(100),
-
-  iconName: z.string().default("Code"),
+  proficiency: z.string().min(2),
 });
 
 export const updateSkillSchema =

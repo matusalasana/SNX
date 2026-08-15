@@ -16,13 +16,13 @@ export const skills = pgTable(
 
     name: varchar("name", {
       length: 100,
-    }).notNull(),
+    }).notNull().unique(),
 
     categoryId: uuid("category_id")
     .references(() => categories.id, { onDelete: 'set null' })
     .notNull(),
 
-    proficiency: varchar("name", {
+    proficiency: varchar("proficiency", {
       length: 100,
     }),
 
