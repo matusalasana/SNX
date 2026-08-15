@@ -168,7 +168,7 @@ const AdminSkills = () => {
 
       {/* Create */}
       {isCreating && (
-        <SkillForm mode="create" onClose={() => setIsCreating(false)} />
+        <SkillForm mode="create" onSuccess={() => setIsCreating(false)} />
       )}
 
       {/* Edit */}
@@ -176,7 +176,7 @@ const AdminSkills = () => {
         <SkillForm
           mode="edit"
           skill={editingSkill}
-          onClose={() => setEditingSkill(null)}
+          onSuccess={() => setEditingSkill(null)}
         />
       )}
     </div>
