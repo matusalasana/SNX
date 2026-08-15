@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import { toast } from "react-hot-toast";
 import { getErrorMessage } from "../../utils/getErrorMessage";
-import { Skill } from "../../types/skills"
+import { SkillFormData } from "../../schema/skills"
 
 type UpdateSkillInput = {
   id: string;
-  data: Skill;
+  data: SkillFormData;
 };
 
 const updateSkill = async ({ id, data }: UpdateSkillInput) => {

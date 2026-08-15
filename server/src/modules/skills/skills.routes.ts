@@ -11,6 +11,7 @@ from "../../middleware/validation.middleware";
 
 import {
   createSkillSchema,
+  updateSkillSchema
 } from "./skills.validation";
 
 const router = Router();
@@ -25,6 +26,13 @@ router.post(
   requireAuth,
   validate(createSkillSchema),
   SkillsController.createSkill
+);
+
+router.patch(
+  "/:id",
+  requireAuth,
+  validate(updateSkillSchema),
+  SkillsController.updateSkill
 );
 
 router.delete(

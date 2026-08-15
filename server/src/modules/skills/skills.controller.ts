@@ -12,8 +12,8 @@ const getSkills = async (
 ) => {
   try {
     const skills =
-      await SkillsService.getAllSkills();
-
+      await SkillsService.getSkills();
+    
     res.status(200).json(skills);
   } catch (err: any) {
     res.status(500).json({
@@ -27,11 +27,30 @@ const createSkill = async (
   res: Response
 ) => {
   try {
-    console.log(req.body)
     const skill =
       await SkillsService.createNewSkill(
         req.body
       );
+
+    res.status(201).json(skill);
+  } catch (err: any) {
+    console.log(err.cause || err.message)
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+const updateSkill = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const skill =
+      await SkillsService.updateSkill({
+        id: req.params.id,
+        data: req.body
+      });
 
     res.status(201).json(skill);
   } catch (err: any) {
@@ -70,5 +89,6 @@ const deleteSkill = async (
 export const SkillsController = {
   getSkills,
   createSkill,
+  updateSkill,
   deleteSkill,
 };

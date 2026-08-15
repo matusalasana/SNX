@@ -5,7 +5,6 @@ import {
   useDeleteProject
 } from "../../hooks/projects";
 import { Skeleton } from "../../utils/skeleton";
-import { FileText, Trash2, Edit3 } from "lucide-react";
 import ProjectCard from "../../components/admin/ProjectCard";
 import ProjectForm from "../../components/admin/ProjectForm";
 import { Project } from "../../types/projects"

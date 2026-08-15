@@ -58,7 +58,7 @@ export default function SkillForm({ mode, skill, onSuccess }: Props) {
           reset()
         }
       });
-    } else {
+    } else if(skill && mode === "edit"){
       updateSkill(
         { id: skill.id, data },
         { onSuccess: () => {

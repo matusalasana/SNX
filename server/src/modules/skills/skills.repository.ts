@@ -1,5 +1,6 @@
 import { db } from "../../db";
 import { skills } from "../../db/schema/skills";
+import { categories } from "../../db/schema/categories";
 
 import {
   asc,
@@ -11,13 +12,25 @@ import {
 } from "./skills.validation";
 
 const findAll = async () => {
-  return db
-    .select()
+  const result = await db
+    .select({
+      skill: skills,
+      category: categories.name
+    })
     .from(skills)
-    .orderBy(
-      asc(skills.category),
-      asc(skills.name)
+    .innerJoin(
+      categories, eq(categories.id, skills.categoryId)
     );
+  
+  const finalData = (result ?? []).map((skill) => {
+    const formatedData = {
+      ...skill.skill,
+      category: skill.category
+    }
+    return formatedData
+  })
+  
+  return finalData ?? [];
 };
 
 const findById = async (
@@ -42,6 +55,19 @@ const create = async (
   return result[0];
 };
 
+const updateSkill = async ({
+  id,
+  skill
+}) => {
+  const result = await db
+    .update(skills)
+    .set(skill)
+    .where(eq(skills.id, id))
+    .returning();
+
+  return result[0];
+};
+
 const deleteOne = async (
   id: string
 ) => {
@@ -57,5 +83,6 @@ export const SkillsRepository = {
   findAll,
   findById,
   create,
+  updateSkill,
   deleteOne,
 };
