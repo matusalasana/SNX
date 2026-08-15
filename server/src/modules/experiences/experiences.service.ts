@@ -7,14 +7,14 @@ import {
 
 const getAllExperiences =
   async () => {
-    return ExperiencesRepository.findAll();
+    return await ExperiencesRepository.findAll();
   };
 
 const createNewExperience =
   async (
     data: CreateExperienceInput
   ) => {
-    return ExperiencesRepository.create(data);
+    return await ExperiencesRepository.create(data);
   };
 
 const deleteExperience =
@@ -28,7 +28,7 @@ const deleteExperience =
       );
     }
 
-    return ExperiencesRepository.deleteOne(id);
+    return await ExperiencesRepository.deleteOne(id);
   };
 
 export const ExperiencesService = {

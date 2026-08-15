@@ -27,8 +27,6 @@ export default function SkillForm({ mode, skill, onSuccess }: Props) {
   const { mutate: createSkill, isPending: creating } = useCreateSkill();
   const { mutate: updateSkill, isPending: updating } = useUpdateSkill();
   
-  const [ isPreview, setIsPreview ] = useState(false);
-  
   const schemaToApply = mode === "create"
     ? createSkillSchema
     : updateSkillSchema

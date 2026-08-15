@@ -1,48 +1,66 @@
-import { useEffect, useState } from "react";
-import { useCreateExperience } from "../../hooks/experiences/useCreateExperience";
-import { useUpdateExperience } from "../../hooks/experiences/useUpdateExperience";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { 
+  useCreateExperience,
+  useUpdateExperience
+} from "../../hooks/experiences";
+import {
+  createExperienceSchema,
+  updateExperienceSchema,
+  type UpdateExperienceInput,
+  type CreateExperienceInput,
+  type ExperienceFormData
+} from "../../schema/experiences";
 
 type Props = {
   mode: "create" | "edit";
-  experience?: any;
-  onClose: () => void;
+  experience?: ExperienceFormData  & { id?: string; };
+  onSuccess?: () => void;
 };
 
-export default function ExperienceForm({
-  mode,
-  experience,
-  onClose,
-}: Props) {
-  const { mutate: createExperience } = useCreateExperience();
-  const { mutate: updateExperience } = useUpdateExperience();
-
-  const [form, setForm] = useState({
-    company: "",
-    role: "",
-    description: "",
-    duration: "",
+export default function ExperienceForm({ mode, experience, onSuccess }: Props) {
+  
+  const { mutate: createExperience, isPending: creating } = useCreateExperience();
+  const { mutate: updateExperience, isPending: updating } = useUpdateExperience();
+  
+  const schemaToApply = mode === "create"
+    ? createExperienceSchema
+    : updateExperienceSchema
+  
+  const isPending = creating || updating;
+  
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<ExperienceFormData>({
+    resolver: zodResolver(schemaToApply),
+    values: mode === "edit" && experience 
+      ? (experience as ExperienceFormData) 
+      : undefined,
   });
 
-  useEffect(() => {
-    if (experience) {
-      setForm({
-        company: experience.company,
-        role: experience.role,
-        description: experience.description || "",
-        duration: experience.duration,
-      });
-    }
-  }, [experience]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = (data: ExperienceFormData) => {
+    
     if (mode === "create") {
-      createExperience(form, { onSuccess: onClose });
-    } else {
+      createExperience(data, {
+        onSuccess: () => {
+          onSuccess?.()
+          reset()
+        }
+      });
+    } else if(skill && mode === "edit"){
       updateExperience(
-        { id: experience.id, ...form },
-        { onSuccess: onClose }
+        { id: skill.id, data },
+        { onSuccess: () => {
+          onSuccess?.()
+          reset()
+        }}
       );
     }
   };
@@ -50,64 +68,51 @@ export default function ExperienceForm({
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
       <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded w-[420px] space-y-3"
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white p-6 rounded w-[400px] space-y-3"
       >
         <h2 className="text-lg font-bold">
-          {mode === "create"
-            ? "Add Experience"
-            : "Edit Experience"}
+          {mode === "create" ? "Create Experience" : "Edit Experience"}
         </h2>
 
-        <input
-          className="w-full border p-2"
-          placeholder="Company"
-          value={form.company}
-          onChange={(e) =>
-            setForm({ ...form, company: e.target.value })
-          }
-        />
+        <div>
+          <label className="label">Company</label>
+          <input {...register("company")} placeholder="eg. (NodeJs, ReactJs, ...)" className="input" />
+          {errors.company && <p className="mt-1 text-xs text-red-500">{errors.company.message}</p>}
+        </div>
 
-        <input
-          className="w-full border p-2"
-          placeholder="Role"
-          value={form.role}
-          onChange={(e) =>
-            setForm({ ...form, role: e.target.value })
-          }
-        />
+        <div>
+          <label className="label">Your Role</label>
+          <input {...register("role")} placeholder="eg. (NodeJs, ReactJs, ...)" className="input" />
+          {errors.role && <p className="mt-1 text-xs text-red-500">{errors.role.message}</p>}
+        </div>
 
-        <input
-          className="w-full border p-2"
-          placeholder="Duration (e.g. 2022 - 2024)"
-          value={form.duration}
-          onChange={(e) =>
-            setForm({ ...form, duration: e.target.value })
-          }
-        />
+        <div>
+          <label className="label">Duration</label>
+          <input {...register("duration")} placeholder="duration" className="input" />
+          {errors.duration && <p className="mt-1 text-xs text-red-500">{errors.duration.message}</p>}
+        </div>
+        
+        <div>
+          <label className="label">Description</label>
+          <textarea {...register("description")} placeholder="duration" className="textarea" />
+          {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description.message}</p>}
+        </div>
 
-        <textarea
-          className="w-full border p-2"
-          placeholder="Description (optional)"
-          value={form.description}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              description: e.target.value,
-            })
-          }
-        />
-
-        <div className="flex justify-end gap-2">
+        <div className="flex items-center justify-between">
           <button
+            disabled={isPending}
             type="button"
-            onClick={onClose}
-            className="px-3 py-1 border"
+            onClick={onSuccess}
+            className="btn btn-secondary"
           >
             Cancel
           </button>
 
-          <button className="px-3 py-1 bg-black text-white">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="btn btn-primary">
             {mode === "create" ? "Create" : "Update"}
           </button>
         </div>

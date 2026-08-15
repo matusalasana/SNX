@@ -33,12 +33,7 @@ const create = async (
 ) => {
   const result = await db
     .insert(experiences)
-    .values({
-      company: data.company,
-      role: data.role,
-      description: data.description,
-      duration: data.duration,
-    })
+    .values(data)
     .returning();
 
   return result[0];
