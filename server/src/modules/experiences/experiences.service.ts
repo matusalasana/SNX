@@ -27,16 +27,16 @@ const updateExperience = async ({
     if(!exists) throw new Error("Experience not found");
     
     const dataToUpdate = {};
-    if(data.company){
+    if(data.company !== undefined){
       dataToUpdate.company = data.company
     }
-    if(data.role){
+    if(data.role !== undefined){
       dataToUpdate.role = data.role
     }
-    if(data.duration){
+    if(data.duration !== undefined){
       dataToUpdate.duration = data.duration
     }
-    if(data.description){
+    if(data.description !== undefined){
       dataToUpdate.description = data.description
     }
     

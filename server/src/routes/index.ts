@@ -6,6 +6,7 @@ import skillRoutes from '../modules/skills/skills.routes';
 import experienceRoutes from '../modules/experiences/experiences.routes';
 import messageRoutes from '../modules/messages/messages.routes';
 import categoryRoutes from '../modules/categories/categories.routes';
+import certificateRoutes from '../modules/certifications/certifications.routes';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/blogs', blogRoutes);
 router.use('/skills', skillRoutes);
 router.use('/experiences', experienceRoutes);
 router.use('/messages', messageRoutes);
+router.use('/certifications', certificateRoutes);
 
 export default router;

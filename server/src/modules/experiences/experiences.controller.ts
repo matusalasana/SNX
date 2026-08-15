@@ -51,7 +51,7 @@ const updateExperience = async (
         data: req.body
       });
 
-    res.status(201).json(experience);
+    res.status(200).json(experience);
   } catch (err: any) {
     res.status(500).json({
       error: err.message,

@@ -10,6 +10,7 @@ import {
   Wrench,
   Briefcase,
   Menu,
+  Award,
   Tag,
   X,
 } from "lucide-react";
@@ -22,6 +23,7 @@ const navItems = [
   { label: "Skills", to: "/admin/skills", icon: Wrench },
   { label: "Experiences", to: "/admin/experiences", icon: Briefcase },
   { label: "Categories", to: "/admin/categories", icon: Tag },
+  { label: "Certifications", to: "/admin/certifications", icon: Award },
 ];
 
 export default function AdminNavbar() {
