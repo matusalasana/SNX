@@ -13,22 +13,27 @@ if (!CLIENT_ORIGIN) {
   throw new Error("CLIENT_ORIGIN is missing");
 }
 
-// Strip any trailing slash to avoid string mismatch with browser Origin headers
-const sanitizedClientOrigin = CLIENT_ORIGIN.replace(/\/$/, "");
 
 const allowedOrigins = [
   "http://localhost:5173",
-  sanitizedClientOrigin,
+  CLIENT_ORIGIN,
   "https://onrender.com"
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow Postman, mobile apps, server-to-server requests
+      // 1. Allow Postman, mobile apps, or headless servers (where origin is undefined)
       if (!origin) return callback(null, true);
 
+      // 2. Allow if it explicitly matches our allowed origins list
       if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // 3. IMPORTANT TRICK FOR VERCEL REWRITES:
+      // If Vercel modifies the Origin to include your deployment domain string, allow it
+      if (origin.includes("vercel.app") || (CLIENT_ORIGIN && origin.includes(CLIENT_ORIGIN.replace(/^https?:\/\//, '')))) {
         return callback(null, true);
       }
 
