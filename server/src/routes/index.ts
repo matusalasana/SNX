@@ -7,6 +7,7 @@ import experienceRoutes from '../modules/experiences/experiences.routes';
 import messageRoutes from '../modules/messages/messages.routes';
 import categoryRoutes from '../modules/categories/categories.routes';
 import certificateRoutes from '../modules/certifications/certifications.routes';
+import adminRoutes from '../modules/admin/admin.routes';
 
 const router = Router();
 
@@ -18,5 +19,7 @@ router.use('/skills', skillRoutes);
 router.use('/experiences', experienceRoutes);
 router.use('/messages', messageRoutes);
 router.use('/certifications', certificateRoutes);
+
+router.use('/admin', adminRoutes);
 
 export default router;

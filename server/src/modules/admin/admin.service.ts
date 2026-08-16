@@ -1,6 +1,10 @@
-import { AdminRepository } from "./blogs.repository";
+import { AdminRepository } from "./admin.repository";
 
 
-const getBlogs = async () => {
-  return await  AdminRepository.getBlogs();
+const getAllBlogs = async () => {
+  return await  AdminRepository.getAllBlogs();
 };
+
+export const AdminService = {
+  getAllBlogs
+}

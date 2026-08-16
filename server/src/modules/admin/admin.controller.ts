@@ -10,10 +10,8 @@ const getAllBlogs = async (
   res: Response
 ) => {
   try {
-    const filters = {}
 
-    const blogs = 
-      await AdminService.getAllBlogs(filters);
+    const blogs = await AdminService.getAllBlogs();
 
     res.status(200).json(blogs);
   } catch (err: any) {

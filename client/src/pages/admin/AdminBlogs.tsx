@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Plus, X, FileText } from "lucide-react";
 import BlogForm from "../../components/admin/BlogForm";
-import { useBlogs, useDeleteBlog } from "../../hooks/blogs";
+import {useDeleteBlog } from "../../hooks/blogs";
+import {useBlogs } from "../../hooks/admin/useBlogs";
 import { BlogFormData } from "../../schema/blogs";
 import BlogCard from "../../components/admin/BlogCard";
 import { Skeleton } from "../../utils/skeleton";

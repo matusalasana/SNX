@@ -29,7 +29,7 @@ export default function BlogDetails() {
     <article className="container-custom section max-w-3xl">
       <div className="flex-start mb-10 gap-4 text-xs">
         <Link
-          to="/blogs"
+          to="/blog"
           className="link flex-start gap-1"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Articles

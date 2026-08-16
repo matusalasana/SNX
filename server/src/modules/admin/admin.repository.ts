@@ -1,5 +1,6 @@
 import { db } from "../../db";
 import { blogs } from "../../db/schema/blogs";
+import { categories } from "../../db/schema/categories";
 
 import {
   desc,
@@ -12,11 +13,25 @@ import {
 } from "./blogs.validation";
 
 export const AdminRepository = {
-  getBlogs: async () => {
-    return await db
-      .select()
+  getAllBlogs: async () => {
+    const result = await db
+      .select({
+        blog: blogs,
+        category: categories.name
+      })
       .from(blogs)
-      .where(eq(blogs.status, "published"))
-      .orderBy(desc(blogs.createdAt));
+      .innerJoin(
+        categories, eq(blogs.categoryId, categories.id)
+      );
+    
+    const finalData = (result ?? []).map((blog) => {
+      const formatedData = {
+      ...blog.blog,
+      category: blog.category
+    }
+    return formatedData;
+    });
+    
+    return finalData ?? [];
   },
 }
