@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import Logo from "./Logo";
 
 const navItems = [
   { label: "Home", to: "/" },
@@ -22,7 +23,7 @@ export default function Navbar() {
           to="/"
           className="text-lg font-semibold tracking-tight text-content"
         >
-          Sana <span className="text-primary">M.</span>
+          <Logo />
         </NavLink>
 
         {/* Desktop Navigation */}
