@@ -7,7 +7,6 @@ import { CLIENT_ORIGIN } from "./configs/env";
 
 export const app = express();
 
-// Required on Render so Express trusts HTTPS forwarded by the load balancer
 app.set("trust proxy", 1);
 
 if (!CLIENT_ORIGIN) {
@@ -20,6 +19,7 @@ const sanitizedClientOrigin = CLIENT_ORIGIN.replace(/\/$/, "");
 const allowedOrigins = [
   "http://localhost:5173",
   sanitizedClientOrigin,
+  "https://onrender.com"
 ];
 
 app.use(

@@ -1,16 +1,10 @@
-import axios from 'axios';
-
-
-let BASE_URL;
-if(import.meta.env.DEV){
-  BASE_URL="http://localhost:3000/api/v1"
-}else{
-  BASE_URL = "/api"
-}
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: BASE_URL,
-  withCredentials: true
+  baseURL: import.meta.env.DEV
+    ? "http://localhost:3000/api/v1"
+    : "/api/v1",
+  withCredentials: true,
 });
 
 export default api;
