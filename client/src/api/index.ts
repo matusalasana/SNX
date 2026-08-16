@@ -5,7 +5,7 @@ let BASE_URL;
 if(import.meta.env.DEV){
   BASE_URL="http://localhost:3000/api/v1"
 }else{
-  BASE_URL = import.meta.env.VITE_API_URL
+  BASE_URL = "/api"
 }
 
 const api = axios.create({
