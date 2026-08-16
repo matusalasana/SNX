@@ -10,13 +10,10 @@ const ThemeToggle = () => {
       onClick={toggleTheme}
       aria-label="Toggle theme"
       className="
-        relative flex h-10 w-10 items-center justify-center
-        rounded-xl border border-border
-        bg-card text-secondary
+        btn-ghost relative flex-center h-10 w-10 p-0
+        rounded-xl border border-border bg-card
         transition-all duration-300
-        hover:border-primary/40
-        hover:bg-primary/5
-        hover:text-primary
+        hover:border-primary/40 hover:bg-primary/5
       "
     >
       <Sun

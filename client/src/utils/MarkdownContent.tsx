@@ -7,15 +7,7 @@ interface MarkdownContentProps {
 
 export default function MarkdownContent({ content }: MarkdownContentProps) {
   return (
-    <article className="prose
-    prose-zinc
-    dark:prose-invert
-    max-w-none
-    prose-headings:font-bold
-    prose-a:text-amber-500
-    prose-a:no-underline
-    hover:prose-a:underline
-    prose-blockquote:border-amber-500 mb-5">
+    <article className="prose max-w-none text-content prose-headings:heading prose-a:text-secondary hover:prose-a:underline prose-a:no-underline prose-blockquote:border-border mb-5">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>
         {content}
       </ReactMarkdown>

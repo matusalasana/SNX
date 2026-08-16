@@ -1,57 +1,54 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../../hooks/auth/useAuth";
 import { Terminal } from "lucide-react";
+import { useAuth } from "../../hooks/auth/useAuth";
 
 const ProtectedRoutes = () => {
   const { data: user, isLoading, isError } = useAuth();
 
-  // ❌ Error state → force logout redirect
+  // Authentication request failed
   if (isError) {
     return <Navigate to="/" replace />;
   }
 
-  // ⏳ Loading state
+  // Checking authentication
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
-
-        {/* Ambient glow background */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-amber-500/10 blur-3xl rounded-full" />
-          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-zinc-800/20 blur-3xl rounded-full" />
+      <div className="relative flex-center min-h-screen overflow-hidden bg-background">
+        {/* Ambient glow */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
+          <div className="absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-muted/50 blur-3xl" />
         </div>
 
-        {/* Loader content */}
+        {/* Loader */}
         <div className="relative z-10 flex flex-col items-center gap-6 text-center">
-
-          {/* Spinner */}
-          <div className="w-10 h-10 border-2 border-zinc-800 border-t-amber-400 rounded-full animate-spin" />
+          <div className="h-10 w-10 animate-spin rounded-full border-2 border-border border-t-primary" />
 
           {/* Brand */}
           <div className="flex flex-col items-center gap-2">
-            <div className="flex items-center gap-2 text-amber-400">
-              <Terminal className="w-5 h-5" />
-              <span className="font-bold tracking-wide">
+            <div className="flex items-center gap-2 text-primary">
+              <Terminal className="h-5 w-5" />
+
+              <span className="heading font-bold tracking-wide">
                 Sana M.
               </span>
             </div>
 
-            <p className="text-xs text-zinc-500 tracking-widest uppercase">
+            <p className="subheading text-xs uppercase tracking-widest">
               Securing dashboard access
             </p>
           </div>
-
         </div>
       </div>
     );
   }
 
-  // ❌ Not authenticated
+  // Not authenticated
   if (!user) {
     return <Navigate to="/" replace />;
   }
 
-  // ✅ Authenticated
+  // Authenticated
   return <Outlet />;
 };
 

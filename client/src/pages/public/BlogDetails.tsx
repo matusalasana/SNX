@@ -1,21 +1,24 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useBlog } from "../../hooks/blogs/useBlog";
-import { Clock, Calendar, ArrowLeft, Star } from "lucide-react";
+import { Clock, ArrowLeft, Star } from "lucide-react";
 import { Skeleton } from "../../utils/skeleton";
 import MarkdownContent from "../../utils/MarkdownContent";
 
 export default function BlogDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: blog = [], isLoading } = useBlog(id!);
+  const { data: blog, isLoading } = useBlog(id!);
 
   if (isLoading) return <BlogDetailsSkeleton />;
 
   if (!blog) {
     return (
-      <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-        <p className="text-zinc-600 dark:text-zinc-400">Blog post not found.</p>
-        <button onClick={() => navigate(-1)} className="mt-4 inline-flex items-center gap-2 text-amber-500 hover:text-amber-600">
+      <div className="grid-center container-custom section text-center">
+        <p className="subheading">Blog post not found.</p>
+        <button
+          onClick={() => navigate(-1)}
+          className="btn-ghost text-primary mt-4"
+        >
           <ArrowLeft className="h-4 w-4" /> Go back
         </button>
       </div>
@@ -23,68 +26,75 @@ export default function BlogDetails() {
   }
 
   return (
-    <article className="mx-auto max-w-3xl px-6 py-24 dark:bg-zinc-900 dark:text-zinc-200">
-
-      <div className="flex flex-col gap-2 mb-10 text-zinc-500 text-sm dark:text-zinc-400">
-        <Link to="/blogs" className="inline-flex items-center text-sm text-zinc-500 transition hover:text-amber-500 dark:text-zinc-400">
+    <article className="container-custom section max-w-3xl">
+      <div className="flex-start mb-10 gap-4 text-xs">
+        <Link
+          to="/blogs"
+          className="link flex-start gap-1"
+        >
           <ArrowLeft className="h-4 w-4" /> Back to Articles
         </Link>
-        <span>
-            {new Date(blog.createdAt).toLocaleDateString()}
-          </span>
+        <span className="subheading">
+          {new Date(blog.createdAt).toLocaleDateString()}
+        </span>
       </div>
 
       {/* Header */}
       <header className="mb-10 space-y-4">
-      
         {/* META */}
-        <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
-          <span className="flex items-center gap-1">
-              <Clock className="h-3 w-3" /> 
-              {blog.readTime}
+        <div className="flex-start flex-wrap gap-3 text-xs">
+          <span className="subheading flex-start gap-1">
+            <Clock className="h-3.5 w-3.5" />
+            {blog.readTime}
           </span>
           {blog.category && (
-            <span className="font-medium uppercase tracking-wider text-blue-500">
+            <span className="badge-success uppercase tracking-wider font-medium">
               {blog.category}
             </span>
           )}
           {blog.featured && (
-            <span className="flex items-center gap-1 text-amber-500">
-              <Star className="h-3 w-3 fill-amber-500" /> Featured
+            <span className="badge-warning flex-start gap-1">
+              <Star className="h-3 w-3 fill-current" /> Featured
             </span>
           )}
         </div>
 
         {/* TITLE */}
-        <h1 className="text-3xl font-bold leading-tight tracking-tight text-zinc-900 md:text-4xl dark:text-white">
+        <h1 className="heading text-3xl sm:text-4xl">
           {blog.title}
         </h1>
       </header>
 
       {/* Thumbnail */}
       {blog.thumbnailUrl && (
-        <img src={blog.thumbnailUrl} alt={blog.title} className="image" />
+        <img
+          src={blog.thumbnailUrl}
+          alt={blog.title}
+          className="image image-cover max-h-[450px]"
+        />
       )}
 
       {/* Content */}
-      <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-amber-500">
-        <MarkdownContent content={blog.content} />
-      </div>
+      <MarkdownContent content={blog.content} />
 
       {/* Tags */}
       <div className="mt-10 flex flex-wrap gap-2">
         {(blog.tags ?? []).map((tag: string) => (
-          <span key={tag} className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+          <span key={tag} className="badge">
             {tag}
           </span>
         ))}
       </div>
 
       {/* Footer CTA */}
-      <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 dark:border-zinc-800 dark:bg-zinc-900/50">
-        <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Enjoyed this article?</h3>
-        <p className="mb-4 text-sm text-zinc-600 dark:text-zinc-400">Let’s connect and build something interesting together.</p>
-        <Link to="/contact" className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-500 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-amber-500">
+      <div className="card mt-16 p-8">
+        <h3 className="heading mb-2 text-lg">
+          Enjoyed this article?
+        </h3>
+        <p className="subheading mb-4 text-sm">
+          Let’s connect and build something interesting together.
+        </p>
+        <Link to="/contact" className="btn-primary inline-flex">
           Contact Me
         </Link>
       </div>
@@ -93,10 +103,10 @@ export default function BlogDetails() {
 }
 
 const BlogDetailsSkeleton = () => (
-  <div className="mx-auto max-w-3xl space-y-6 px-6 py-24">
-    <Skeleton className="h-6 w-32" />
-    <Skeleton className="h-12 w-full" />
-    <Skeleton className="h-64 w-full rounded-2xl" />
-    <Skeleton className="h-40 w-full" />
+  <div className="container-custom section max-w-3xl space-y-6">
+    <Skeleton className="skeleton h-6 w-32" />
+    <Skeleton className="skeleton h-12 w-full" />
+    <Skeleton className="skeleton h-64 w-full rounded-2xl" />
+    <Skeleton className="skeleton h-40 w-full" />
   </div>
 );

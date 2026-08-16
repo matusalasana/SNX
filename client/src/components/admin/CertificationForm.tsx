@@ -1,122 +1,200 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { 
+import {
   useCreateCertification,
-  useUpdateCertification
+  useUpdateCertification,
 } from "../../hooks/certifications";
 import {
   createCertificationSchema,
   updateCertificationSchema,
-  type UpdateCertificationInput,
-  type CreateCertificationInput,
-  type CertificationFormData
+  type CertificationFormData,
 } from "../../schema/certifications";
 
 type Props = {
   mode: "create" | "edit";
-  certification?: CertificationFormData  & { id?: string; };
+  certification?: CertificationFormData & { id?: string };
   onSuccess?: () => void;
 };
 
-export default function CertificationForm({ mode, certification, onSuccess }: Props) {
-  
-  const { mutate: createCertification, isPending: creating } = useCreateCertification();
-  const { mutate: updateCertification, isPending: updating } = useUpdateCertification();
-  
-  const schemaToApply = mode === "create"
-    ? createCertificationSchema
-    : updateCertificationSchema
-  
+export default function CertificationForm({
+  mode,
+  certification,
+  onSuccess,
+}: Props) {
+  const {
+    mutate: createCertification,
+    isPending: creating,
+  } = useCreateCertification();
+
+  const {
+    mutate: updateCertification,
+    isPending: updating,
+  } = useUpdateCertification();
+
+  const schemaToApply =
+    mode === "create"
+      ? createCertificationSchema
+      : updateCertificationSchema;
+
   const isPending = creating || updating;
-  
+
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     reset,
     formState: { errors },
   } = useForm<CertificationFormData>({
     resolver: zodResolver(schemaToApply),
-    values: mode === "edit" && certification 
-      ? (certification as CertificationFormData) 
-      : undefined,
+    values:
+      mode === "edit" && certification
+        ? certification
+        : undefined,
   });
 
   const onSubmit = (data: CertificationFormData) => {
-    
     if (mode === "create") {
       createCertification(data, {
         onSuccess: () => {
-          onSuccess?.()
-          reset()
-        }
+          reset();
+          onSuccess?.();
+        },
       });
-    } else if(certification && mode === "edit"){
+      return;
+    }
+
+    if (mode === "edit" && certification?.id) {
       updateCertification(
-        { id: certification.id, data },
-        { onSuccess: () => {
-          onSuccess?.()
-          reset()
-        }}
+        {
+          id: certification.id,
+          data,
+        },
+        {
+          onSuccess: () => {
+            reset();
+            onSuccess?.();
+          },
+        }
       );
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-content/40 p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded w-[400px] space-y-3"
+        className="card w-full max-w-md space-y-4"
       >
-        <h2 className="text-lg font-bold">
-          {mode === "create" ? "Create Certification" : "Edit Certification"}
-        </h2>
+        <div>
+          <h2 className="heading text-lg">
+            {mode === "create"
+              ? "Create Certification"
+              : "Edit Certification"}
+          </h2>
+
+          <p className="subheading mt-1 text-sm">
+            {mode === "create"
+              ? "Add a certification to your profile."
+              : "Update your certification details."}
+          </p>
+        </div>
 
         <div>
           <label className="label">Name</label>
-          <input {...register("name")} placeholder="eg. Meta Backed Developer" className="input" />
-          {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
+          <input
+            {...register("name")}
+            placeholder="e.g. Meta Front-End Developer"
+            className="input"
+            disabled={isPending}
+          />
+          {errors.name && (
+            <p className="error-text mt-1">
+              {errors.name.message}
+            </p>
+          )}
         </div>
 
         <div>
           <label className="label">Issuer</label>
-          <input {...register("issuer")} placeholder="eg. (NodeJs, ReactJs, ...)" className="input" />
-          {errors.issuer && <p className="mt-1 text-xs text-red-500">{errors.issuer.message}</p>}
+          <input
+            {...register("issuer")}
+            placeholder="e.g. Meta"
+            className="input"
+            disabled={isPending}
+          />
+          {errors.issuer && (
+            <p className="error-text mt-1">
+              {errors.issuer.message}
+            </p>
+          )}
         </div>
 
         <div>
           <label className="label">Issued Date</label>
-          <input {...register("issueDate")} className="input" type="month"/>
-          {errors.issueDate && <p className="mt-1 text-xs text-red-500">{errors.issueDate.message}</p>}
-        </div>
-        
-        <div>
-          <label className="label">Credential ID</label>
-          <input {...register("credentialId")} className="input"/>
-          {errors.credentialId && <p className="mt-1 text-xs text-red-500">{errors.credentialId.message}</p>}
-        </div>
-        
-        <div>
-          <label className="label">Credential URL</label>
-          <input {...register("credentialUrl")} className="input"/>
-          {errors.credentialUrl && <p className="mt-1 text-xs text-red-500">{errors.credentialUrl.message}</p>}
-        </div>
-        
-        <div>
-          <label className="label">Description</label>
-          <textarea {...register("description")} placeholder="duration" className="textarea" />
-          {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description.message}</p>}
+          <input
+            {...register("issueDate")}
+            type="month"
+            className="input"
+            disabled={isPending}
+          />
+          {errors.issueDate && (
+            <p className="error-text mt-1">
+              {errors.issueDate.message}
+            </p>
+          )}
         </div>
 
-        <div className="flex items-center justify-between">
-          <button
+        <div>
+          <label className="label">Credential ID</label>
+          <input
+            {...register("credentialId")}
+            className="input"
             disabled={isPending}
+          />
+          {errors.credentialId && (
+            <p className="error-text mt-1">
+              {errors.credentialId.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label className="label">Credential URL</label>
+          <input
+            {...register("credentialUrl")}
+            type="url"
+            placeholder="https://..."
+            className="input"
+            disabled={isPending}
+          />
+          {errors.credentialUrl && (
+            <p className="error-text mt-1">
+              {errors.credentialUrl.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label className="label">Description</label>
+          <textarea
+            {...register("description")}
+            placeholder="Describe this certification..."
+            className="textarea"
+            disabled={isPending}
+          />
+          {errors.description && (
+            <p className="error-text mt-1">
+              {errors.description.message}
+            </p>
+          )}
+        </div>
+
+        <div className="flex items-center justify-end gap-3 border-t border-border pt-4">
+          <button
             type="button"
             onClick={onSuccess}
-            className="btn btn-secondary"
+            disabled={isPending}
+            className="btn-outline"
           >
             Cancel
           </button>
@@ -124,8 +202,13 @@ export default function CertificationForm({ mode, certification, onSuccess }: Pr
           <button
             type="submit"
             disabled={isPending}
-            className="btn btn-primary">
-            {mode === "create" ? "Create" : "Update"}
+            className="btn-primary"
+          >
+            {isPending
+              ? "Saving..."
+              : mode === "create"
+                ? "Create"
+                : "Update"}
           </button>
         </div>
       </form>

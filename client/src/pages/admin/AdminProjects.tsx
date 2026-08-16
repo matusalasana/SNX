@@ -33,22 +33,22 @@ export default function AdminProjects() {
   
   if (isLoading) {
     return (
-      <section className="max-w-6xl mx-auto py-24 px-6">
+      <section className="container-custom section">
       
         <div className="mb-10 space-y-3">
-          <Skeleton className="h-6 w-32" />
-          <Skeleton className="h-10 w-72" />
+          <Skeleton className="skeleton h-6 w-32" />
+          <Skeleton className="skeleton h-10 w-72" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-zinc-800 p-5 space-y-3"
+              className="card p-5 space-y-3"
             >
-              <Skeleton className="h-40 w-full rounded-xl" />
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-4 w-full" />
+              <Skeleton className="skeleton h-40 w-full rounded-xl" />
+              <Skeleton className="skeleton h-4 w-3/4" />
+              <Skeleton className="skeleton h-4 w-full" />
             </div>
           ))}
         </div>
@@ -57,17 +57,17 @@ export default function AdminProjects() {
   }
 
   return (
-    <section className="max-w-6xl mx-auto py-24 px-6 text-white">
+    <section className="container-custom section text-content">
 
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-3xl font-bold text-amber-400">
+      <div className="flex-between items-center mb-10">
+        <h1 className="heading text-3xl font-bold">
           Projects
         </h1>
 
         <button
           onClick={openCreate}
-          className="flex items-center gap-2 bg-amber-500 text-black px-4 py-2 rounded-xl"
+          className="btn-primary"
         >
           <Plus className="w-4 h-4" />
           New Project 
@@ -88,8 +88,8 @@ export default function AdminProjects() {
         
       {/* MODAL */}
       {formMode && (
-      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 p-4">
-        <div className="mx-auto w-full max-w-xl rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+      <div className="fixed inset-0 z-50 overflow-y-auto bg-background/80 backdrop-blur-sm p-4">
+        <div className="card mx-auto w-full max-w-xl p-6">
           <ProjectForm
             mode={formMode}
             project={selected ?? undefined}
@@ -99,7 +99,7 @@ export default function AdminProjects() {
           <button
             type="button"
             onClick={closeModal}
-            className="mt-4 text-sm text-zinc-400"
+            className="btn-ghost mt-4 text-sm"
           >
             Cancel
           </button>

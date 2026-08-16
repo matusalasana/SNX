@@ -40,44 +40,38 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-20">
-      <div className="max-w-6xl mx-auto">
+    <main className="container-custom section min-h-screen bg-background text-content">
+      <div className="mx-auto space-y-12">
 
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-3xl font-bold">
-            Admin <span className="text-amber-400">Dashboard</span>
+        <div>
+          <h1 className="heading text-3xl font-bold">
+            Admin Dashboard
           </h1>
-          <p className="text-zinc-400 mt-2">
+          <p className="subheading mt-2 text-sm">
             Manage your portfolio content and track activity.
           </p>
         </div>
 
         {/* STATS GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat) => {
             const Icon = stat.icon;
 
             return (
               <div
                 key={stat.label}
-                className="
-                  p-6 rounded-2xl
-                  border border-zinc-800
-                  bg-zinc-900/30
-                  hover:border-amber-500/30
-                  transition
-                "
+                className="card p-6"
               >
-                <div className="flex items-center justify-between mb-4">
-                  <Icon className="w-5 h-5 text-amber-400" />
+                <div className="flex-between items-center mb-4">
+                  <Icon className="w-5 h-5 text-secondary" />
                 </div>
 
-                <h2 className="text-2xl font-bold">
+                <h2 className="heading text-2xl font-bold">
                   {stat.value}
                 </h2>
 
-                <p className="text-zinc-400 text-sm">
+                <p className="subheading text-sm">
                   {stat.label}
                 </p>
               </div>
@@ -89,65 +83,65 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
           {/* Projects */}
-          <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/20">
+          <div className="card p-6">
             <div className="flex items-center gap-2 mb-4">
-              <FolderKanban className="text-amber-400 w-5 h-5" />
-              <h3 className="font-semibold">Projects</h3>
+              <FolderKanban className="text-secondary w-5 h-5" />
+              <h3 className="heading font-semibold">Projects</h3>
             </div>
 
-            <p className="text-zinc-400 text-sm mb-4">
+            <p className="subheading text-sm mb-4">
               Add, update, or manage your portfolio projects.
             </p>
 
-            <button className="px-4 py-2 rounded-xl bg-amber-500 text-black text-sm hover:bg-amber-400 transition">
+            <button className="btn-primary text-sm">
               Manage Projects
             </button>
           </div>
 
           {/* Blogs */}
-          <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/20">
+          <div className="card p-6">
             <div className="flex items-center gap-2 mb-4">
-              <BookOpen className="text-amber-400 w-5 h-5" />
-              <h3 className="font-semibold">Blogs</h3>
+              <BookOpen className="text-secondary w-5 h-5" />
+              <h3 className="heading font-semibold">Blogs</h3>
             </div>
 
-            <p className="text-zinc-400 text-sm mb-4">
+            <p className="subheading text-sm mb-4">
               Write, edit, and publish articles.
             </p>
 
-            <button className="px-4 py-2 rounded-xl bg-amber-500 text-black text-sm hover:bg-amber-400 transition">
+            <button className="btn-primary text-sm">
               Manage Blogs
             </button>
           </div>
 
           {/* Skills */}
-          <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/20">
+          <div className="card p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Code2 className="text-amber-400 w-5 h-5" />
-              <h3 className="font-semibold">Skills</h3>
+              <Code2 className="text-secondary w-5 h-5" />
+              <h3 className="heading font-semibold">Skills</h3>
             </div>
 
-            <p className="text-zinc-400 text-sm mb-4">
+            <p className="subheading text-sm mb-4">
               Update your technical stack.
             </p>
 
-            <button className="px-4 py-2 rounded-xl bg-amber-500 text-black text-sm hover:bg-amber-400 transition">
+            <button className="btn-primary text-sm">
               Manage Skills
             </button>
           </div>
 
           {/* Experience */}
-          <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/20">
+          <div className="card p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Briefcase className="text-amber-400 w-5 h-5" />
-              <h3 className="font-semibold">Experience</h3>
+              <Briefcase className="text-secondary w-5 h-5" />
+              <h3 className="heading font-semibold">Experience</h3>
             </div>
 
-            <p className="text-zinc-400 text-sm mb-4">
+            <p className="subheading text-sm mb-4">
               Add internships, roles, and work history.
             </p>
 
-            <button className="px-4 py-2 rounded-xl bg-amber-500 text-black text-sm hover:bg-amber-400 transition">
+            <button className="btn-primary text-sm">
               Manage Experience
             </button>
           </div>

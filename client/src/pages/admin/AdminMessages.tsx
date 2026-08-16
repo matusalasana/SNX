@@ -32,29 +32,29 @@ export default function AdminMessagesPage() {
 
   if (isLoading) {
     return (
-      <section className="max-w-7xl mx-auto px-6 py-12">
+      <section className="container-custom section">
         <div className="space-y-3 mb-8">
-          <Skeleton className="h-5 w-24" />
-          <Skeleton className="h-9 w-64" />
+          <Skeleton className="skeleton h-5 w-24" />
+          <Skeleton className="skeleton h-9 w-64" />
         </div>
 
-        <Skeleton className="h-[600px] rounded-2xl" />
+        <Skeleton className="skeleton h-[600px] rounded-2xl" />
       </section>
     );
   }
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-12 text-white">
+    <section className="container-custom section text-content">
       {/* Header */}
       <header className="mb-8">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400">
+          <div className="p-2.5 rounded-xl bg-muted text-secondary">
             <Inbox className="w-5 h-5" />
           </div>
 
           <div>
-            <h1 className="text-2xl font-semibold">Inbox</h1>
-            <p className="text-sm text-zinc-500">
+            <h1 className="heading text-2xl font-semibold">Inbox</h1>
+            <p className="subheading text-sm">
               {messages.length} {messages.length === 1 ? "message" : "messages"}
             </p>
           </div>
@@ -62,21 +62,21 @@ export default function AdminMessagesPage() {
       </header>
 
       {/* Inbox Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-[360px_1fr] min-h-[600px] overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950">
+      <div className="card grid grid-cols-1 lg:grid-cols-[360px_1fr] min-h-[600px] overflow-hidden p-0">
         
         {/* Left: Message list */}
-        <aside className="border-b lg:border-b-0 lg:border-r border-zinc-800 max-h-[600px] overflow-y-auto">
-          <div className="p-4 border-b border-zinc-800 sticky top-0 bg-zinc-950/80 backdrop-blur z-10">
-            <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+        <aside className="border-b lg:border-b-0 lg:border-r border-border max-h-[600px] overflow-y-auto">
+          <div className="p-4 border-b border-border sticky top-0 bg-background/80 backdrop-blur z-10">
+            <p className="subheading text-xs font-medium uppercase tracking-wider">
               Messages
             </p>
           </div>
 
           <div className="p-2 space-y-1">
             {messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <Mail className="w-8 h-8 text-zinc-700 mb-3" />
-                <p className="text-sm text-zinc-500">No messages yet</p>
+              <div className="flex-center flex-col py-20 text-center">
+                <Mail className="w-8 h-8 text-secondary mb-3" />
+                <p className="subheading text-sm">No messages yet</p>
               </div>
             ) : (
               messages.map((message: Message) => (
@@ -85,7 +85,7 @@ export default function AdminMessagesPage() {
                   onClick={() => handleView(message)}
                   className={`cursor-pointer rounded-lg transition-colors ${
                     selected?.id === message.id
-                      ? "ring-1 ring-amber-500/50 bg-amber-500/5"
+                      ? "ring-1 ring-border bg-muted"
                       : ""
                   }`}
                 >
@@ -105,18 +105,18 @@ export default function AdminMessagesPage() {
         </aside>
 
         {/* Right: Selected Message Reader Detail View */}
-        <main className="flex flex-col h-full bg-zinc-900/30">
+        <main className="flex flex-col h-full bg-muted/30">
           {selected ? (
             <div className="flex flex-col h-full p-6">
               {/* Message Header Actions */}
-              <div className="flex items-start justify-between pb-6 border-b border-zinc-800 gap-4">
+              <div className="flex-between items-start pb-6 border-b border-border gap-4">
                 <div>
-                  <h2 className="text-xl font-semibold text-zinc-100 mb-2">
+                  <h2 className="heading text-xl font-semibold mb-2">
                     {selected.subject}
                   </h2>
-                  <div className="flex items-center gap-2 text-sm text-zinc-400">
-                    <User className="w-4 h-4 text-amber-400" />
-                    <span className="font-medium text-zinc-200">{selected.name}</span>
+                  <div className="flex items-center gap-2 text-sm text-secondary">
+                    <User className="w-4 h-4 text-secondary" />
+                    <span className="font-medium text-content">{selected.name}</span>
                     <span>&lt;{selected.email}&gt;</span>
                   </div>
                 </div>
@@ -125,14 +125,14 @@ export default function AdminMessagesPage() {
                   <button
                     onClick={() => handleDelete(selected.id)}
                     disabled={isPending}
-                    className="p-2 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                    className="p-2 rounded-lg text-secondary hover:text-content hover:bg-muted transition-colors"
                     title="Delete Message"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setSelected(null)}
-                    className="p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+                    className="btn-ghost p-2"
                     title="Close"
                   >
                     <X className="w-5 h-5" />
@@ -142,16 +142,16 @@ export default function AdminMessagesPage() {
 
               {/* Message Body Content */}
               <div className="flex-1 py-6 overflow-y-auto">
-                <p className="text-zinc-300 leading-relaxed whitespace-pre-wrap">
+                <p className="text-content leading-relaxed whitespace-pre-wrap">
                   {selected.message}
                 </p>
               </div>
 
               {/* Message Footer Action */}
-              <div className="pt-4 border-t border-zinc-800 flex justify-end">
+              <div className="pt-4 border-t border-border flex justify-end">
                 <a
                   href={`mailto:${selected.email}?subject=Re: ${encodeURIComponent(selected.subject)}`}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 text-zinc-950 font-medium hover:bg-amber-400 transition-colors text-sm"
+                  className="btn-primary text-sm"
                 >
                   <Mail className="w-4 h-4" />
                   Reply via Email
@@ -159,10 +159,10 @@ export default function AdminMessagesPage() {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center h-full p-12 text-center text-zinc-500">
-              <Mail className="w-12 h-12 text-zinc-700 mb-4" />
-              <p className="text-base font-medium text-zinc-400">No message selected</p>
-              <p className="text-sm">Select a message from the list to view its details.</p>
+            <div className="flex-center flex-col h-full p-12 text-center text-secondary">
+              <Mail className="w-12 h-12 text-secondary/50 mb-4" />
+              <p className="heading text-base font-medium">No message selected</p>
+              <p className="subheading text-sm">Select a message from the list to view its details.</p>
             </div>
           )}
         </main>

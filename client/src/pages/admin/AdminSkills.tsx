@@ -34,54 +34,54 @@ const AdminSkills = () => {
 
   if (isLoading) {
     return (
-      <div className="p-4 md:p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+      <div className="container-custom section space-y-6 bg-background text-content min-h-screen">
   
         {/* Header skeleton */}
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-10 w-28 rounded-lg" />
+        <div className="flex-between flex-col sm:flex-row gap-3">
+          <Skeleton className="skeleton h-8 w-40" />
+          <Skeleton className="skeleton h-10 w-28 rounded-lg" />
         </div>
   
         {/* Table skeleton */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="card border-border overflow-hidden p-0">
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
   
-              <thead className="bg-amber-50 dark:bg-gray-700">
+              <thead className="bg-muted">
                 <tr>
                   <th className="p-3 text-left">
-                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="skeleton h-4 w-24" />
                   </th>
                   <th className="p-3 text-left">
-                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="skeleton h-4 w-24" />
                   </th>
                   <th className="p-3 text-left">
-                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="skeleton h-4 w-24" />
                   </th>
                   <th className="p-3 text-left">
-                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="skeleton h-4 w-20" />
                   </th>
                 </tr>
               </thead>
   
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-border">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <tr key={i}>
                     <td className="p-3">
-                      <Skeleton className="h-4 w-40" />
+                      <Skeleton className="skeleton h-4 w-40" />
                     </td>
   
                     <td className="p-3">
-                      <Skeleton className="h-4 w-28" />
+                      <Skeleton className="skeleton h-4 w-28" />
                     </td>
   
                     <td className="p-3">
-                      <Skeleton className="h-6 w-16 rounded-md" />
+                      <Skeleton className="skeleton h-6 w-16 rounded-md" />
                     </td>
   
                     <td className="p-3 flex gap-3">
-                      <Skeleton className="h-4 w-12" />
-                      <Skeleton className="h-4 w-12" />
+                      <Skeleton className="skeleton h-4 w-12" />
+                      <Skeleton className="skeleton h-4 w-12" />
                     </td>
                   </tr>
                 ))}
@@ -95,17 +95,17 @@ const AdminSkills = () => {
   }
 
   return (
-    <div className="p-4 md:p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="container-custom section space-y-6 bg-background text-content min-h-screen">
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-3xl font-bold text-amber-400">
+      <div className="flex-between items-center mb-10">
+        <h1 className="heading text-3xl font-bold">
           Skills 
         </h1>
 
         <button
           onClick={openCreate}
-          className="btn btn-primary"
+          className="btn-primary"
         >
           <Plus className="w-4 h-4" />
           New Skill 

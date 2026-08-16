@@ -2,20 +2,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { 
+import {
   useCreateProject,
   useUpdateProject,
-  useUploadThumbnail 
+  useUploadThumbnail,
 } from "../../hooks/projects";
-import { useCategories } from "../../hooks/categories/useCategories"; 
-import { 
-  createProjectSchema, 
-  updateProjectSchema, 
+import { useCategories } from "../../hooks/categories/useCategories";
+import {
+  createProjectSchema,
+  updateProjectSchema,
   type CreateProjectInput,
   type UpdateProjectInput,
   type ProjectFormData,
 } from "../../schema/projects";
-
 
 interface ProjectFormProps {
   project?: ProjectFormData & { id?: string; thumbnail_url?: string };
@@ -34,57 +33,48 @@ const DEFAULT_VALUES: Partial<ProjectFormData> = {
   featured: false,
 };
 
-
 export default function ProjectForm({
   project,
   mode,
-  onSuccess
+  onSuccess,
 }: ProjectFormProps) {
-  
   // Hooks & Mutations
   const { data: categories, isLoading: loadingCategories } = useCategories();
   const { mutateAsync: createProject, isPending: creating } = useCreateProject();
   const { mutateAsync: updateProject, isPending: updating } = useUpdateProject();
   const { mutateAsync: uploadThumbnail, isPending: uploading } = useUploadThumbnail();
-  
+
   // Local states
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
   const [tagInput, setTagInput] = useState("");
-  
+
   // Select schema dynamically
-  const schemaToApply = mode === "create" 
-    ? createProjectSchema 
-    : updateProjectSchema;
-  
+  const schemaToApply =
+    mode === "create" ? createProjectSchema : updateProjectSchema;
+
   // Pending states
   const isPending = creating || updating || uploading;
-    
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    reset,
-  } = useForm<ProjectFormData>({
-    resolver: zodResolver(schemaToApply),
-    defaultValues: DEFAULT_VALUES,
-    values: mode === "edit" && project 
-      ? (project as ProjectFormData) 
-      : undefined,
-  });
+
+  const { register, handleSubmit, setValue, watch, reset } =
+    useForm<ProjectFormData>({
+      resolver: zodResolver(schemaToApply),
+      defaultValues: DEFAULT_VALUES,
+      values:
+        mode === "edit" && project ? (project as ProjectFormData) : undefined,
+    });
 
   const tags = watch("tags") || [];
-  
+
   // File Preview Handler
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     setThumbnail(file);
     setThumbnailPreview(URL.createObjectURL(file));
   };
-  
+
   // Tags Handler
   const addTag = () => {
     const value = tagInput.trim();
@@ -96,18 +86,14 @@ export default function ProjectForm({
 
   const removeTag = (tag: string) => {
     const newTags = tags.filter((t) => t !== tag);
-    setValue(
-      "tags", 
-      newTags, 
-      { shouldValidate: true }
-    );
+    setValue("tags", newTags, { shouldValidate: true });
   };
 
   // Submit handler
-  const submit = async(data: ProjectFormData) => {
-    try{
+  const submit = async (data: ProjectFormData) => {
+    try {
       let projectId = project?.id;
-      
+
       if (mode === "create") {
         const payload = {
           title: data.title,
@@ -118,73 +104,75 @@ export default function ProjectForm({
           githubUrl: data.githubUrl,
           liveUrl: data.liveUrl,
           featured: data.featured,
-        }
-        
+        };
+
         const formData = new FormData();
-    
+
         if (thumbnail) {
           formData.append("thumbnail", thumbnail);
         }
-        
+
         formData.append("data", JSON.stringify(payload));
-        
-        // createProject handles post data + thumbnail simultaneously
+
         const createdProject = await createProject(formData);
         projectId = createdProject?.id;
       } else if (mode === "edit" && projectId) {
-        await updateProject({
-          id: projectId, 
-          data: data as UpdateProjectInput 
-        }, {
-          onSuccess: () => {
-            onSuccess?.()
+        await updateProject(
+          {
+            id: projectId,
+            data: data as UpdateProjectInput,
+          },
+          {
+            onSuccess: () => {
+              onSuccess?.();
+            },
           }
-        });
-      
-      
-        // Upload thumbnail ONLY if a new file was chosen in edit mode
+        );
+
         if (thumbnail) {
           const formData = new FormData();
           formData.append("thumbnail", thumbnail);
-          
-          await uploadThumbnail({ 
-            id: projectId, 
-            formData 
+
+          await uploadThumbnail({
+            id: projectId,
+            formData,
           });
         }
       }
       reset();
       onSuccess?.();
-    }catch (error) {
+    } catch (error) {
       console.error("Form submission failed:", error);
     }
   };
 
   return (
-    <div className="w-full">
+    <div className="card w-full">
       <form onSubmit={handleSubmit(submit)} className="space-y-6">
-
         {/* TITLE */}
         <div>
           <label className="label">Title</label>
-          <input {...register("title")} className="input" />
+          <input {...register("title")} className="input" placeholder="Project title" />
         </div>
-        
+
         {/* CONTENT */}
         <div>
-            <label className="label">Content</label>
-            <textarea
-              {...register("content")}
-              rows={12}
-              placeholder="Write about the project ..."
-              className="input font-mono text-xs leading-relaxed"
-            />
-          </div>
+          <label className="label">Content</label>
+          <textarea
+            {...register("content")}
+            placeholder="Write about the project ..."
+            className="textarea font-mono text-xs leading-relaxed"
+          />
+        </div>
 
-        {/* DESCRIPTION */} 
+        {/* DESCRIPTION */}
         <div>
           <label className="label">Description</label>
-          <textarea {...register("description")} rows={5} className="input" />
+          <textarea
+            {...register("description")}
+            placeholder="Brief project summary..."
+            className="textarea min-h-24"
+          />
         </div>
 
         {/* THUMBNAIL */}
@@ -193,14 +181,12 @@ export default function ProjectForm({
 
           <label
             htmlFor="thumbnail"
-            className="flex aspect-video cursor-pointer items-center justify-center rounded-lg border border-dashed hover:border-amber-500"
+            className="flex aspect-video cursor-pointer items-center justify-center rounded-lg border border-dashed border-border bg-muted/30 transition-colors hover:border-primary"
           >
             {thumbnailPreview ? (
-              <img src={thumbnailPreview} className="h-full w-full object-cover" />
+              <img src={thumbnailPreview} className="image-cover rounded-lg" alt="Thumbnail preview" />
             ) : (
-              <span className="text-sm text-neutral-500">
-                Upload thumbnail
-              </span>
+              <span className="text-sm text-secondary">Upload thumbnail</span>
             )}
           </label>
 
@@ -216,7 +202,7 @@ export default function ProjectForm({
         {/* CATEGORY */}
         <div>
           <label className="label">Category</label>
-        
+
           <select
             className="input"
             disabled={loadingCategories}
@@ -225,7 +211,7 @@ export default function ProjectForm({
             <option value="">
               {loadingCategories ? "Loading categories..." : "Select category"}
             </option>
-        
+
             {categories?.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
@@ -235,9 +221,23 @@ export default function ProjectForm({
         </div>
 
         {/* LINKS */}
-        <div className="grid md:grid-cols-2 gap-4">
-          <input {...register("githubUrl")} placeholder="GitHub URL" className="input" />
-          <input {...register("liveUrl")} placeholder="Live URL" className="input" />
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="label">GitHub Repository</label>
+            <input
+              {...register("githubUrl")}
+              placeholder="https://github.com/..."
+              className="input"
+            />
+          </div>
+          <div>
+            <label className="label">Live URL</label>
+            <input
+              {...register("liveUrl")}
+              placeholder="https://..."
+              className="input"
+            />
+          </div>
         </div>
 
         {/* TAGS */}
@@ -248,38 +248,56 @@ export default function ProjectForm({
             <input
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
+              placeholder="Add tag..."
               className="input"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addTag();
+                }
+              }}
             />
 
-            <button type="button" onClick={addTag} className="bg-amber-500 text-white px-4 rounded">
+            <button
+              type="button"
+              onClick={addTag}
+              className="btn-secondary whitespace-nowrap"
+            >
               Add
             </button>
           </div>
 
-          <div className="flex gap-2 mt-2 flex-wrap">
+          <div className="mt-3 flex flex-wrap gap-2">
             {tags.map((tag) => (
               <button
                 key={tag}
                 type="button"
                 onClick={() => removeTag(tag)}
-                className="text-xs px-2 py-1 bg-amber-100 text-amber-700 rounded"
+                className="badge cursor-pointer gap-1.5 transition-colors hover:bg-danger/10 hover:text-danger"
+                title="Click to remove"
               >
-                {tag} ×
+                <span>{tag}</span>
+                <span className="font-bold">×</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* FEATURED */}
-        <label className="flex gap-2 items-center">
-          <input type="checkbox" {...register("featured")} />
-          Featured Project
+        <label className="label flex cursor-pointer items-center gap-2">
+          <input
+            type="checkbox"
+            {...register("featured")}
+            className="h-4 w-4 rounded border-border text-primary focus:ring-primary/20"
+          />
+          <span>Featured Project</span>
         </label>
 
         {/* SUBMIT */}
         <button
+          type="submit"
           disabled={isPending}
-          className="w-full bg-amber-500 text-white py-3 rounded"
+          className="btn-primary w-full py-3"
         >
           {isPending
             ? "Saving..."

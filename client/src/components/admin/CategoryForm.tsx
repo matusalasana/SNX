@@ -1,14 +1,10 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { 
-  useCreateCategory,
-} from "../../hooks/categories";
-import { useCategories } from "../../hooks/categories/useCategories";
+import { useCreateCategory } from "../../hooks/categories";
 import {
   createCategorySchema,
-  type CategoryFormData
+  type CategoryFormData,
 } from "../../schema/categories";
 
 type Props = {
@@ -16,9 +12,8 @@ type Props = {
 };
 
 export default function CategoryForm({ onSuccess }: Props) {
-  
   const { mutate: createCategory, isPending } = useCreateCategory();
-  
+
   const {
     register,
     handleSubmit,
@@ -29,36 +24,51 @@ export default function CategoryForm({ onSuccess }: Props) {
   });
 
   const onSubmit = (data: CategoryFormData) => {
-      createCategory(data, {
-        onSuccess: () => {
-          onSuccess?.()
-          reset()
-        }
-      })
+    createCategory(data, {
+      onSuccess: () => {
+        reset();
+        onSuccess?.();
+      },
+    });
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-content/40 p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded w-[400px] space-y-3"
+        className="card w-full max-w-md space-y-4"
       >
-        <h2 className="text-lg font-bold">
-          Create Category
-        </h2>
+        <div>
+          <h2 className="heading text-lg">Create Category</h2>
+
+          <p className="subheading mt-1 text-sm">
+            Add a new category to organize your content.
+          </p>
+        </div>
 
         <div>
           <label className="label">Name</label>
-          <input {...register("name")} placeholder="eg. (NodeJs, ReactJs, ...)" className="input" />
-          {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
+
+          <input
+            {...register("name")}
+            placeholder="e.g. Node.js, React.js..."
+            className="input"
+            disabled={isPending}
+          />
+
+          {errors.name && (
+            <p className="error-text mt-1">
+              {errors.name.message}
+            </p>
+          )}
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-end gap-3 border-t border-border pt-4">
           <button
-            disabled={isPending}
             type="button"
             onClick={onSuccess}
-            className="btn btn-secondary"
+            disabled={isPending}
+            className="btn-outline"
           >
             Cancel
           </button>
@@ -66,8 +76,9 @@ export default function CategoryForm({ onSuccess }: Props) {
           <button
             type="submit"
             disabled={isPending}
-            className="btn btn-primary">
-            Create
+            className="btn-primary"
+          >
+            {isPending ? "Creating..." : "Create"}
           </button>
         </div>
       </form>

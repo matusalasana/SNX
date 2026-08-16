@@ -26,32 +26,32 @@ const AdminCategories = () => {
 
   if (isLoading) {
     return (
-      <div className="p-4 md:p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+      <div className="container-custom section space-y-6 bg-background text-content min-h-screen">
   
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-10 w-28 rounded-lg" />
+        <div className="flex-between flex-col sm:flex-row gap-3">
+          <Skeleton className="skeleton h-8 w-40" />
+          <Skeleton className="skeleton h-10 w-28 rounded-lg" />
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Skeleton className="h-40 w-full" />
+          <Skeleton className="skeleton h-40 w-full" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-4 md:p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="container-custom section space-y-6 bg-background text-content min-h-screen">
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="text-3xl font-bold text-amber-400">
+      <div className="flex-between items-center mb-10">
+        <h1 className="heading text-3xl font-bold">
           Categories 
         </h1>
 
         <button
           onClick={openModal}
-          className="btn btn-primary"
+          className="btn-primary"
         >
           <Plus className="w-4 h-4" />
           New Category 

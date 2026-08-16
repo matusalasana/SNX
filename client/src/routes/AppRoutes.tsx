@@ -19,13 +19,12 @@ import About from "../pages/public/About";
 import Contact from "../pages/public/Contact";
 import Login from "../pages/public/Login";
 import NotFound from "../pages/public/NotFound";
-import Test from "../pages/public/Test";
 
 // Admin pages
 import AdminDashboard from "../pages/admin/Dashboard";
 import AdminCategories from "../pages/admin/AdminCategories";
 import AdminMessages from "../pages/admin/AdminMessages";
-import AdminBlogEditor from "../pages/admin/AdminBlogEditor";
+
 import AdminBlogs from "../pages/admin/AdminBlogs";
 import AdminProjects from "../pages/admin/AdminProjects";
 import AdminSkills from "../pages/admin/AdminSkills";
@@ -57,10 +56,6 @@ export const router = createBrowserRouter([
       {
         path: VITE_ADMIN_LOGIN_URL,
         element: <Login />,
-      },
-      {
-        path: "test",
-        element: <Test />,
       },
 
       // Projects
@@ -112,10 +107,6 @@ export const router = createBrowserRouter([
           {
             path: "blogs",
             element: <AdminBlogs />,
-          },
-          {
-            path: "blogs/new",
-            element: <AdminBlogEditor />,
           },
           {
             path: "projects",
