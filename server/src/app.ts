@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { view } from "./middleware/console.middleware";
 import { CLIENT_ORIGIN } from "./configs/env";
+import { appTemplate } from "./templates/appTemplate";
 
 export const app = express();
 
@@ -47,5 +48,13 @@ app.use(cookieParser());
 app.use(view());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+
+app.get("/", (_req, res) => {
+  res.status(200).send(appTemplate())
+})
+
+app.get("/api/v1", (_req, res) => {
+  res.status(200).send(appTemplate())
+})
 
 app.use("/api/v1", routes);
