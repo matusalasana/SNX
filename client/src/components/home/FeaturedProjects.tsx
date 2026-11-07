@@ -1,6 +1,7 @@
 import { useProjects } from "../../hooks/projects/useProjects";
 import { Skeleton } from "../../utils/skeleton";
 import ProjectCard from "../common/ProjectCard";
+import { StaggerGroup, StaggerItem } from "../motion/Stagger";
 import SectionTitle from "../common/SectionTitle";
 
 export default function FeaturedProjects() {
@@ -60,14 +61,13 @@ export default function FeaturedProjects() {
       />
 
       {/* Featured Grid */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <StaggerGroup className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-          />
+          <StaggerItem key={project.id}>
+            <ProjectCard project={project} />
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerGroup>
     </section>
   );
 }

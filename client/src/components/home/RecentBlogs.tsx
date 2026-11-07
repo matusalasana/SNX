@@ -1,6 +1,7 @@
 import { useBlogs } from "../../hooks/blogs/useBlogs";
 import BlogCard from "../common/BlogCard";
 import { Skeleton } from "../../utils/skeleton";
+import { StaggerGroup, StaggerItem } from "../motion/Stagger";
 import SectionTitle from "../common/SectionTitle";
 
 export default function RecentBlogs() {
@@ -76,14 +77,13 @@ export default function RecentBlogs() {
       />
 
       {/* Grid */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <StaggerGroup className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {recentBlogs.map((blog) => (
-          <BlogCard
-            key={blog.id}
-            blog={blog}
-          />
+          <StaggerItem key={blog.id}>
+            <BlogCard blog={blog} />
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerGroup>
     </section>
   );
 }
