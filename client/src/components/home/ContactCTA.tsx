@@ -1,5 +1,6 @@
 import { Mail, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import Magnetic from "../motion/Magnetic";
 
 export default function ContactCTA() {
   return (
@@ -25,6 +26,7 @@ export default function ContactCTA() {
         {/* Buttons */}
         <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
           {/* Primary CTA */}
+          <Magnetic>
           <Link
             to="/contact"
             className="btn-primary rounded-xl px-6 py-3"
@@ -32,6 +34,7 @@ export default function ContactCTA() {
             <Mail className="size-4" />
             Contact Me
           </Link>
+          </Magnetic>
 
           {/* Secondary CTA */}
           <Link
