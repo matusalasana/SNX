@@ -10,7 +10,7 @@ import {
 import {
   CreateBlogInput,
   UpdateBlogInput,
-} from "./blogs.validation";
+} from "../blogs/blogs.validation";
 
 export const AdminRepository = {
   getAllBlogs: async () => {

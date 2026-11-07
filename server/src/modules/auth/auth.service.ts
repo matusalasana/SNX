@@ -67,7 +67,8 @@ const register = async (data: RegisterInput) => {
       email: user.email,
       avatar_url: user.avatarUrl,
       bio: user.bio
-    }
+    },
+    token
   };
 }
 
