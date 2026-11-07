@@ -1,3 +1,4 @@
+import { StaggerGroup, StaggerItem } from "../../components/motion/Stagger";
 import { useMemo } from "react";
 import { useBlogs } from "../../hooks/blogs/useBlogs";
 import BlogCard from "../../components/common/BlogCard";
@@ -49,11 +50,13 @@ const BlogSection = ({ title, items, isFeatured = true }: { title: string; items
     <h2 className={`mb-6 text-sm font-medium uppercase tracking-widest ${isFeatured ? "text-primary" : "subheading"}`}>
       {title}
     </h2>
-    <div className={`grid grid-cols-1 gap-6 ${isFeatured ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}>
+    <StaggerGroup className={`grid grid-cols-1 gap-6 ${isFeatured ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}>
       {items.map((blog) => (
-        <BlogCard key={blog.id} blog={blog} />
+        <StaggerItem key={blog.id}>
+          <BlogCard blog={blog} />
+        </StaggerItem>
       ))}
-    </div>
+    </StaggerGroup>
   </div>
 );
 

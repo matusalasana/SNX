@@ -1,3 +1,4 @@
+import { StaggerGroup, StaggerItem } from "../../components/motion/Stagger";
 import { useProjects } from "../../hooks/projects/useProjects";
 import ProjectCard from "../../components/common/ProjectCard";
 import { Skeleton } from "../../utils/skeleton";
@@ -65,11 +66,13 @@ export default function Projects() {
 
       {/* Featured Projects */}
       {projects.length > 0 && (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <StaggerGroup className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <StaggerItem key={project.id}>
+              <ProjectCard project={project} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       )}
     </section>
   );
