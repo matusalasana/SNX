@@ -9,6 +9,7 @@ import {
 const SocialMedias = () => {
   return (
     <div className="mt-10 flex gap-5">
+      <Magnetic>
       <a
         href="https://github.com/matusalasana"
         target="_blank"
@@ -18,7 +19,9 @@ const SocialMedias = () => {
       >
         <Github size={22} />
       </a>
+      </Magnetic>
 
+      <Magnetic>
       <a
         href="https://www.linkedin.com/in/sana-matusala-b111a7366"
         target="_blank"
@@ -28,7 +31,9 @@ const SocialMedias = () => {
       >
         <Linkedin size={22} />
       </a>
+      </Magnetic>
 
+      <Magnetic>
       <a
         href="mailto:matusalasana@gmail.com"
         aria-label="Email"
@@ -36,7 +41,9 @@ const SocialMedias = () => {
       >
         <Mail size={22} />
       </a>
+      </Magnetic>
 
+      <Magnetic>
       <a
         href="http://t.me/sana1514"
         target="_blank"
@@ -46,7 +53,9 @@ const SocialMedias = () => {
       >
         <Send size={22} />
       </a>
+      </Magnetic>
 
+      <Magnetic>
       <a
         href="tel:+251945807386"
         aria-label="Phone"
@@ -54,6 +63,7 @@ const SocialMedias = () => {
       >
         <Phone size={22} />
       </a>
+      </Magnetic>
     </div>
   );
 };
