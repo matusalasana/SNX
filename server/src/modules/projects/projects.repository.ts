@@ -7,6 +7,8 @@ import {
   UpdateProjectInput,
 } from "./projects.validation";
 
+type ProjectInsert = typeof projects.$inferInsert;
+
 export const ProjectsRepository = {
   getProjects: async () => {
     return db
@@ -35,14 +37,14 @@ export const ProjectsRepository = {
     return finalData ?? null
   },
 
-  create: async (data) => {
+  create: async (data: ProjectInsert) => {
   return await db
       .insert(projects)
       .values(data)
       .returning();
 },
 
-  update: async (id: string, data: UpdateProjectInput) => {
+  update: async (id: string, data: Partial<ProjectInsert>) => {
     const result = await db
       .update(projects)
       .set({
@@ -56,8 +58,11 @@ export const ProjectsRepository = {
   },
   
   updateThumbnail: async ({
-    id, 
-    thumbnailUrl 
+    id,
+    thumbnailUrl,
+  }: {
+    id: string;
+    thumbnailUrl: string;
   }) => {
     const result = await db
       .update(projects)

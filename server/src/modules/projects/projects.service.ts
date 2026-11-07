@@ -4,7 +4,8 @@ import {
   UpdateProjectInput,
   createProjectSchema
 } from "./projects.validation";
-import { uploadToCloudinary } from "../../utils/cloudinary"
+import { uploadToCloudinary } from "../../utils/cloudinary";
+import type { projects } from "../../db/schema/projects";
 
 // GET ALL
 const getProjects = async () => {
@@ -23,7 +24,10 @@ const getProjectById = async (id: string) => {
 // CREATE
 const createNewProject = async ({
   validatedData,
-  thumbnail
+  thumbnail,
+}: {
+  validatedData: CreateProjectInput;
+  thumbnail: Buffer;
 }) => {
   
   if(!validatedData) throw new Error("Body is empty");
@@ -68,13 +72,13 @@ const updateProject = async (
 
   if (!exists) throw new Error("Project not found");
   
-  const dataToUpdate = {};
+  const dataToUpdate: Partial<typeof projects.$inferInsert> = {};
   
   if(data.title){
     dataToUpdate.title=data.title
   }
   if(data.category_id){
-    dataToUpdate.category_id=data.category_id
+    dataToUpdate.categoryId=data.category_id
   }
   if(data.content){
     dataToUpdate.content=data.content
@@ -104,7 +108,10 @@ const updateProject = async (
 // UPDATE THUMBNAIL
 const updateThumbnail = async ({
   id,
-  thumbnail_buffer
+  thumbnail_buffer,
+}: {
+  id: string;
+  thumbnail_buffer: Buffer;
 }) => {
   const exists = await ProjectsRepository.findById(id);
 
