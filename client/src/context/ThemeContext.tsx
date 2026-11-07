@@ -1,44 +1,55 @@
-import { 
-  createContext, 
-  useContext, 
-  useEffect, 
-  useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-type Theme = "light" | "dark";
+/** light = Light-Neo, dark = Dark-Neo, terminal = Terminal / IDE */
+export type Theme = "light" | "dark" | "terminal";
+
+export const THEMES: Theme[] = ["light", "dark", "terminal"];
 
 type ThemeContextType = {
   theme: Theme;
-  toggleTheme: () => void;
+  setTheme: (theme: Theme) => void;
+  /** Advance to the next theme in THEMES order. */
+  cycleTheme: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const readInitialTheme = (): Theme => {
+  if (typeof window === "undefined") return "light";
+  const root = document.documentElement;
+  if (root.classList.contains("terminal")) return "terminal";
+  return root.classList.contains("dark") ? "dark" : "light";
+};
+
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === "undefined") return "light";
-    return document.documentElement.classList.contains("dark")
-      ? "dark"
-      : "light";
-  });
+  const [theme, setTheme] = useState<Theme>(readInitialTheme);
 
   useEffect(() => {
     const root = document.documentElement;
 
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
+    // Terminal builds on the dark class so `dark:` variants keep working.
+    root.classList.toggle("dark", theme !== "light");
+    root.classList.toggle("terminal", theme === "terminal");
 
-    localStorage.setItem("theme", theme);
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {
+      /* storage unavailable */
+    }
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
+  const cycleTheme = useCallback(() => {
+    setTheme((prev) => THEMES[(THEMES.indexOf(prev) + 1) % THEMES.length]);
+  }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, cycleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

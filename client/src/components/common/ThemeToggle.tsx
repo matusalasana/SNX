@@ -1,37 +1,46 @@
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "../../context/ThemeContext";
+import { Moon, Sun, Terminal } from "lucide-react";
+import { THEMES, useTheme, type Theme } from "../../context/ThemeContext";
 
+const META: Record<Theme, { label: string; Icon: typeof Sun }> = {
+  light: { label: "Light", Icon: Sun },
+  dark: { label: "Dark", Icon: Moon },
+  terminal: { label: "IDE", Icon: Terminal },
+};
+
+/** Three-way switch: Light-Neo / Dark-Neo / Terminal-IDE. */
 const ThemeToggle = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
-    <button
-      type="button"
-      onClick={toggleTheme}
-      aria-label="Toggle theme"
-      className="
-        btn-ghost relative flex-center h-10 w-10 p-0
-        rounded-xl border border-border bg-card
-        transition-all duration-300
-        hover:border-primary/40 hover:bg-primary/5
-      "
+    <div
+      role="radiogroup"
+      aria-label="Theme"
+      className="inline-flex border-[3px] border-ink bg-card shadow-neo-sm"
     >
-      <Sun
-        className={`absolute h-5 w-5 transition-all duration-300 ${
-          theme === "dark"
-            ? "scale-0 rotate-90 opacity-0"
-            : "scale-100 rotate-0 opacity-100"
-        }`}
-      />
+      {THEMES.map((t) => {
+        const { label, Icon } = META[t];
+        const active = theme === t;
 
-      <Moon
-        className={`absolute h-5 w-5 transition-all duration-300 ${
-          theme === "dark"
-            ? "scale-100 rotate-0 opacity-100"
-            : "scale-0 -rotate-90 opacity-0"
-        }`}
-      />
-    </button>
+        return (
+          <button
+            key={t}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            aria-label={`${label} theme`}
+            title={`${label} theme`}
+            onClick={() => setTheme(t)}
+            className={`flex-center size-9 transition-colors ${
+              active
+                ? "bg-accent text-on-accent"
+                : "text-content hover:bg-muted"
+            } ${t !== "light" ? "border-l-[3px] border-ink" : ""}`}
+          >
+            <Icon className="size-4" />
+          </button>
+        );
+      })}
+    </div>
   );
 };
 
