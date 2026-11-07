@@ -57,7 +57,10 @@ const create = async (
 
 const updateSkill = async ({
   id,
-  skill
+  skill,
+}: {
+  id: string;
+  skill: Partial<typeof skills.$inferInsert>;
 }) => {
   const result = await db
     .update(skills)

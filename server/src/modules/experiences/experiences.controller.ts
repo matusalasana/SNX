@@ -47,7 +47,7 @@ const updateExperience = async (
   try {
     const experience =
       await ExperiencesService.updateExperience({
-        id: req.params.id,
+        id: req.params.id as string,
         data: req.body
       });
 

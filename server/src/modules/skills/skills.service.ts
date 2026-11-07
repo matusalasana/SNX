@@ -1,8 +1,10 @@
 import { SkillsRepository }
 from "./skills.repository";
 
+import type { skills } from "../../db/schema/skills";
 import {
   CreateSkillInput,
+  UpdateSkillInput,
 } from "./skills.validation";
 
 const getSkills =
@@ -19,7 +21,10 @@ const createNewSkill =
   
 const updateSkill = async ({
   id,
-  data
+  data,
+}: {
+  id: string;
+  data: UpdateSkillInput;
 }) => {
   
   if(!id) throw new Error("Id not provided");
@@ -27,7 +32,7 @@ const updateSkill = async ({
   const exists = await SkillsRepository.findById(id);
   if(!exists) throw new Error("Skill not found");
   
-  const dataToUpdate = {};
+  const dataToUpdate: Partial<typeof skills.$inferInsert> = {};
   if(data.name){
     dataToUpdate.name = data.name
   }

@@ -1,8 +1,10 @@
 import { ExperiencesRepository }
 from "./experiences.repository";
 
+import type { experiences } from "../../db/schema/experiences";
 import {
   CreateExperienceInput,
+  UpdateExperienceInput,
 } from "./experiences.validation";
 
 const getAllExperiences =
@@ -19,14 +21,17 @@ const createNewExperience =
   
 const updateExperience = async ({
     id,
-    data
+    data,
+  }: {
+    id: string;
+    data: UpdateExperienceInput;
   }) => {
     
     if(!id) throw new Error("Id not provided");
     const exists = await ExperiencesRepository.findById(id);
     if(!exists) throw new Error("Experience not found");
     
-    const dataToUpdate = {};
+    const dataToUpdate: Partial<typeof experiences.$inferInsert> = {};
     if(data.company !== undefined){
       dataToUpdate.company = data.company
     }

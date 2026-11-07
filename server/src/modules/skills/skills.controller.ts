@@ -48,7 +48,7 @@ const updateSkill = async (
   try {
     const skill =
       await SkillsService.updateSkill({
-        id: req.params.id,
+        id: req.params.id as string,
         data: req.body
       });
 

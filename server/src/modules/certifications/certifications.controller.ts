@@ -48,7 +48,7 @@ const updateCertification = async (
   try {
     const certification =
       await CertificationsService.updateCertification({
-        id: req.params.id,
+        id: req.params.id as string,
         data: req.body,
       });
 

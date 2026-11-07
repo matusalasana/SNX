@@ -41,7 +41,10 @@ const create = async (
 
 const updateExperience = async ({
   id,
-  experience
+  experience,
+}: {
+  id: string;
+  experience: Partial<typeof experiences.$inferInsert>;
 }) => {
   const result = await db
     .update(experiences)
