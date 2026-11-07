@@ -11,7 +11,6 @@ from "../../middleware/validation.middleware";
 
 import {
   createCategorySchema,
-  categoryIdSchema,
 } from "./categories.validation";
 
 const router = Router();
