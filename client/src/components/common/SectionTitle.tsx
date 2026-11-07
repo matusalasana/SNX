@@ -1,3 +1,5 @@
+import ScrambleText from "../motion/ScrambleText";
+
 type SectionTitleProps = {
   eyebrow?: string;
   title: string;
