@@ -1,3 +1,4 @@
+import Magnetic from "../motion/Magnetic";
 import {
   Github,
   Linkedin,
