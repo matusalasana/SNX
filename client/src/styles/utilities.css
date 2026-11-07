@@ -3,27 +3,27 @@
 ======================================== */
 
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200 focus:outline-none disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 border-[3px] border-ink px-5 py-2.5 text-sm font-bold uppercase tracking-wide shadow-neo transition-[transform,box-shadow,background-color] duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo-lg focus:outline-none focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-accent-2 active:translate-x-1 active:translate-y-1 active:shadow-none disabled:pointer-events-none disabled:opacity-50;
 }
 
 @utility btn-primary {
-  @apply btn bg-primary text-white hover:opacity-90 focus:ring-2 focus:ring-primary/50;
+  @apply btn bg-primary text-on-primary;
 }
 
 @utility btn-secondary {
-  @apply btn bg-secondary text-white hover:opacity-90 focus:ring-2 focus:ring-secondary/30;
+  @apply btn bg-accent-2 text-on-accent;
 }
 
 @utility btn-outline {
-  @apply btn border border-border bg-transparent text-content hover:bg-muted focus:ring-2 focus:ring-primary/30;
+  @apply btn bg-card text-content hover:bg-accent hover:text-on-accent;
 }
 
 @utility btn-ghost {
-  @apply btn bg-transparent text-content hover:bg-muted focus:ring-2 focus:ring-primary/30;
+  @apply btn border-transparent bg-transparent text-content shadow-none hover:bg-accent hover:text-on-accent hover:shadow-neo;
 }
 
 @utility btn-danger {
-  @apply btn bg-danger text-white hover:opacity-90 focus:ring-2 focus:ring-danger/30;
+  @apply btn bg-danger text-white;
 }
 
 
@@ -65,7 +65,7 @@
 ======================================== */
 
 @utility input {
-  @apply w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-content outline-none transition-colors placeholder:text-secondary disabled:cursor-not-allowed disabled:opacity-50 focus:border-primary focus:ring-2 focus:ring-primary/20;
+  @apply w-full border-[3px] border-ink bg-card px-3 py-2 text-sm text-content outline-none transition-[box-shadow,transform] placeholder:text-secondary disabled:cursor-not-allowed disabled:opacity-50 focus:-translate-x-0.5 focus:-translate-y-0.5 focus:shadow-neo;
 }
 
 @utility textarea {
@@ -86,11 +86,11 @@
 ======================================== */
 
 @utility text-gradient {
-  @apply bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-transparent;
+  @apply bg-accent px-2 text-on-accent;
 }
 
 @utility heading {
-  @apply font-bold tracking-tight text-content;
+  @apply font-display font-black tracking-tight text-content;
 }
 
 @utility subheading {
@@ -111,19 +111,19 @@
 ======================================== */
 
 @utility badge {
-  @apply inline-flex items-center rounded-full bg-muted px-2 py-1 text-xs font-medium text-content;
+  @apply inline-flex items-center border-2 border-ink bg-accent px-2 py-0.5 text-xs font-bold uppercase text-on-accent;
 }
 
 @utility badge-success {
-  @apply rounded-full bg-green-100 px-2 py-1 text-green-700 dark:bg-green-900/30 dark:text-green-400;
+  @apply border-2 border-ink bg-accent-2 px-2 py-0.5 text-on-accent;
 }
 
 @utility badge-warning {
-  @apply rounded-full bg-amber-100 px-2 py-1 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400;
+  @apply border-2 border-ink bg-accent px-2 py-0.5 text-on-accent;
 }
 
 @utility badge-danger {
-  @apply rounded-full bg-red-100 px-2 py-1 text-red-700 dark:bg-red-900/30 dark:text-red-400;
+  @apply border-2 border-ink bg-danger px-2 py-0.5 text-white;
 }
 
 
@@ -132,7 +132,7 @@
 ======================================== */
 
 @utility skeleton {
-  @apply animate-pulse rounded-md bg-muted;
+  @apply animate-pulse bg-muted;
 }
 
 @utility loading {
@@ -145,7 +145,7 @@
 ======================================== */
 
 @utility image {
-  @apply mb-10 w-full rounded-2xl border border-border;
+  @apply mb-10 w-full border-[3px] border-ink shadow-neo;
 }
 
 @utility image-cover {
@@ -214,5 +214,5 @@
 ======================================== */
 
 @utility card {
-  @apply rounded-xl border border-border bg-card p-6 shadow-sm;
+  @apply border-[3px] border-ink bg-card p-6 shadow-neo;
 }
