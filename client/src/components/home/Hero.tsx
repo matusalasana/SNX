@@ -1,5 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import Magnetic from "../motion/Magnetic";
+import ScrambleText from "../motion/ScrambleText";
 
 const Hero = () => {
   return (
@@ -23,7 +25,7 @@ const Hero = () => {
         .
 
         <span className="mt-4 block text-3xl font-medium text-secondary md:text-4xl">
-          Full Stack Developer
+          <ScrambleText text="Full Stack Developer" />
         </span>
       </h1>
 
@@ -35,6 +37,7 @@ const Hero = () => {
 
       {/* CTA Buttons */}
       <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
+        <Magnetic>
         <Link
           to="/projects"
           className="group btn-primary rounded-xl px-6 py-3"
@@ -43,7 +46,9 @@ const Hero = () => {
 
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
         </Link>
+        </Magnetic>
 
+        <Magnetic>
         <a
           href="/Sana_Matusala_Resume.pdf"
           download
@@ -51,6 +56,7 @@ const Hero = () => {
         >
           Download Resume
         </a>
+        </Magnetic>
       </div>
     </section>
   );
