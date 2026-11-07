@@ -8,11 +8,9 @@ import {
   and
 } from "drizzle-orm";
 
-import {
-  CreateBlogInput,
-  UpdateBlogInput,
-} from "./blogs.validation";
-import { BlogFilters } from "./blogs.service";
+import type { BlogFilters } from "./blogs.service";
+
+export type BlogInsert = typeof blogs.$inferInsert;
 
 const getBlogs = async (filters: BlogFilters) => {
   const conditions = [
@@ -24,7 +22,7 @@ const getBlogs = async (filters: BlogFilters) => {
   }
 
   if (filters.category !== undefined) {
-    conditions.push(eq(blogs.category, filters.category));
+    conditions.push(eq(blogs.categoryId, filters.category));
   }
 
   return db
@@ -53,7 +51,7 @@ const getBlogById = async (id: string) => {
   return finalData ?? null;
 };
 
-const createBlog = async (data: CreateBlogInput) => {
+const createBlog = async (data: BlogInsert) => {
   const result = await db
     .insert(blogs)
     .values(data)
@@ -62,7 +60,13 @@ const createBlog = async (data: CreateBlogInput) => {
   return result[0];
 };
 
-const update = async ({id, data}) => {
+const update = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: Partial<BlogInsert>;
+}) => {
   const result = await db
     .update(blogs)
     .set({
@@ -75,7 +79,13 @@ const update = async ({id, data}) => {
   return result[0] ?? null;
 };
 
-const updateThumbnail = async ({id, thumbnailUrl}) => {
+const updateThumbnail = async ({
+  id,
+  thumbnailUrl,
+}: {
+  id: string;
+  thumbnailUrl: string;
+}) => {
   const result = await db
     .update(blogs)
     .set({

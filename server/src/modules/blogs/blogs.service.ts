@@ -2,7 +2,8 @@ import { BlogsRepository } from "./blogs.repository";
 import { uploadToCloudinary } from "../../utils/cloudinary"
 import { createBlogSchema, updateBlogSchema } from "./blogs.validation"
 
-import {
+import type { BlogInsert } from "./blogs.repository";
+import type {
   CreateBlogInput,
   UpdateBlogInput,
 } from "./blogs.validation";
@@ -28,7 +29,10 @@ const getBlogById = async (id: string) => {
 
 const createBlog = async ({
   thumbnail_buffer,
-  validated
+  validated,
+}: {
+  thumbnail_buffer?: Buffer;
+  validated: CreateBlogInput;
 }) => {
   const {
     title,
@@ -61,7 +65,10 @@ const createBlog = async ({
 
 const updateBlog = async ({
   id,
-  validated
+  validated,
+}: {
+  id: string;
+  validated?: UpdateBlogInput;
 }) => {
   if(!validated){
     throw new Error("Body data not found");
@@ -81,7 +88,7 @@ const updateBlog = async ({
 
   if (!exists) throw new Error("Blog post not found");
   
-  const dataToUpdate = {};
+  const dataToUpdate: Partial<BlogInsert> = {};
   
   if(title !== undefined){
     dataToUpdate.title=title
@@ -107,11 +114,7 @@ const updateBlog = async ({
     dataToUpdate.featured=featured
   }
   
-  if(tags.length > 0){
-    dataToUpdate.tags=tags
-  }
-  
-  if (tags && Array.isArray(tags)) {
+  if (Array.isArray(tags)) {
     dataToUpdate.tags = tags;
   }
   
@@ -123,7 +126,10 @@ const updateBlog = async ({
 
 const updateThumbnail = async ({
   id,
-  thumbnail_buffer
+  thumbnail_buffer,
+}: {
+  id: string;
+  thumbnail_buffer?: Buffer;
 }) => {
   const existing = await BlogsRepository.getBlogById(id);
 

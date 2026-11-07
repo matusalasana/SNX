@@ -17,7 +17,7 @@ const getBlogs = async (req: Request, res: Response) => {
           : undefined,
 
       category:
-        req.query.category !== undefined
+        typeof req.query.category === "string"
           ? req.query.category
           : undefined,
     };
