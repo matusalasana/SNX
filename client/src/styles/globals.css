@@ -2,10 +2,13 @@
 
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import "./theme.css";
 @import "./utilities.css";
 @import "./animations.css";
 
 @theme {
   --font-sans: "Roboto", sans-serif;
+  --font-display: "Archivo Black", "Roboto", sans-serif;
 }

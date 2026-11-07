@@ -1,43 +1,82 @@
+/* ========================================
+   NEO-BRUTALIST TOKENS
+   Light-Neo is the default. `.dark` = Dark-Neo.
+   `.terminal` (applied together with `.dark`) = Terminal / IDE.
+   Never hardcode colors in components: use these tokens.
+======================================== */
+
 @theme {
-  /* Main surfaces */
-  --color-background: #ffffff;
+  /* Surfaces */
+  --color-background: #fff4d6; /* raw cream */
   --color-card: #ffffff;
 
-  /* Main content */
-  --color-content: #18181b;
+  /* Content */
+  --color-content: #0a0a0a;
+  --color-secondary: #3f3f46;
 
-  /* Subtle UI */
-  --color-muted: #f4f4f5;
-  --color-border: #e4e4e7;
+  /* Structure */
+  --color-ink: #0a0a0a; /* borders + hard shadows */
+  --color-border: #0a0a0a;
+  --color-muted: #f1e3b3;
 
-  /* Brand / dominant color */
-  --color-primary: #10b981;
-
-  /* Secondary actions */
-  --color-secondary: #64748b;
+  /* Color blocking */
+  --color-primary: #e5391a; /* signal red */
+  --color-on-primary: #ffffff;
+  --color-accent: #ffd400; /* highlighter yellow */
+  --color-accent-2: #5eead4; /* neon mint */
+  --color-on-accent: #0a0a0a;
 
   /* Danger */
-  --color-danger: #ef4444;
+  --color-danger: #c1121f;
+
+  /* Hard, un-blurred shadows */
+  --shadow-neo-sm: 2px 2px 0 0 var(--color-ink);
+  --shadow-neo: 4px 4px 0 0 var(--color-ink);
+  --shadow-neo-lg: 8px 8px 0 0 var(--color-ink);
 }
 
+/* ---------- Dark-Neo ---------- */
 .dark {
-  /* Main surfaces */
-  --color-background: #020617;
-  --color-card: #0f172a;
+  --color-background: #141414;
+  --color-card: #1f1f1f;
 
-  /* Main content */
-  --color-content: #f8fafc;
+  --color-content: #fff4d6;
+  --color-secondary: #c9c2ab;
 
-  /* Subtle UI */
-  --color-muted: #1e293b;
-  --color-border: #334155;
+  --color-ink: #fff4d6;
+  --color-border: #fff4d6;
+  --color-muted: #2c2c2c;
 
-  /* Brand / dominant color */
-  --color-primary: #34d399;
+  --color-primary: #ffd400;
+  --color-on-primary: #0a0a0a;
+  --color-accent: #5eead4;
+  --color-accent-2: #ff7a59;
+  --color-on-accent: #0a0a0a;
 
-  /* Secondary actions */
-  --color-secondary: #94a3b8;
+  --color-danger: #ff6b6b;
+}
 
-  /* Danger */
-  --color-danger: #f87171;
+/* ---------- Terminal / IDE ----------
+   Syntax-highlight mapping:
+   primary = strings, accent = keywords, accent-2 = types/functions */
+.terminal {
+  --font-sans: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+
+  --color-background: #0b100c;
+  --color-card: #111a13;
+
+  --color-content: #c8f7d0;
+  --color-secondary: #7fb68a;
+
+  --color-ink: #39ff6a;
+  --color-border: #2a7f45;
+  --color-muted: #16241a;
+
+  --color-primary: #39ff6a;
+  --color-on-primary: #04110a;
+  --color-accent: #ffb000;
+  --color-accent-2: #4dd0ff;
+  --color-on-accent: #04110a;
+
+  --color-danger: #ff5f56;
 }

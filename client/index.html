@@ -20,7 +20,7 @@
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Playwrite+NZ+Guides&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;700&family=Black+Ops+One&family=Playwrite+NZ+Guides&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/Logo.svg" />
@@ -33,15 +33,14 @@
       (function () {
         try {
           const theme = localStorage.getItem("theme");
-    
-          if (
+          const root = document.documentElement;
+          const dark =
             theme === "dark" ||
-            (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-          ) {
-            document.documentElement.classList.add("dark");
-          } else {
-            document.documentElement.classList.remove("dark");
-          }
+            theme === "terminal" ||
+            (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+          root.classList.toggle("dark", dark);
+          root.classList.toggle("terminal", theme === "terminal");
         } catch (e) {}
       })();
     </script>
