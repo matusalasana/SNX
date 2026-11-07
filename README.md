@@ -1,256 +1,219 @@
-# 🚀 SNX Portfolio
+# SNX Portfolio
 
-A modern full-stack developer portfolio built to showcase projects, technical skills, blog content, and professional experience through a fast, responsive, and scalable web application.
+A full-stack developer portfolio with a public site (projects, blog, experience, skills, certifications, contact form) and a private admin dashboard for managing all of that content.
 
-### 🌐 Live Demo 
-
-Visit the live website:
-
-[http://sana-matusala-portfolio.vercel.app](https://sana-matusala-portfolio.vercel.app)
+**Live site:** [sana-matusala-portfolio.vercel.app](https://sana-matusala-portfolio.vercel.app)
 
 ---
 
-## ✨ Features
+## Features
 
-### Public Features
+### Public site
 
-- Responsive modern UI
-- Project showcase with detailed project pages
-- Blog platform with article details pages
-- Featured projects and featured articles
-- Technology tags and categorization
-- Contact section
-- Dark theme design
-- Optimized performance and SEO-friendly structure
+- Responsive UI with light/dark theme toggle
+- Home page with hero, summary, services, skills, experience, certifications, featured projects and recent blogs
+- Projects list and project detail pages
+- Blog list and article pages with Markdown rendering (sanitized with DOMPurify)
+- About and Contact pages with a message form
+- Downloadable resume
 
-### Admin Features
+### Admin dashboard
 
-- Secure authentication
-- Create, update, and delete projects
-- Create, update, and delete blog posts
-- Upload thumbnails and multiple project screenshots
-- Manage featured content
-- Cloudinary image storage integration
+- Cookie-based JWT authentication; the login page lives at a configurable URL
+- CRUD for projects, blogs, categories, skills, experiences and certifications
+- Inbox for messages sent through the contact form
+- Image uploads (thumbnails, screenshots) stored on Cloudinary
 
 ---
 
-## 🛠 Tech Stack
+## Tech stack
 
-### Frontend
-
-- React
-- TypeScript
-- React Router
-- React Hook Form
-- Zod
-- TanStack Query
-- Tailwind CSS
-- Axios
-
-### Backend
-
-- Node.js
-- Express
-- TypeScript
-- Drizzle ORM
-- PostgreSQL
-- JWT Authentication
-- Multer
-- Cloudinary
-
-### Deployment
-
-- Vercel (Frontend)
-- Render (Backend)
-- Neon PostgreSQL
+| Layer      | Tools |
+| ---------- | ----- |
+| Frontend   | React 19, TypeScript, Vite, React Router 7, TanStack Query, React Hook Form + Zod, Tailwind CSS 4 + daisyUI, Framer Motion, Axios |
+| Backend    | Node.js, Express 4, TypeScript, Drizzle ORM, PostgreSQL (`pg` / Neon), JWT + bcrypt, Zod, Multer, Helmet, CORS |
+| Media      | Cloudinary |
+| Deployment | Vercel (frontend), Render (backend), Neon (PostgreSQL) |
 
 ---
 
-## 📁 Project Structure
+## Project structure
 
-```bash
-snx/
-├── client/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── hooks/
-│   │   ├── services/
-│   │   ├── schema/
-│   │   └── types/
-│   └── public/
-│
-├── server/
+```
+SNX/
+├── client/                  # React + Vite app
+│   ├── public/              # Static assets (photo, resume)
+│   ├── vercel.json          # Rewrites /api to the backend
 │   └── src/
-│       │   
-│       ├── configs/
-│       ├── db/
-│       ├── middleware/
-│       ├── modules/
-│       │   ├── projects.controller.ts
-│       │   ├── projects.service.ts
-│       │   ├── projects.repository.ts
-│       │   ├── projects.routes.ts
-│       │   └── projects.validation.ts
-│       ├── routes/
-│       ├── types/
-│       ├── utils/
+│       ├── api/             # Axios instance
+│       ├── components/      # admin/, auth/, common/, forms/, home/
+│       ├── context/         # Theme context
+│       ├── hooks/           # TanStack Query hooks per resource
+│       ├── layouts/
+│       ├── pages/           # public/ and admin/
+│       ├── routes/          # Router and protected routes
+│       ├── schema/          # Zod schemas
+│       └── types/
+│
+├── server/                  # Express API
+│   ├── drizzle.config.ts
+│   └── src/
+│       ├── configs/         # env and Cloudinary setup
+│       ├── db/              # Drizzle client, schema/, reset script
+│       ├── middleware/      # auth, upload, validation, logging
+│       ├── modules/         # auth, admin, projects, blogs, categories,
+│       │                    # skills, experiences, certifications, messages
+│       │                    #   each: controller / service / repository /
+│       │                    #         routes / validation
+│       ├── routes/          # Mounts all modules under /api/v1
 │       ├── app.ts
 │       └── server.ts
-│
 │
 └── README.md
 ```
 
 ---
 
-## ⚙️ Environment Variables
+## Getting started
 
-### Frontend
+### Prerequisites
+
+- Node.js 20+ and npm
+- A PostgreSQL database (a free [Neon](https://neon.tech) project works well)
+- A [Cloudinary](https://cloudinary.com) account for image uploads
+
+### 1. Clone and install
+
 ```bash
-VITE_API_URL=http://localhost:3000/api/v1
+git clone https://github.com/matusalasana/SNX.git
+cd SNX
+
+cd client && npm install
+cd ../server && npm install
 ```
 
-### Backend
+### 2. Configure environment variables
+
+**`server/.env`**
+
+| Variable                | Required | Default                 | Description |
+| ----------------------- | -------- | ----------------------- | ----------- |
+| `JWT_SECRET`            | yes      | n/a                     | Secret used to sign auth tokens. The server refuses to start without it. |
+| `DATABASE_URL`          | yes      | n/a                     | PostgreSQL connection string |
+| `CLIENT_ORIGIN`         | yes      | n/a                     | Allowed frontend origin for CORS, e.g. `http://localhost:5173` |
+| `CLOUDINARY_CLOUD_NAME` | yes      | n/a                     | Cloudinary credentials |
+| `CLOUDINARY_API_KEY`    | yes      | n/a                     | |
+| `CLOUDINARY_API_SECRET` | yes      | n/a                     | |
+| `PORT`                  | no       | `3000`                  | API port |
+| `SERVER_ORIGIN`         | no       | `http://localhost:3000` | Public URL of the API |
+| `COOKIE_MAX_AGE`        | no       | 7 days (ms)             | Auth cookie lifetime in milliseconds |
+| `PWD_SALT_ROUNDS`       | no       | `12`                    | bcrypt salt rounds |
+
+**`client/.env`**
+
 ```bash
-PORT=3000
-
-DATABASE_URL=your_database_url
-
-JWT_SECRET=your_jwt_secret
-
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-CLIENT_URL=http://localhost:5173
-```
----
-
-## Installation 
-
-### Clone the repository
-```bash
-git clone https://github.com/yourusername/snx.git
-
-cd snx
+VITE_ADMIN_LOGIN_URL=/your-secret-login-path
 ```
 
-### Install dependencies
+The API base URL is not an environment variable. In development the client calls `http://localhost:3000/api/v1`. In production it calls `/api/v1`, which `client/vercel.json` rewrites to the backend so that auth cookies stay first-party.
 
-Frontend
+### 3. Set up the database
+
+From `server/`:
+
 ```bash
-cd client
-npm install
+npm run push        # push the Drizzle schema to the database
+# or
+npm run generate    # generate SQL migrations
+npm run migrate     # apply migrations
 ```
 
-Backend
-```bash
-cd server
-npm install
-```
+`npm run schema:drop` drops and recreates the `public` schema. It deletes all data, so use it only on a database you can afford to wipe.
 
----
-
-### Database Setup
-
-
+### 4. Run locally
 
 ```bash
-# Generate migrations:
-npm run generate
+# terminal 1: API on http://localhost:3000
+cd server && npm run dev
 
-# Push schema:
-npm run push
-
-# Seed data
-npm run seed
-
-# Reset DB
-npm run reset
-```
-
----
-
-▶️ Running the Application
-
-Backend
-```bash
-npm run dev
-```
-
-Frontend
-```bash
-npm run dev
+# terminal 2: client on http://localhost:5173
+cd client && npm run dev
 ```
 
 ---
 
-## Media Management
+## Scripts
 
-Project thumbnails and screenshots are uploaded through Cloudinary.
+### Client (`client/`)
 
-```bash
-Folder structure:
+| Command           | Description |
+| ----------------- | ----------- |
+| `npm run dev`     | Start the Vite dev server |
+| `npm run build`   | Production build |
+| `npm run preview` | Preview the production build |
+| `npm run lint`    | Run ESLint |
 
-projects/
-├── thumbnails/
-└── images/
+### Server (`server/`)
 
-blogs/
-├── thumbnails/
-```
-
----
-
-## Authentication
-
-Admin routes are protected using JWT-based authentication.
-
-Protected actions include:
-
-- Creating projects
-- Updating projects
-- Deleting projects
-- Creating blogs
-- Updating blogs
-- Deleting blogs
+| Command              | Description |
+| -------------------- | ----------- |
+| `npm run dev`        | Start with `tsx watch` |
+| `npm run build`      | Bundle with `tsup` into `dist/` |
+| `npm start`          | Run the built server |
+| `npm run check`      | Type-check without emitting |
+| `npm run generate`   | Generate Drizzle migrations |
+| `npm run migrate`    | Apply migrations |
+| `npm run push`       | Push schema directly to the database |
+| `npm run schema:drop`| Drop and recreate the `public` schema |
 
 ---
 
-## Future Improvements
+## API overview
 
-- Project analytics dashboard
-- Search functionality
+All routes are mounted under `/api/v1`:
+
+`/auth` · `/projects` · `/categories` · `/blogs` · `/skills` · `/experiences` · `/certifications` · `/messages` · `/admin`
+
+Read endpoints are public. Write endpoints require a valid auth cookie issued by `/auth`.
+
+---
+
+## Media management
+
+Uploads go through Multer to Cloudinary. Project and blog thumbnails and project screenshots are stored there, and only the resulting URLs are saved in the database.
+
+---
+
+## Deployment
+
+- **Frontend:** Vercel, with the project root set to `client/`
+- **Backend:** Render, running `npm run build` then `npm start` in `server/`
+- **Database:** Neon PostgreSQL
+
+Set the server environment variables on Render and `VITE_ADMIN_LOGIN_URL` on Vercel. Update the rewrite destination in `client/vercel.json` if the backend URL changes.
+
+---
+
+## Roadmap
+
+- Search and project filtering
 - Blog comments
-- Project filtering
-- Markdown editor
+- Analytics dashboard
 - Newsletter integration
 - Internationalization (i18n)
-- Automated testing
+- Automated tests
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-Contributions, issues, and feature requests are welcome.
-
-Feel free to fork the project and submit a pull request.
+Issues and pull requests are welcome. Fork the repo, create a branch, and open a PR.
 
 ---
 
-## 📬 Contact
+## Contact
 
-If you'd like to collaborate, discuss opportunities, or provide feedback:
-
-# 🚀 SNX Portfolio
-
-[Live Website](https://sana-matusala-portfolio.vercel.app) •
-[GitHub](https://github.com/matusalasana) •
-[LinkedIn](https://www.linkedin.com/in/sana-matusala-b111a7366)
-[Telegram](t.me/sana1514)
-
-
----
-
-Built with ☕, TypeScript, and a lot of persistence.
+[Website](https://sana-matusala-portfolio.vercel.app) ·
+[GitHub](https://github.com/matusalasana) ·
+[LinkedIn](https://www.linkedin.com/in/sana-matusala-b111a7366) ·
+[Telegram](https://t.me/sana1514)
