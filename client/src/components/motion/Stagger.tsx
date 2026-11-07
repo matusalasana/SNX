@@ -8,11 +8,13 @@ const container: Variants = {
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 48, rotate: -1.5 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    rotate: 0,
+    // Crisp spring: snappy with a slight overshoot, like a mechanical latch.
+    transition: { type: "spring", stiffness: 380, damping: 24, mass: 0.8 },
   },
 };
 
